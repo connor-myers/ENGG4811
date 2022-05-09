@@ -1,3 +1,7 @@
+# simple program which uses the model trained that determines if provided doc and code are related
+# for demonstration purposes
+# model state is NOT uploaded to github
+
 import torch
 from model import Model
 from transformers import (RobertaConfig, RobertaForSequenceClassification, RobertaTokenizer)

@@ -1,2 +1,12 @@
 milestone_1/code-documentation-collector/examples*
 milestone_1/code-documentation-collector/.idea*
+milestone_1/code-documentation-collector/target
+*.bin
+
+milestone_1/CodeBERT-classification/code/__pycache__
+milestone_1/CodeBERT-classification/code/train.log
+milestone_1/CodeBERT-classification/dataset/ 
+*.jsonl
+*.log
+milestone_1/app/__pycache__
+milestone_1/CodeBERT-classification/code/saved_models
