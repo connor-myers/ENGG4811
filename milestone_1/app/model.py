@@ -11,12 +11,11 @@ from torch.nn import BCELoss, MSELoss
     
     
 class Model(nn.Module):   
-    def __init__(self, encoder,config,tokenizer,args):
+    def __init__(self, encoder,config,tokenizer):
         super(Model, self).__init__()
         self.encoder = encoder
         self.config=config
         self.tokenizer=tokenizer
-        self.args=args
     
         
     def forward(self, input_ids=None,labels=None): 

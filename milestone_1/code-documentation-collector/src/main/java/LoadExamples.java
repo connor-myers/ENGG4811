@@ -1,3 +1,4 @@
+import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.visitor.VoidVisitor;
@@ -41,7 +42,14 @@ public class LoadExamples {
                 e.printStackTrace();
                 continue;
             }
-            CompilationUnit cu = StaticJavaParser.parse(fis);
+
+            CompilationUnit cu;
+            try {
+                cu = StaticJavaParser.parse(fis);
+            } catch (ParseProblemException | StackOverflowError e) {
+                // code contains invalid Java for some reason? Just ignore it.
+                continue;
+            }
 
             VoidVisitor<List<CodeDocPair>> methodNameVisitor = new MethodVisitor();
             methodNameVisitor.visit(cu, codeDocPairs);

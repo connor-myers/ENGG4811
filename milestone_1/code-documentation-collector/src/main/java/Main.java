@@ -13,7 +13,7 @@ public class Main {
     public static int POSITIVE_CHANCE = 50;
 
     public static int NEGATIVE_CHANCE = TOTAL_CHANCE - POSITIVE_CHANCE;
-    public static int NUM_EXAMPLES = 6000;
+    public static int NUM_EXAMPLES = 1000000;
 
     public static double NUM_TRAIN = 0.8;
     public static double NUM_TEST = 0.1;
@@ -24,12 +24,19 @@ public class Main {
         List<CodeDocPair> trainingPairs = LoadExamples.getExampleCodeDocPairs("examples_train");
         Collections.shuffle(trainingPairs);
 
+        System.out.println("Training pairs loaded" + trainingPairs.size() + " loaded");
+
         List<CodeDocPair> testingPairs = LoadExamples.getExampleCodeDocPairs("examples_test");
         Collections.shuffle(testingPairs);
+
+        System.out.println("Testing pairs loaded" + testingPairs.size() + " loaded");
 
         List<CodeDocPair> evaluatingPairs = LoadExamples.getExampleCodeDocPairs("examples_eval");
         Collections.shuffle(evaluatingPairs);
 
+        System.out.println("Evaluating pairs loaded: " + evaluatingPairs.size() + " loaded");
+
+        System.out.println("Done getting pairs!");
 
         List<JSONObject> trainExamples = generateExamples(trainingPairs, (int) Math.round(NUM_TRAIN * NUM_EXAMPLES));
         List<JSONObject> testExamples =   generateExamples(testingPairs, (int) Math.round(NUM_TEST * NUM_EXAMPLES));
@@ -90,6 +97,7 @@ public class Main {
         int numAdded = 0;
         int index = 0;
         while(numAdded < Integer.min(pairs.size(), num) && index < pairs.size()) {
+            System.out.printf("%d of %d\n", numAdded, Integer.min(pairs.size(), num));
             CodeDocPair pair = pairs.get(index);
             JSONObject example = new JSONObject();
             if (rand.nextInt(TOTAL_CHANCE) < POSITIVE_CHANCE) {

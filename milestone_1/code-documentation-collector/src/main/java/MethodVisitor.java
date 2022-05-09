@@ -12,8 +12,16 @@ public class MethodVisitor extends VoidVisitorAdapter<List<CodeDocPair>> {
         super.visit(md, pairs);
         if (md.getBody().isPresent() && md.getJavadocComment().isPresent()) {
             //String code = cleanCode((md.getBody().get().toString())); // no method signature inc
-            String code = cleanCode(md.getDeclarationAsString() + " " + md.getBody().get()); // method signature inc
-            String doc = cleanDocumentation(md.getJavadocComment().get().getContent());
+            String code;
+            String doc;
+
+            try {
+                code = cleanCode(md.getDeclarationAsString() + " " + md.getBody().get()); // method signature inc
+                doc = cleanDocumentation(md.getJavadocComment().get().getContent());
+            } catch (StackOverflowError e) {
+                // yeah idk just dont add it
+                return;
+            }
 
             if (code.length() == 0 || doc.length() == 0) {
                 return;
@@ -24,7 +32,7 @@ public class MethodVisitor extends VoidVisitorAdapter<List<CodeDocPair>> {
         }
     }
 
-    private String cleanDocumentation(String raw) {
+    private String cleanDocumentation(String raw) throws StackOverflowError {
         return raw.
                 replaceAll("\n", " "). // remove new lines
                 replace("*", ""). // removes stars that create comments
@@ -36,7 +44,7 @@ public class MethodVisitor extends VoidVisitorAdapter<List<CodeDocPair>> {
                 trim();
     }
 
-    private String cleanCode(String raw) {
+    private String cleanCode(String raw) throws StackOverflowError {
         return raw. // removes opening and closing braces
                 replaceAll("\n", " "). // remove new lines
                 replaceAll("//.*|/\\*(?s:.*?)\\*/|(\"(?:(?<!\\\\)(?:\\\\\\\\)*\\\\\"|[^\r\n\"])*\")", "$1"). // remove comments
