@@ -1,0 +1,4 @@
+def searcher(self):
+        if self._searcher is None:
+            self._searcher = Searcher(self)
+        return self._searcher

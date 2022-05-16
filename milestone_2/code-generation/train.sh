@@ -1,0 +1,15 @@
+python3 run.py \
+	--do_train \
+	--do_eval \
+	--model_name_or_path microsoft/unixcoder-base \
+	--train_filename dataset/train.json \
+	--dev_filename dataset/dev.json \
+	--output_dir saved_models \
+	--max_source_length 350 \
+	--max_target_length 150 \
+	--beam_size 3 \
+	--train_batch_size 4 \
+	--eval_batch_size 4 \
+	--learning_rate 5e-5 \
+	--gradient_accumulation_steps 1 \
+	--num_train_epochs 3 

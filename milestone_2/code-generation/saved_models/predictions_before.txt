@@ -1,0 +1,2 @@
+public static int sumAllIntegers(List<Integer> list) { int sum = 0; for (Integer element : list) { sum = sum + element; } return sum; }
+public static long absolute(long x) { return Math.abs(x); }

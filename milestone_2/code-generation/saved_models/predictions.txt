@@ -1,0 +1,8 @@
+def sum(self, *args):
+        if len(args) == 1:
+            return sum(args[0])
+        else:
+            return sum(args)
+def abs(x):
+    x = np.asarray(x)
+    return np.abs(x)
