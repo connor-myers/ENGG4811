@@ -1,52 +1,8 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
 \expandafter\ifx\csname href\endcsname\relax
   \def\href#1#2{#2} \def\path#1{#1}\fi
-
-\bibitem{DumyCitationKey}
-Y.~Name, C.~author 1, F.~Author, Title of your journal/conference paper, Name
-  of the journal/conference proceeding 00~(00) (20--) 00--00.
-
-\bibitem{Cawvey2017}
-M.~Cawvey, M.~Hayes, D.~Canache, J.~J. Mondak,
-  \href{http://politics.oxfordre.com/view/10.1093/acrefore/9780190228637.001.0001/acrefore-9780190228637-e-221}{{Personality
-  and Political Behavior}}, Vol.~1, Oxford University Press, 2017.
-\newblock \href {https://doi.org/10.1093/acrefore/9780190228637.013.221}
-  {\path{doi:10.1093/acrefore/9780190228637.013.221}}.
-\newline\urlprefix\url{http://politics.oxfordre.com/view/10.1093/acrefore/9780190228637.001.0001/acrefore-9780190228637-e-221}
-
-\bibitem{Pakzad2018}
-R.~Pakzad, S.~Wang, S.~Sloan,
-  \href{http://ascelibrary.org/doi/10.1061/{\%}28ASCE{\%}29GM.1943-5622.0001172}{{Numerical
-  Study of the Failure Response and Fracture Propagation for Rock Specimens
-  with Preexisting Flaws under Compression}}, International Journal of
-  Geomechanics 18~(7) (2018) 04018070.
-\newblock \href {https://doi.org/10.1061/(ASCE)GM.1943-5622.0001172}
-  {\path{doi:10.1061/(ASCE)GM.1943-5622.0001172}}.
-\newline\urlprefix\url{http://ascelibrary.org/doi/10.1061/{\%}28ASCE{\%}29GM.1943-5622.0001172}
-
-\bibitem{Adachi2007}
-J.~Adachi, E.~Siebrits, A.~Peirce, J.~Desroches, Computer simulation of
-  hydraulic fractures, International Journal of Rock Mechanics and Mining
-  Sciences 44~(5) (2007) 739--757.
-
-\bibitem{J.Fenwick2010}
-J.~Fenwick, L.~Gross,
-  \href{http://crpit.com/confpapers/CRPITV107Fenwick.pdf}{Lazy evaluation of
-  pde coefficients in the escript system}, in: J.~Chen, R.~Ranjan (Eds.),
-  Eighth Australasian Symposium on Parallel and Distributed Computing (AusPDC
-  2010), Vol. 107 of CRPIT, ACS, Brisbane, Australia, 2010, pp. 71--76.
-\newline\urlprefix\url{http://crpit.com/confpapers/CRPITV107Fenwick.pdf}
-
-\bibitem{PeerlingPhD1999}
-R.~H. Peerlings, Enhanced damage modelling for fracture and fatigue, Ph.D.
-  thesis, Eindhoven University of Technology (1999).
-
-\bibitem{Panis2004}
-M.~Panis, Experimental identification of a damage evolution law for steel,
-  Tech. rep., Faculty of Mechanical Engineering, Eindhoven University of
-  Technology (2004).
 
 \end{thebibliography}
