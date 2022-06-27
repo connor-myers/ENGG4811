@@ -7,46 +7,44 @@ Reallocating 'name_of_file' (item size: 1) to 26 items.
 Reallocating 'name_of_file' (item size: 1) to 24 items.
 A level-1 auxiliary file: ./Appendix/Appendix.aux
 Database file #1: ./References/Bibliography.bib
-Warning--I didn't find a database entry for "Cawvey2017"
-You've used 0 entries,
+You've used 7 entries,
             2952 wiz_defined-function locations,
-            672 strings with 5145 characters,
-and the built_in function-call counts, 44 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 23
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
-chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+            711 strings with 6092 characters,
+and the built_in function-call counts, 1869 in all, are:
+= -- 162
+> -- 45
+< -- 3
++ -- 19
+- -- 12
+* -- 97
+:= -- 253
+add.period$ -- 8
+call.type$ -- 7
+change.case$ -- 8
+chr.to.int$ -- 6
+cite$ -- 7
+duplicate$ -- 74
+empty$ -- 247
+format.name$ -- 14
+if$ -- 511
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 8
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 7
+missing$ -- 3
+newline$ -- 35
+num.names$ -- 6
+pop$ -- 78
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 1
+skip$ -- 122
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 36
+swap$ -- 24
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 7
-(There was 1 warning)
+while$ -- 10
+width$ -- 8
+write$ -- 65

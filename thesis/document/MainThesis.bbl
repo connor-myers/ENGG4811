@@ -1,8 +1,42 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
 \expandafter\ifx\csname href\endcsname\relax
   \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{NielsonFlemming2005Popa}
+F.~Nielson, H.~R. Nielson, C.~Hankin, Principles of program analysis / Flemming
+  Nielson, Hanne Riis Nielson, Chris Hankin., 1st Edition, Springer-Verlag,
+  Berlin ; Heidelberg ; New York, 2005.
+
+\bibitem{sonarqube}
+SonarSource, \href{https://www.sonarqube.org/}{Sonarqube} (2022).
+\newline\urlprefix\url{https://www.sonarqube.org/}
+
+\bibitem{spotbugs}
+\href{https://spotbugs.github.io/}{Spotbugs} (2022).
+\newline\urlprefix\url{https://spotbugs.github.io/}
+
+\bibitem{snykcode}
+Snyk, \href{https://snyk.io/}{Snykcode} (2022).
+\newline\urlprefix\url{https://snyk.io/}
+
+\bibitem{infer}
+Facebook, \href{https://fbinfer.com/}{Infer} (2022).
+\newline\urlprefix\url{https://fbinfer.com/}
+
+\bibitem{Nichols2020}
+W.~R. Nichols, \href{https://arxiv.org/abs/2003.03001}{The cost and benefits of
+  static analysis during development} (2020).
+\newblock \href {https://doi.org/10.48550/ARXIV.2003.03001}
+  {\path{doi:10.48550/ARXIV.2003.03001}}.
+\newline\urlprefix\url{https://arxiv.org/abs/2003.03001}
+
+\bibitem{ZampettiFiorella2017HOSP}
+F.~Zampetti, S.~Scalabrino, R.~Oliveto, G.~Canfora, M.~Di~Penta, How open
+  source projects use static code analysis tools in continuous integration
+  pipelines, in: 2017 IEEE/ACM 14th International Conference on Mining Software
+  Repositories (MSR), IEEE, 2017, pp. 334--344.
 
 \end{thebibliography}
