@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
@@ -33,10 +33,39 @@ W.~R. Nichols, \href{https://arxiv.org/abs/2003.03001}{The cost and benefits of
   {\path{doi:10.48550/ARXIV.2003.03001}}.
 \newline\urlprefix\url{https://arxiv.org/abs/2003.03001}
 
+\bibitem{moller2012static}
+A.~M{\o}ller, M.~I. Schwartzbach, Static program analysis, Notes. Feb (2012).
+
+\bibitem{chess2004static}
+B.~Chess, G.~McGraw, Static analysis for security, IEEE security \& privacy
+  2~(6) (2004) 76--79.
+
 \bibitem{ZampettiFiorella2017HOSP}
 F.~Zampetti, S.~Scalabrino, R.~Oliveto, G.~Canfora, M.~Di~Penta, How open
   source projects use static code analysis tools in continuous integration
   pipelines, in: 2017 IEEE/ACM 14th International Conference on Mining Software
   Repositories (MSR), IEEE, 2017, pp. 334--344.
+
+\bibitem{RAHIMZADEH2021102588}
+M.~Rahimzadeh, A.~Attar, S.~M. Sakhaei,
+  \href{https://www.sciencedirect.com/science/article/pii/S1746809421001853}{A
+  fully automated deep learning-based network for detecting covid-19 from a new
+  and large lung ct scan dataset}, Biomedical Signal Processing and Control 68
+  (2021) 102588.
+\newblock \href {https://doi.org/https://doi.org/10.1016/j.bspc.2021.102588}
+  {\path{doi:https://doi.org/10.1016/j.bspc.2021.102588}}.
+\newline\urlprefix\url{https://www.sciencedirect.com/science/article/pii/S1746809421001853}
+
+\bibitem{DengLi2018Dlin}
+L.~Deng, Y.~Liu, Deep learning in natural language processing / Li Deng, Yang
+  Liu, editors., Springer, Singapore, 2018.
+
+\bibitem{CodeBERT}
+Z.~Feng, D.~Guo, D.~Tang, N.~Duan, X.~Feng, M.~Gong, L.~Shou, B.~Qin, T.~Liu,
+  D.~Jiang, M.~Zhou, \href{https://arxiv.org/abs/2002.08155}{Codebert: A
+  pre-trained model for programming and natural languages} (2020).
+\newblock \href {https://doi.org/10.48550/ARXIV.2002.08155}
+  {\path{doi:10.48550/ARXIV.2002.08155}}.
+\newline\urlprefix\url{https://arxiv.org/abs/2002.08155}
 
 \end{thebibliography}

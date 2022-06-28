@@ -25,6 +25,8 @@
 \RequirePackage{graphicx}								
 %Use pdfLaTeX.
 
+\usepackage[autostyle]{csquotes}
+
 \RequirePackage{booktabs, longtable} 		
 %These allow tables to split over pages. Very useful in theses!
 
