@@ -3,8 +3,9 @@ from tkinter import scrolledtext
 from tkinter import filedialog
 from tkinter.messagebox import showinfo
 from functools import partial
-
-
+from process import DataProcessor
+from process import allowed_types
+import sys
 
 class Gui:
     def __init__(self):
@@ -47,27 +48,26 @@ class Gui:
         self.javadoc = self.javadoc_text.get("1.0", END)
         self.code = self.code_text.get("1.0", END)
 
-        self.print()
-
-        # save to xml
-
-        # clear entries
-        self.clear()
+        # hand over to process.py to process
+        processor = DataProcessor(self.filename, self.name.get(), self.cwe.get(), self.type.get(), self.javadoc, self.code)
+        if processor.is_input_valid():
+            self.clear()
+            # put data into xml file!
+        else:
+            # separate errors
+            print("\n#############################\n", file=sys.stderr)
 
     def clear(self):
         # clear user input from screen
         self.filename_label.config(text="")
         self.qualified_name_entry.delete(0, 'end')
         self.cwe_entry.delete(0, 'end')
-        self.type.set("Source")
+        self.type.set(allowed_types[0]) # by default set it to the first option
         self.javadoc_text.delete('1.0', END)
         self.code_text.delete('1.0', END)
 
-        # reset variables to empty
-        self.filename = None
-        self.name = StringVar()
-        self.cwe = StringVar()
-        self.type = StringVar()
+        # special variable we manually must reset
+        self.filename = ""
 
     def create_widgets(self):
         self.create_file_selection()
@@ -119,7 +119,7 @@ class Gui:
         self.qualified_name_entry = name_entry
 
     def create_cwe_entry(self):
-        cwe_label = Label(self.root, text="CWE", width=20, font=("bold", 15), anchor='w')
+        cwe_label = Label(self.root, text="CWE (Number only)", width=20, font=("bold", 15), anchor='w')
         cwe_label.grid(column=0, row=2, sticky='w', **self.paddings)
         cwe_entry = Entry(self.root, width=20, textvariable=self.cwe)
         cwe_entry.grid(column=1, row=2, sticky='w', **self.paddings)
@@ -130,7 +130,7 @@ class Gui:
         type_label = Label(self.root, text="Method Type", width=20, font=("bold", 15), anchor='w')
         type_label.grid(column=0, row=3, sticky='w', **self.paddings)
         self.type.set("Source")
-        option_menu = OptionMenu(self.root, self.type, "Source", "Sink", "Sanitiser")
+        option_menu = OptionMenu(self.root, self.type, *allowed_types)
         option_menu.grid(column=1, row=3, sticky='w', **self.paddings)
 
     def create_javadoc_entry(self):
