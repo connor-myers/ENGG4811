@@ -1,4 +1,5 @@
 from gui import Gui
+from process import *
 
 
 def main():

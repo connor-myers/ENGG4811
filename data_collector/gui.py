@@ -1,9 +1,12 @@
 from tkinter import *
 from tkinter import scrolledtext
 from tkinter import filedialog
-from tkinter.messagebox import showinfo
 from functools import partial
-from process import DataProcessor
+from tkinter.messagebox import showinfo
+
+from process import Input
+from process import InputValidator
+from process import InputCleaner
 from process import allowed_types
 import sys
 
@@ -49,12 +52,13 @@ class Gui:
         self.code = self.code_text.get("1.0", END)
 
         # hand over to process.py to process
-        processor = DataProcessor(self.filename, self.name.get(), self.cwe.get(), self.type.get(), self.javadoc, self.code)
-        if processor.is_input_valid():
-            self.clear()
+        user_input = Input(self.filename, self.name.get(), self.cwe.get(), self.type.get(), self.javadoc, self.code)
+        if InputValidator(user_input).validate():
+            clean_input = InputCleaner(user_input).clean()
             # put data into xml file!
+            self.clear()
         else:
-            # separate errors
+            showinfo(title='Bad Input', message="Bad input provided. Check terminal for logs.")
             print("\n#############################\n", file=sys.stderr)
 
     def clear(self):
