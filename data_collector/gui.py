@@ -12,6 +12,14 @@ class Gui:
         root.geometry("750x400")
         root.title('Java Method Adder')
 
+        # tkinter elements
+        self.filename_label = None
+        self.qualified_name_entry = None
+        self.cwe_entry = None
+        self.javadoc_text = None
+        self.code_text = None
+
+        # user input stored here
         self.filename = None
         self.name = StringVar()
         self.cwe = StringVar()
@@ -34,14 +42,32 @@ class Gui:
         print("javadoc = %s" % self.javadoc)
         print("code = %s" % self.code)
 
-    def close(self):
-        self.save()
-        self.root.destroy()
-
     def save(self):
         # scrolled text is weird and we can't use StringVar() for it, so we save manually
-        self.javadoc = self.javadoc.get("1.0", END)
-        self.code = self.code.get("1.0", END)
+        self.javadoc = self.javadoc_text.get("1.0", END)
+        self.code = self.code_text.get("1.0", END)
+
+        self.print()
+
+        # save to xml
+
+        # clear entries
+        self.clear()
+
+    def clear(self):
+        # clear user input from screen
+        self.filename_label.config(text="")
+        self.qualified_name_entry.delete(0, 'end')
+        self.cwe_entry.delete(0, 'end')
+        self.type.set("Source")
+        self.javadoc_text.delete('1.0', END)
+        self.code_text.delete('1.0', END)
+
+        # reset variables to empty
+        self.filename = None
+        self.name = StringVar()
+        self.cwe = StringVar()
+        self.type = StringVar()
 
     def create_widgets(self):
         self.create_file_selection()
@@ -66,6 +92,8 @@ class Gui:
 
         file_frame.grid(column=1, row=0, sticky='w', **self.paddings)
 
+        self.filename_label = file_name
+
     def select_file(self, label):
         filetypes = (
             ('xml files', '*.xml'),
@@ -88,11 +116,15 @@ class Gui:
         name_entry = Entry(self.root, width=60, textvariable=self.name)
         name_entry.grid(column=1, row=1, sticky='w', **self.paddings)
 
+        self.qualified_name_entry = name_entry
+
     def create_cwe_entry(self):
         cwe_label = Label(self.root, text="CWE", width=20, font=("bold", 15), anchor='w')
         cwe_label.grid(column=0, row=2, sticky='w', **self.paddings)
         cwe_entry = Entry(self.root, width=20, textvariable=self.cwe)
         cwe_entry.grid(column=1, row=2, sticky='w', **self.paddings)
+
+        self.cwe_entry = cwe_entry
 
     def create_type_entry(self):
         type_label = Label(self.root, text="Method Type", width=20, font=("bold", 15), anchor='w')
@@ -107,7 +139,7 @@ class Gui:
         javadoc_text = scrolledtext.ScrolledText(self.root, wrap=WORD, width=50, height=1, font=("Arial", 10))
         javadoc_text.grid(column=1, row=4, sticky='w', **self.paddings)
 
-        self.javadoc = javadoc_text
+        self.javadoc_text = javadoc_text
 
     def create_code_entry(self):
         code_label = Label(self.root, text="Code", width=20, font=("bold", 15), anchor='w')
@@ -115,8 +147,8 @@ class Gui:
         code_text = scrolledtext.ScrolledText(self.root, wrap=WORD, width=50, height=1, font=("Arial", 10))
         code_text.grid(column=1, row=5, sticky='w', **self.paddings)
 
-        self.code = code_text
+        self.code_text = code_text
 
     def create_submit_button(self):
-        submit_button = Button(self.root, text="Submit", command=self.close)
-        submit_button.grid(column=1, row=6, **self.paddings)
+        submit_button = Button(self.root, text="Submit", command=self.save)
+        submit_button.grid(column=1, row=6, stick='w', **self.paddings)
