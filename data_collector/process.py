@@ -6,9 +6,12 @@ import re
 
 allowed_types = ["Source", "Sink", "Sanitiser"]
 
-# arbitrary numbers
 min_javadoc_length = 20
 min_code_length = 20
+
+# ? necessary ?
+max_javadoc_length = 500
+max_code_length = 500
 
 
 class Input:
@@ -127,15 +130,25 @@ class InputCleaner:
         self.input = valid_input
         self.html_regex = re.compile("<.*?>")
         self.links_regex = re.compile("http\\S+")
+        self.comments_regex_1 = re.compile("/\*.*?\*/", re.DOTALL)
+        self.comments_regex_2 = re.compile("//.*?\n")
+
+        self.javadoc_replacements = [
+            ("\n", ""),
+            ("\t", " "),
+            ("/**", ""),
+            ("*/", ""),
+            ("*", "")
+        ]
+
+        self.code_replacements = [
+            ("\n", ""),
+            ("\t", " ")
+        ]
 
     def clean(self):
-        self.__clean_filename()
-        self.__clean_qualified_name()
-        self.__clean_cwe()
-        self.__clean_type()
-        self.__clean_javadoc()
-        self.__clean_code()
-        return 1
+        return Input(self.__clean_filename(), self.__clean_qualified_name(), self.__clean_cwe(), self.__clean_type(),
+                     self.__clean_javadoc(), self.__clean_code())
 
     def __clean_filename(self):
         # might need to do something here later
@@ -154,20 +167,23 @@ class InputCleaner:
         return self.input.type
 
     def __clean_javadoc(self):
-        clean = self.input.javadoc.replace("\n", "")  # get rid of all newline characters
-        clean = clean.replace("/**", "")
-        clean = clean.replace("*/", "")
-        clean = clean.replace("*", "")  # remove stars that create comment
-        clean = clean.replace("\t", " ")  # replace tabs with a single space
+        clean = self.input.javadoc
+        for search, replacement in self.javadoc_replacements:
+            clean = clean.replace(search, replacement)
+
         clean = re.sub(self.html_regex, "", clean)  # remove html tags
         clean = re.sub(self.links_regex, "", clean)  # remove links
-        clean = re.sub(self.links_regex, "", clean)  # remove links
-        clean = ' '.join(clean.split()) # cursed method of replacing multiple spaces with 1
-
-        # remove javadoc symbols (if they are there)
-        print(clean)
+        clean = ' '.join(clean.split())  # cursed method of replacing multiple spaces with 1
 
         return clean
 
     def __clean_code(self):
-        return 1
+        clean = re.sub(self.comments_regex_1, "", self.input.code)
+        clean = re.sub(self.comments_regex_2, "", clean)
+
+        for search, replacement in self.code_replacements:
+            clean = clean.replace(search, replacement)
+
+        clean = ' '.join(clean.split())  # cursed method of replacing multiple spaces with 1
+
+        return clean

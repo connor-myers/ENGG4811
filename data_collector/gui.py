@@ -63,15 +63,11 @@ class Gui:
 
     def clear(self):
         # clear user input from screen
-        self.filename_label.config(text="")
         self.qualified_name_entry.delete(0, 'end')
         self.cwe_entry.delete(0, 'end')
         self.type.set(allowed_types[0]) # by default set it to the first option
         self.javadoc_text.delete('1.0', END)
         self.code_text.delete('1.0', END)
-
-        # special variable we manually must reset
-        self.filename = ""
 
     def create_widgets(self):
         self.create_file_selection()
