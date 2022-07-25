@@ -106,7 +106,7 @@ class Gui:
             filetypes=filetypes)
 
         if filename != "":
-            showinfo(title='Selected File', message=filename)
+            #showinfo(title='Selected File', message=filename)
             label["text"] = filename
             self.filename = filename
 
