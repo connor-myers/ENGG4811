@@ -17,6 +17,7 @@
 \pagestyle{headings}
 
 % ********* Enter your text below this line: ********
+\noindent
 To provide context for this project, a high-level overview of deep learning will be provided. 
 
 % ***************************************************
@@ -25,6 +26,7 @@ To provide context for this project, a high-level overview of deep learning will
 % ********* Enter your text below this line: ********
 \section{Deep Learning Model Architectures}
 
+\noindent
 There are a large variety of deep learning models, each designed for different purposes and with
 different strengths and weaknesses. Given how computationally expensive training and fine-tuning models is,
 ensuring that an appropriate architecture is used (indirectly chosen when selecting a pre-trained model)
@@ -33,6 +35,7 @@ deep learning model architectures at a high-level in order to determine an appro
 
 \section{Simple Neural Network}
 
+\noindent
 Here, we will outline a basic neural network model to familiarise ourselves with the terminology that will be used
 later in the report, as well as the project moving forward.
 
@@ -54,6 +57,7 @@ later in the report, as well as the project moving forward.
     \end{center}
 \end{figure}
 
+\noindent
 Figure \ref{samplenetwork} shows a simple neural network. A neural network consists of an input layer, which is a vector. 
 Transforming the raw data (e.g. images, natural language, Java documentation, etc.,) into a vector is known
 as \emph{encoding}. How encoding is performed differs for all models, and is an consequential decision when designing a model.
@@ -70,33 +74,46 @@ that will be used for this project.
 \end{figure}
 
 \newpage
-
+\noindent
 Each neuron sums all the values of the neurons connected to it (generally, this is \emph{all} the previous neurons.).
 The edges between neurons have \emph{weights}, which are multiplied against the value before being added to the neuron. 
-Furthermore, each neuron has a \emph{bias} which is added to the neuron after each calculation. Figure \ref{neurondiagram} shows this graphically.
+Furthermore, each neuron has a \emph{bias} which is added to the neuron after each calculation. Figure \ref{neurondiagram} shows this graphically.\\
 
+\noindent
 When this sum is generated, it is then passed into an \emph{activation function}.
 The activation function stabalises the value of each neuron, ensuring they do not drop to zero or grow exponentially.
 These two issues are commonly referred to as
 the \emph{vanishing gradient} and \emph{exploding gradient} problems, respectively. 
 The choice of activation function is important. There is a trade-off between the computational cost of activiation
 functions, and how effective they are. Common activation functions include: the sigmoid function,
-hyberbolic tangent function, and gaussian function.
+hyberbolic tangent function, and gaussian function.\\
+
+\section{Training}
+\noindent
+Now that we understand the basics of what a neural network is, the most important aspect of deep-learning as it pertains to this thesis can be introduced --- training. Training a neural network means to systematically adjust the values of the network (i.e, weights of edges between neurons and each neuron's bias) in order to generate more accurate results.\\
+
+\noindent
+Initially, a neural network's weights and biases will be set a random. At this stage, any predictions made by the network are nothing more than guesses. However, if examples where the correct label is known are provided to the model, using algorithms such as \emph{backpropogation}, the weights and biases of the network can be adjusted such that the new resulting output is now closer to the expected output. When this process done on many thousands of examples, with a proper splitting between train, test and evaluation datasets, the neural network is likely to have "learned" the general properties of whatever it is it is classifying, and therefore be able to accurately classify inputs it has not yet seen before. \\
+
+\section{Advanced Neural Networks}
 
 \subsection{Recurrent Neural Networks}
 
+\noindent
 Processing language is difficult. The meaning of words is not just determined by itself, but also in what
 context the word is being used in. That is, the meaning of a word is not just determined by itself,
-but also by the words that surround it.
+but also by the words that surround it. 
 The simple neural network introduced above would not be able to handle such a situation as it has no ``memory''
-of previous inputs, i.e. it lacks contextual information.
+of previous inputs, i.e. it lacks contextual information. \\
 
+\noindent
 Recurrent Neural Networks are one methodology for neural networks to have ``memory'' 
 and thereby consider what context an input is being used in.
 Essentially, the state of an RNN at any input is determined by all previous inputs.
 Having ``memory'' of previous inputs allows RNNs to perform complex tasks on sequence data such as: voice recognition
-computer vision or natural language tasks such as translation. % YOU NEED A CITATION HERE :)
+computer vision or natural language tasks such as translation. \\ % YOU NEED A CITATION HERE :)
 
+\noindent
 While RNNs have historically proved useful for NLP tasks \cite{DBLP:journals/corr/BahdanauCB14}, they have
 numerous downsides. Perhaps the key issue with RNNs is that they are notoriously difficult to train,
 due to the \emph{vanishing gradient} and \emph{exploding gradient} problems. Difficulty here meaning both 
@@ -104,31 +121,35 @@ that they are computationally expensive to train, and can often produce inaccura
 Most solutions to these issues slow training considerably \cite{DBLP:journals/corr/abs-1211-5063}.
 LSTM (Long short-term memory) networks are a class of RNN conceived
 to address the vanishing gradient and exploding gradient problems present in simple RNNs
-\cite{10.1162/neco.1997.9.8.1735}. 
+\cite{10.1162/neco.1997.9.8.1735}.\\ 
 
 \subsection{Long short-term Memory Networks}
 
+\noindent
 Long short-term memory networks (LTSMs) are a subclass of RNN designed to address the
 vanishing gradient and exploding gradient issues present in simple RNNs. Describing the precise methodology
 in which this is done is outside the scope of this report. However, put simply, this is achieved with ``gating units''
 which are a more sophisticated method for calculating the hidden-state of a cell
-(Where the hidden-state of a cell is the ``memory'' the neural network uses to understand the context of an input \cite{salem2022recurrent}).
+(Where the hidden-state of a cell is the ``memory'' the neural network uses to understand the context of an input \cite{salem2022recurrent}).\\
 
+\noindent
 These gating units, in addition to using the activation function that simple RNNs use, have to calculate a variety
 of additional values. These extra computations accumulate and make LTSMs far more computationally intensive to train than
 their generic RNN counterparts. However, this is not without benefit. LTSMs are significantly more accurate for longer
-sequences compared to generic RNNs \cite{sundermeyer2012lstm}.
+sequences compared to generic RNNs \cite{sundermeyer2012lstm}.\\
 
 
 \subsection{Transformers}
 
+\noindent
 The goal of the transformer model, introduced by Google Brain in 2017, was to handle sequential data, just as
 RNNs do, but without the training-time limitations . Ultimately, this goal
 was achieved as transformer models were demonstrated to perform significantly better than RNNs while
-simultaneously requiring less training time \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.
+simultaneously requiring less training time \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.\\
 
+\noindent
 Long training times for RNNs are, ultimately, caused by the fact that input must be processed sequentially.
 Transformers, however, do not have this limitation.
 They can process multiple inputs simultaneously and those inputs do not have to be in order.
-It is because transformers are parallelisable that they have quicker training times \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.
+It is because transformers are parallelisable that they have quicker training times \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.\\
 

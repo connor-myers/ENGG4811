@@ -1,0 +1,73 @@
+%If you are presenting work which has been previously published, acknowledge this here.
+% ***************************************************
+% How to introduce a previously published chapter
+% ***************************************************
+%This is an example of how you might introduce a chapter that has been published previously. 
+%\cleartoevenpage
+%\pagestyle{empty}	
+%Use this command (above) to suppress the header from the preceding chapter.
+
+% ***************************************************
+% Example of an internal chapter
+% ***************************************************
+%This is an internal chapter of the thesis.
+%If you have a long title, you can supply an abbreviated version to print in the Table of Contents using the optional argument to the \chapter command.
+\chapter[Abbreviated title]{Milestone 1}
+\label{Chap:label}	%CREATE YOUR OWN LABEL.
+\pagestyle{headings}
+
+% ********* Enter your text below this line: ********
+
+\noindent
+In order to learn how to fine-tune CodeBERT for a classification task, a simple milestone task was conducted. While the models generated in this milestone task do not directly pertain to the goals of this thesis, it is worth discussing as the methodology for performing this task is similar to how the project proper will be done.\\
+
+\section{Objective}
+
+\begin{figure}
+	\label{codematches}
+	\begin{lstlisting}
+	/**
+	return id of the session to identify a sessions in the sequence of all sessions for the same key
+	*/
+	public int getSessionId() {
+ 		return sessionId;
+	}
+	\end{lstlisting}
+	\caption{An example of matching Javadoc and code}
+\end{figure}
+
+\begin{figure}
+	\label{test}
+	\begin{lstlisting}
+	/**
+	Shutdown the executor so we don't leak threads into other test runs.
+	*/
+	public Collection<RetentionLease> leases() { 
+		return leases.values();
+	}
+	\end{lstlisting}
+	\caption{An example where Javadoc and code do not match}
+\end{figure}
+
+
+
+
+\noindent
+The objective of this milestone task was to fine-tune CodeBERT for the simple binary classification task of determining if a pair of Javadoc and a Java method are related or not. I.e., \emph{Does this Javadoc describe this method?} For example, Figure \ref{codematches}, below, shows an example of Javadoc and code matching, whereas Figure \ref{test} shows an example where the Javadoc and code do not match. While this task is trivial for humans, it is not simple for a neural network.\\
+
+\section{Data Collection}
+
+\noindent
+For CodeBERT to work this any degree of accuracy for this task, it needed to be fine-tuned with additional data. It was not clear how many examples exactly would be required but it was decided 30,000 examples would be collected, with a typical 80-10-10 split. That is, 24,000 training examples, 3,000 test examples and 3,000 evaluation examples.\\
+
+\noindent
+The data was collected from numerous open-source projects (with the appropriate licensing) from Github, and examples were extracted using a tool programmed in Java. Exactly half the examples were positive --- that is, the Javadoc does match the code. And, the other half of the examples were negative, where the Javadoc and code did not match. For positive examples, methods and their corresponding Javadoc were retrieved from the code-bases and combined together. For negative examples, a random Java method and random Javadoc were assigned together and assumed to be unrelated.\\
+
+\noindent
+Since CodeBERT has a limited input size of 512 tokens, efforts were made to reduce the number of characters in the examples and remove as much superfluous information as possible. For example, embedded HTML tags (common in Javadocs) and newline characters were remove, and multiple spaces were replaced with a single space.\\
+
+\noindent
+After this processing, if the combination of the Java method and the Javadoc was still over 512 tokens, the example was rejected. While this may initially seem to be an extreme solution, it was done from a lack of viable alternatives. One possibility would be to truncate the example, such that the example fit in 512 characters. However, upon further investigation, this is an unsuitable solution. Since we are working with bimodal data, if one truncates the example at the end, such that any tokens after 512 is ignored, then this unfairly biases the data towards the code segment of the data (as the input of CodeBERT is code first, then a separator token, followed by the natural-language). As an alternative to this, one could truncate an equal amount from the code and natural-language such that the final example is less than 512 tokens. However, this is also an inadequate solution as there is not a one-to-one relationship between Javadoc and code. That is, the first "x percent" of the Javadoc does not describe the first "x percent" of the code. As such, any attempt to truncate the examples this way would likely lead to spoiling the data and hence a less accurate model. There are additional techniques that can be employed to solve CodeBERT's maximum input length problem, and they will be discussed at a later stage of this thesis. For this milestone task, however, it was decided to simply reject these examples.\\
+
+
+
