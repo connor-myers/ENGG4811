@@ -7,7 +7,7 @@ class DataSaver:
         self.tree = xml.parse(filename)
         self.root = self.tree.getroot()
 
-    def update_no_save(self, clean_input):
+    def save(self, clean_input):
         # main element
         next_id = self.__get_next_method_id()
         new_method = xml.SubElement(self.root, "method", id=str(next_id))
@@ -30,7 +30,7 @@ class DataSaver:
 
         # make it look pretty!
         xml.indent(self.tree, space="\t", level=0)
-        self.tree.write("test.xml")
+        self.tree.write(self.filename)
 
         # updated xml but not saving to disk (yet)
         return self.tree

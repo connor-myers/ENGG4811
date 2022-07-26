@@ -59,8 +59,8 @@ class Gui:
         user_input = Input(self.filename, self.name.get(), self.cwe.get(), self.type.get(), self.javadoc, self.code)
         if InputValidator(user_input).validate():
             clean_input = InputCleaner(user_input).clean()
-            DataSaver(clean_input.filename).update_no_save(clean_input)
-            #self.clear() # turn back on later
+            DataSaver(clean_input.filename).save(clean_input)
+            self.clear()
         else:
             showinfo(title='Bad Input', message="Bad input provided. Check terminal for logs.")
             print("\n#############################\n", file=sys.stderr)

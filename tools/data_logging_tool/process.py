@@ -6,8 +6,8 @@ import re
 
 allowed_types = ["Source", "Sink", "Sanitiser"]
 
-min_javadoc_length = 20
-min_code_length = 20
+min_javadoc_length = 1
+min_code_length = 1
 
 # ? necessary ?
 max_javadoc_length = 500
@@ -69,8 +69,8 @@ class InputValidator:
 
     def __validate_cwe(self):
         if self.input.cwe is None or len(self.input.cwe) <= 0:
-            print("no cwe provided", file=sys.stderr)
-            return False
+            #print("no cwe provided", file=sys.stderr)
+            return True
         if not self.input.cwe.isnumeric():
             print("cwe provided is not a number (only provide the number)", file=sys.stderr)
             return False
@@ -160,6 +160,8 @@ class InputCleaner:
         return self.input.qualified_name
 
     def __clean_cwe(self):
+        if self.input.cwe is None or self.input.cwe == "":
+            return "N/A"
         return "CWE-{}: {}".format(self.input.cwe, cwe_database.get(int(self.input.cwe)).get("name"))
 
     def __clean_type(self):

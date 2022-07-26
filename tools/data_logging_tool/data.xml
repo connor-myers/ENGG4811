@@ -1,0 +1,9 @@
+<methods>
+	<method id="1">
+		<qualified-name>Object javax.servlet.ServletRequest.getAttribute(String)</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the value of the named attribute as an Object, or null if no attribute of the given name exists. Attributes can be set two ways. The servlet container may set attributes to make available custom information about a request. For example, for requests made using HTTPS, the attribute javax.servlet.request.X509Certificate can be used to retrieve information on the certificate of the client. Attributes can also be set programatically using {@link ServletRequest#setAttribute}. This allows information to be embedded into a request before a {@link RequestDispatcher} call. Attribute names should follow the same conventions as package names. This specification reserves names matching java., javax., and sun.. @param name a String specifying the name of the attribute @return an Object containing the value of the attribute, or null if the attribute does not exist</javadoc>
+		<code>public Object getAttribute(String name);</code>
+	</method>
+</methods>
