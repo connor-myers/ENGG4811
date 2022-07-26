@@ -13,6 +13,8 @@ min_code_length = 20
 max_javadoc_length = 500
 max_code_length = 500
 
+cwe_database = Database()
+
 
 class Input:
     def __init__(self, filename, qualified_name, cwe, type, javadoc, code):
@@ -27,7 +29,6 @@ class Input:
 class InputValidator:
     def __init__(self, user_input):
         self.input = user_input
-        self.cwe_database = Database()
 
     def validate(self):
         valid = True
@@ -73,7 +74,7 @@ class InputValidator:
         if not self.input.cwe.isnumeric():
             print("cwe provided is not a number (only provide the number)", file=sys.stderr)
             return False
-        if self.cwe_database.get(int(self.input.cwe)) is None:
+        if cwe_database.get(int(self.input.cwe)) is None:
             print("%s is not a valid CWE" % self.input.cwe, file=sys.stderr)
             return False
 
@@ -159,8 +160,7 @@ class InputCleaner:
         return self.input.qualified_name
 
     def __clean_cwe(self):
-        # might need to do something here later
-        return self.input.cwe
+        return "CWE-{}: {}".format(self.input.cwe, cwe_database.get(int(self.input.cwe)).get("name"))
 
     def __clean_type(self):
         # might need to do something here later
