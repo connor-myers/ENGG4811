@@ -68,4 +68,47 @@ Z.~Feng, D.~Guo, D.~Tang, N.~Duan, X.~Feng, M.~Gong, L.~Shou, B.~Qin, T.~Liu,
   {\path{doi:10.48550/ARXIV.2002.08155}}.
 \newline\urlprefix\url{https://arxiv.org/abs/2002.08155}
 
+\bibitem{DBLP:journals/corr/BahdanauCB14}
+D.~Bahdanau, K.~Cho, Y.~Bengio, \href{http://arxiv.org/abs/1409.0473}{Neural
+  machine translation by jointly learning to align and translate}, in:
+  Y.~Bengio, Y.~LeCun (Eds.), 3rd International Conference on Learning
+  Representations, {ICLR} 2015, San Diego, CA, USA, May 7-9, 2015, Conference
+  Track Proceedings, 2015.
+\newline\urlprefix\url{http://arxiv.org/abs/1409.0473}
+
+\bibitem{DBLP:journals/corr/abs-1211-5063}
+R.~Pascanu, T.~Mikolov, Y.~Bengio,
+  \href{http://arxiv.org/abs/1211.5063}{Understanding the exploding gradient
+  problem}, CoRR abs/1211.5063 (2012).
+\newblock \href {http://arxiv.org/abs/1211.5063} {\path{arXiv:1211.5063}}.
+\newline\urlprefix\url{http://arxiv.org/abs/1211.5063}
+
+\bibitem{10.1162/neco.1997.9.8.1735}
+S.~Hochreiter, J.~Schmidhuber,
+  \href{https://doi.org/10.1162/neco.1997.9.8.1735}{{Long Short-Term Memory}},
+  Neural Computation 9~(8) (1997) 1735--1780.
+\newblock \href
+  {http://arxiv.org/abs/https://direct.mit.edu/neco/article-pdf/9/8/1735/813796/neco.1997.9.8.1735.pdf}
+  {\path{arXiv:https://direct.mit.edu/neco/article-pdf/9/8/1735/813796/neco.1997.9.8.1735.pdf}},
+  \href {https://doi.org/10.1162/neco.1997.9.8.1735}
+  {\path{doi:10.1162/neco.1997.9.8.1735}}.
+\newline\urlprefix\url{https://doi.org/10.1162/neco.1997.9.8.1735}
+
+\bibitem{salem2022recurrent}
+F.~Salem, \href{https://books.google.com.au/books?id=bJpXEAAAQBAJ}{Recurrent
+  Neural Networks: From Simple to Gated Architectures}, Springer, 2022.
+\newline\urlprefix\url{https://books.google.com.au/books?id=bJpXEAAAQBAJ}
+
+\bibitem{sundermeyer2012lstm}
+M.~Sundermeyer, R.~Schl{\"u}ter, H.~Ney, Lstm neural networks for language
+  modeling, in: Thirteenth annual conference of the international speech
+  communication association, 2012.
+
+\bibitem{DBLP:journals/corr/VaswaniSPUJGKP17}
+A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez,
+  L.~Kaiser, I.~Polosukhin, \href{http://arxiv.org/abs/1706.03762}{Attention is
+  all you need}, CoRR abs/1706.03762 (2017).
+\newblock \href {http://arxiv.org/abs/1706.03762} {\path{arXiv:1706.03762}}.
+\newline\urlprefix\url{http://arxiv.org/abs/1706.03762}
+
 \end{thebibliography}

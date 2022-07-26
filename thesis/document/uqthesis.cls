@@ -54,6 +54,9 @@
 \RequirePackage{comment}								
 %Use this to enable easy inclusion/exclusion of instructions (at request of grad school).
 
+% my packages
+\usepackage{neuralnetwork}
+
 %*************************************
 % Turn off instructional comments
 %*************************************

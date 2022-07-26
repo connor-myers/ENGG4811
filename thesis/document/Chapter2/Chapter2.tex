@@ -3,8 +3,8 @@
 % How to introduce a previously published chapter
 % ***************************************************
 %This is an example of how you might introduce a chapter that has been published previously. 
-\cleartoevenpage
-\pagestyle{empty}	
+%\cleartoevenpage
+%\pagestyle{empty}	
 %Use this command (above) to suppress the header from the preceding chapter.
 
 % ***************************************************
@@ -12,20 +12,123 @@
 % ***************************************************
 %This is an internal chapter of the thesis.
 %If you have a long title, you can supply an abbreviated version to print in the Table of Contents using the optional argument to the \chapter command.
-\chapter[Abbreviated title]{Full title}
+\chapter[Abbreviated title]{Deep Learning}
 \label{Chap:label}	%CREATE YOUR OWN LABEL.
 \pagestyle{headings}
 
 % ********* Enter your text below this line: ********
-Introduce the broad layout of the chapter.
+To provide context for this project, a high-level overview of deep learning will be provided. 
 
 % ***************************************************
 
-
-\section{Introduction}
-\label{Sec:label}	%CREATE YOUR OWN LABEL.
 
 % ********* Enter your text below this line: ********
-Add your text here. 
+\section{Deep Learning Model Architectures}
 
-% ***************************************************
+There are a large variety of deep learning models, each designed for different purposes and with
+different strengths and weaknesses. Given how computationally expensive training and fine-tuning models is,
+ensuring that an appropriate architecture is used (indirectly chosen when selecting a pre-trained model)
+is an important decision key for this project's success. In this section, we will discuss and compare common
+deep learning model architectures at a high-level in order to determine an appropriate selection for this project.
+
+\section{Simple Neural Network}
+
+Here, we will outline a basic neural network model to familiarise ourselves with the terminology that will be used
+later in the report, as well as the project moving forward.
+
+\newpage
+
+\begin{figure}
+    \caption{A Simple Neural Network}
+    \label{samplenetwork}
+    \begin{center}
+        \begin{neuralnetwork}[height=5]
+            \newcommand{\x}[2]{$x_#2$}
+            \newcommand{\y}[2]{$\hat{y}_#2$}
+            \newcommand{\hfirst}[2]{\small $h^{(1)}_#2$}
+            \newcommand{\hsecond}[2]{\small $h^{(2)}_#2$}
+            \inputlayer[count=2, bias=false, title=Input\\layer, text=\x]
+            \hiddenlayer[count=4, bias=false, title=Hidden\\layer 1, text=\hfirst] \linklayers
+            \outputlayer[count=1, title=Output\\layer, text=\y] \linklayers
+        \end{neuralnetwork}
+    \end{center}
+\end{figure}
+
+Figure \ref{samplenetwork} shows a simple neural network. A neural network consists of an input layer, which is a vector. 
+Transforming the raw data (e.g. images, natural language, Java documentation, etc.,) into a vector is known
+as \emph{encoding}. How encoding is performed differs for all models, and is an consequential decision when designing a model.
+Common methods for encoding include: integer encoding, one-hot encoding, and word embeddings.
+Word embeddings are of particular importance as they are used by CodeBERT, the pre-trained model
+that will be used for this project.
+
+\begin{figure}
+    \caption{Diagram of a singular neuron}
+    \begin{center}
+            \includegraphics[scale=0.75]{Images/neuron_diagram.png}
+    \end{center}
+    \label{neurondiagram}
+\end{figure}
+
+\newpage
+
+Each neuron sums all the values of the neurons connected to it (generally, this is \emph{all} the previous neurons.).
+The edges between neurons have \emph{weights}, which are multiplied against the value before being added to the neuron. 
+Furthermore, each neuron has a \emph{bias} which is added to the neuron after each calculation. Figure \ref{neurondiagram} shows this graphically.
+
+When this sum is generated, it is then passed into an \emph{activation function}.
+The activation function stabalises the value of each neuron, ensuring they do not drop to zero or grow exponentially.
+These two issues are commonly referred to as
+the \emph{vanishing gradient} and \emph{exploding gradient} problems, respectively. 
+The choice of activation function is important. There is a trade-off between the computational cost of activiation
+functions, and how effective they are. Common activation functions include: the sigmoid function,
+hyberbolic tangent function, and gaussian function.
+
+\subsection{Recurrent Neural Networks}
+
+Processing language is difficult. The meaning of words is not just determined by itself, but also in what
+context the word is being used in. That is, the meaning of a word is not just determined by itself,
+but also by the words that surround it.
+The simple neural network introduced above would not be able to handle such a situation as it has no ``memory''
+of previous inputs, i.e. it lacks contextual information.
+
+Recurrent Neural Networks are one methodology for neural networks to have ``memory'' 
+and thereby consider what context an input is being used in.
+Essentially, the state of an RNN at any input is determined by all previous inputs.
+Having ``memory'' of previous inputs allows RNNs to perform complex tasks on sequence data such as: voice recognition
+computer vision or natural language tasks such as translation. % YOU NEED A CITATION HERE :)
+
+While RNNs have historically proved useful for NLP tasks \cite{DBLP:journals/corr/BahdanauCB14}, they have
+numerous downsides. Perhaps the key issue with RNNs is that they are notoriously difficult to train,
+due to the \emph{vanishing gradient} and \emph{exploding gradient} problems. Difficulty here meaning both 
+that they are computationally expensive to train, and can often produce inaccurate results for long sequences of inputs.
+Most solutions to these issues slow training considerably \cite{DBLP:journals/corr/abs-1211-5063}.
+LSTM (Long short-term memory) networks are a class of RNN conceived
+to address the vanishing gradient and exploding gradient problems present in simple RNNs
+\cite{10.1162/neco.1997.9.8.1735}. 
+
+\subsection{Long short-term Memory Networks}
+
+Long short-term memory networks (LTSMs) are a subclass of RNN designed to address the
+vanishing gradient and exploding gradient issues present in simple RNNs. Describing the precise methodology
+in which this is done is outside the scope of this report. However, put simply, this is achieved with ``gating units''
+which are a more sophisticated method for calculating the hidden-state of a cell
+(Where the hidden-state of a cell is the ``memory'' the neural network uses to understand the context of an input \cite{salem2022recurrent}).
+
+These gating units, in addition to using the activation function that simple RNNs use, have to calculate a variety
+of additional values. These extra computations accumulate and make LTSMs far more computationally intensive to train than
+their generic RNN counterparts. However, this is not without benefit. LTSMs are significantly more accurate for longer
+sequences compared to generic RNNs \cite{sundermeyer2012lstm}.
+
+
+\subsection{Transformers}
+
+The goal of the transformer model, introduced by Google Brain in 2017, was to handle sequential data, just as
+RNNs do, but without the training-time limitations . Ultimately, this goal
+was achieved as transformer models were demonstrated to perform significantly better than RNNs while
+simultaneously requiring less training time \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.
+
+Long training times for RNNs are, ultimately, caused by the fact that input must be processed sequentially.
+Transformers, however, do not have this limitation.
+They can process multiple inputs simultaneously and those inputs do not have to be in order.
+It is because transformers are parallelisable that they have quicker training times \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.
+

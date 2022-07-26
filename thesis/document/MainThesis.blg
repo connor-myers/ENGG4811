@@ -7,44 +7,47 @@ Reallocating 'name_of_file' (item size: 1) to 26 items.
 Reallocating 'name_of_file' (item size: 1) to 24 items.
 A level-1 auxiliary file: ./Appendix/Appendix.aux
 Database file #1: ./References/Bibliography.bib
-You've used 12 entries,
+Warning--empty pages in DBLP:journals/corr/BahdanauCB14
+Warning--empty pages in sundermeyer2012lstm
+You've used 18 entries,
             2952 wiz_defined-function locations,
-            747 strings with 7171 characters,
-and the built_in function-call counts, 3295 in all, are:
-= -- 287
-> -- 110
+            788 strings with 8647 characters,
+and the built_in function-call counts, 5195 in all, are:
+= -- 457
+> -- 183
 < -- 3
-+ -- 44
-- -- 32
-* -- 203
-:= -- 458
-add.period$ -- 15
-call.type$ -- 12
-change.case$ -- 12
++ -- 72
+- -- 54
+* -- 355
+:= -- 723
+add.period$ -- 24
+call.type$ -- 18
+change.case$ -- 17
 chr.to.int$ -- 6
-cite$ -- 12
-duplicate$ -- 117
-empty$ -- 407
-format.name$ -- 39
-if$ -- 879
+cite$ -- 20
+duplicate$ -- 181
+empty$ -- 641
+format.name$ -- 67
+if$ -- 1383
 int.to.chr$ -- 0
-int.to.str$ -- 12
-missing$ -- 8
-newline$ -- 54
-num.names$ -- 11
-pop$ -- 118
+int.to.str$ -- 18
+missing$ -- 15
+newline$ -- 80
+num.names$ -- 19
+pop$ -- 168
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 206
+skip$ -- 321
 stack$ -- 0
-substring$ -- 73
-swap$ -- 34
+substring$ -- 100
+swap$ -- 50
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 18
-width$ -- 14
-write$ -- 109
+warning$ -- 2
+while$ -- 26
+width$ -- 20
+write$ -- 170
+(There were 2 warnings)
