@@ -135,7 +135,7 @@ class InputCleaner:
         self.comments_regex_2 = re.compile("//.*?\n")
 
         self.javadoc_replacements = [
-            ("\n", ""),
+            ("\n", " "),
             ("\t", " "),
             ("/**", ""),
             ("*/", ""),
@@ -143,7 +143,7 @@ class InputCleaner:
         ]
 
         self.code_replacements = [
-            ("\n", ""),
+            ("\n", " "),
             ("\t", " ")
         ]
 
