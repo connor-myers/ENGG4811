@@ -1,0 +1,42 @@
+packages:
+  - package:
+      name: javax.servlet.ServletRequest
+      url: https://docs.oracle.com/javaee/6/api/javax/servlet/ServletRequest.html
+      sources:
+        - source:
+            name: getAttribute
+        - source:
+            name: getAttributeNames
+        - source:
+            name: getCharacterEncoding
+        - source:
+            name: getContentType
+        - source:
+            name: getParameter
+        - source:
+            name: getParameterNames
+        - source:
+            name: getParameterValues
+        - source:
+            name: getParameterMap
+        - source:
+            name: getProtocol
+        - source:
+            name: getScheme
+        - source:
+            name: getServerName
+        - source:
+            name: getRemoteAddr
+        - source:
+            name: getRemoteHost
+        - source:
+            name: getLocalName
+        - source:
+            name: getLocalAddr
+        - source:
+            name: getLocalAddr
+      sinks:
+        - sink:
+            name: setAttribute
+        - sink:
+            name: setCharacterEncoding
