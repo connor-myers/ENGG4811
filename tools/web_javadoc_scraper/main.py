@@ -1,25 +1,88 @@
-import yaml
 import sys
-from file import FileProcessor
-from web import get_javadoc_html
-from html_processor import get_method_data
+import yaml
+import requests
+
+from bs4 import BeautifulSoup
+
+allowed_method_types = ["sources", "sinks", "sanitisers"]
+
+class DataConfig:
+    def __init__(self, packages):
+        self.packages = packages
+
+class PackageData:
+    def __init__(self, name, url, methods):
+        self.name = name
+        self.url = url
+        self.methods = methods
+
+    def print(self):
+        print("package name = %s, package url = %s" % (self.name, self.url))
+
+        for method in self.methods:
+            method.print()
+
+
+class MethodData:
+    def __init__(self, name, method_type):
+        self.name = name
+        self.method_type = method_type
+
+    def print(self):
+        print("     method name = %s, package type = %s" % (self.name, self.method_type))
+
+class FileProcessor:
+    def __init__(self, filename):
+        self.filename = filename
+    def load(self):
+        with open(self.filename, 'r') as file:
+            packages = yaml.safe_load(file)
+
+        packages_data = []
+        for package in packages["packages"]:
+            package = package["package"]
+            methods = []
+            for method_type in allowed_method_types:
+                # i.e. package does not have source, sink, sanitiser...
+                if method_type not in package:
+                    continue
+                for method in package[method_type]:
+                    # bit dodgy but there should only be 1 element here, so we do this to get the name
+                    name = next(iter(method.values()))["name"]
+                    methods.append(MethodData(name, method_type[:-1]))
+
+            packages_data.append(PackageData(package["name"], package["url"], methods))
+
+        return packages_data
+
+class HtmlProcessor:
+    def __init__(self, html):
+        self.html = html
+        self.html_parser = BeautifulSoup(html, 'html.parser')
+    def get_method_data(self, method_name):
+        start = self.html_parser.find("a", attrs = {'name': lambda L: L and L.startswith(method_name)})
+        div = start.findNext("div")
+        dl = div.findNext("dl")
+
+        cleaned_div = " ".join(div.get_text().replace("\n", " ").split())
+        cleaned_dl = " ".join(dl.get_text().replace("\n", " ").split())
+
+        return cleaned_div + " " + cleaned_dl
 
 def main():
     if len(sys.argv) != 2:
         print("usage: python3 main.py config.yaml")
         sys.exit(1)
 
-    # get list of packages we need to load methods for from config
+    # what methods are we processing?s
     config = FileProcessor(sys.argv[1]).load()
-
-    # load methods for each package
     for package in config:
-        #print(get_javadoc_html(package.url))
+        # only load html for each package once, obviously
+        html_processor = HtmlProcessor(requests.get(package.url).text)
         for method in package.methods:
-            get_method_data(get_javadoc_html(package.url), method.name)
-            print("###########################################")
-        #print(package.url)
-        #print(get_javadoc_html(package.url))
+            print(html_processor.get_method_data(method.name))
+            print("##########################################")
+    
 
 if __name__ == "__main__":
     main()

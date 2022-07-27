@@ -2,3 +2,4 @@
 
 ### Dependencies
     - PyYaml
+    - BeautifulSoup

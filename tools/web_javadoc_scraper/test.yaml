@@ -1,7 +1,7 @@
 packages:
   - package:
       name: javax.servlet.ServletRequest
-      url: https://docs.oracle.com/javaee/6/api/javax/servlet/ServletRequest.html
+      url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html
       sources:
         - source:
             name: getAttribute
@@ -40,3 +40,4 @@ packages:
             name: setAttribute
         - sink:
             name: setCharacterEncoding
+
