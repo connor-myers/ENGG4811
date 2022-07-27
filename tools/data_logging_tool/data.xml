@@ -1,9 +1,98 @@
 <methods>
 	<method id="1">
-		<qualified-name>Object javax.servlet.ServletRequest.getAttribute(String)</qualified-name>
+		<qualified-name>java.lang.Object javax.servlet.ServletRequest.getAttribute(java.lang.String name)</qualified-name>
 		<cwe>N/A</cwe>
 		<type>Source</type>
-		<javadoc>Returns the value of the named attribute as an Object, or null if no attribute of the given name exists. Attributes can be set two ways. The servlet container may set attributes to make available custom information about a request. For example, for requests made using HTTPS, the attribute javax.servlet.request.X509Certificate can be used to retrieve information on the certificate of the client. Attributes can also be set programatically using {@link ServletRequest#setAttribute}. This allows information to be embedded into a request before a {@link RequestDispatcher} call. Attribute names should follow the same conventions as package names. This specification reserves names matching java., javax., and sun.. @param name a String specifying the name of the attribute @return an Object containing the value of the attribute, or null if the attribute does not exist</javadoc>
-		<code>public Object getAttribute(String name);</code>
+		<javadoc>Returns the value of the named attribute as an Object, or null if no attribute of the given name exists. Attributes can be set two ways. The servlet container may set attributes to make available custom information about a request. For example, for requests made using HTTPS, the attribute javax.servlet.request.X509Certificate can be used to retrieve information on the certificate of the client. Attributes can also be set programatically using ServletRequest#setAttribute. This allows information to be embedded into a request before a RequestDispatcher call. Attribute names should follow the same conventions as package names. This specification reserves names matching java., javax., and sun.. Parameters: name - a String specifying the name of the attribute Returns: an Object containing the value of the attribute, or null if the attribute does not exist</javadoc>
+	</method>
+	<method id="2">
+		<qualified-name>java.util.Enumeration&lt;java.lang.String&gt; java.util.Enumeration&lt;java.lang.String&gt;.getAttributeNames()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns an Enumeration containing the names of the attributes available to this request. This method returns an empty Enumeration if the request has no attributes available to it. Returns: an Enumeration of strings containing the names of the request's attributes</javadoc>
+	</method>
+	<method id="3">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getCharacterEncoding()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the name of the character encoding used in the body of this request. This method returns null if the request does not specify a character encoding Returns: a String containing the name of the character encoding, or null if the request does not specify a character encoding</javadoc>
+	</method>
+	<method id="4">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getContentType()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the MIME type of the body of the request, or null if the type is not known. For HTTP servlets, same as the value of the CGI variable CONTENT_TYPE. Returns: a String containing the name of the MIME type of the request, or null if the type is not known</javadoc>
+	</method>
+	<method id="5">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getParameter(java.lang.String name)</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the value of a request parameter as a String, or null if the parameter does not exist. Request parameters are extra information sent with the request. For HTTP servlets, parameters are contained in the query string or posted form data. You should only use this method when you are sure the parameter has only one value. If the parameter might have more than one value, use getParameterValues(java.lang.String). If you use this method with a multivalued parameter, the value returned is equal to the first value in the array returned by getParameterValues. If the parameter data was sent in the request body, such as occurs with an HTTP POST request, then reading the body directly via getInputStream() or getReader() can interfere with the execution of this method. Parameters: name - a String specifying the name of the parameter Returns: a String representing the single value of the parameter See Also: getParameterValues(java.lang.String)</javadoc>
+	</method>
+	<method id="6">
+		<qualified-name>java.util.Enumeration&lt;java.lang.String&gt; javax.servlet.ServletRequest.getParameterNames()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns an Enumeration of String objects containing the names of the parameters contained in this request. If the request has no parameters, the method returns an empty Enumeration. Returns: an Enumeration of String objects, each String containing the name of a request parameter; or an empty Enumeration if the request has no paramete</javadoc>
+	</method>
+	<method id="7">
+		<qualified-name>java.lang.String[] javax.servlet.ServletRequest.getParameterValues(java.lang.String name)</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns an array of String objects containing all of the values the given request parameter has, or null if the parameter does not exist. If the parameter has a single value, the array has a length of 1. Parameters: name - a String containing the name of the parameter whose value is requested Returns: an array of String objects containing the parameter's values See Also: getParameter(java.lang.String)</javadoc>
+	</method>
+	<method id="8">
+		<qualified-name>java.util.Map&lt;java.lang.String,java.lang.String[]&gt; javax.servlet.ServletRequest.getParameterMap()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns a java.util.Map of the parameters of this request. Request parameters are extra information sent with the request. For HTTP servlets, parameters are contained in the query string or posted form data. Returns: an immutable java.util.Map containing parameter names as keys and parameter values as map values. The keys in the parameter map are of type String. The values in the parameter map are of type String array.</javadoc>
+	</method>
+	<method id="9">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getProtocol()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the name and version of the protocol the request uses in the form protocol/majorVersion.minorVersion, for example, HTTP/1.1. For HTTP servlets, the value returned is the same as the value of the CGI variable SERVER_PROTOCOL. Returns: a String containing the protocol name and version number</javadoc>
+	</method>
+	<method id="10">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getScheme()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the name of the scheme used to make this request, for example, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738. Returns: a String containing the name of the scheme used to make this request</javadoc>
+	</method>
+	<method id="11">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getServerName()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the host name of the server to which the request was sent. It is the value of the part before ":" in the Host header value, if any, or the resolved server name, or the server IP address. Returns: a String containing the name of the server</javadoc>
+	</method>
+	<method id="12">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getRemoteAddr()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the Internet Protocol (IP) address of the client or last proxy that sent the request. For HTTP servlets, same as the value of the CGI variable REMOTE_ADDR. Returns: a String containing the IP address of the client that sent the request</javadoc>
+	</method>
+	<method id="13">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getRemoteHost()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the fully qualified name of the client or the last proxy that sent the request. If the engine cannot or chooses not to resolve the hostname (to improve performance), this method returns the dotted-string form of the IP address. For HTTP servlets, same as the value of the CGI variable REMOTE_HOST. Returns: a String containing the fully qualified name of the client</javadoc>
+	</method>
+	<method id="14">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getLocalName()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the host name of the Internet Protocol (IP) interface on which the request was received. Returns: a String containing the host name of the IP on which the request was received. Since: Servlet 2.4java.lang.String getLocalName()</javadoc>
+	</method>
+	<method id="15">
+		<qualified-name>java.lang.String javax.servlet.ServletRequest.getLocalAddr()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Returns the Internet Protocol (IP) address of the interface on which the request was received. Returns: a String containing the IP address on which the request was received. Since: Servlet 2.4</javadoc>
+	</method>
+	<method id="16">
+		<qualified-name>java.io.BufferedReader javax.servlet.ServletRequest.getReader()</qualified-name>
+		<cwe>N/A</cwe>
+		<type>Source</type>
+		<javadoc>Retrieves the body of the request as character data using a BufferedReader. The reader translates the character data according to the character encoding used on the body. Either this method or getInputStream() may be called to read the body, not both. Returns: a BufferedReader containing the body of the request Throws: java.io.UnsupportedEncodingException - if the character set encoding used is not supported and the text cannot be decoded IllegalStateException - if getInputStream() method has been called on this request java.io.IOException - if an input or output exception occurred See Also: getInputStream()</javadoc>
 	</method>
 </methods>
