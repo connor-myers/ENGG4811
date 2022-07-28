@@ -2,6 +2,8 @@ import sys
 import yaml
 import requests
 
+import xml.etree.ElementTree as xml
+
 from bs4 import BeautifulSoup
 
 allowed_method_types = ["sources", "sinks", "sanitisers"]
@@ -84,17 +86,55 @@ class HtmlProcessor:
 
         return ExtractedMethodInfo(qualified_name, javadoc, method_type)
 
+class XmlProcessor:
+    def __init__(self, filename):
+        self.filename = filename
+        self.tree = xml.parse(filename)
+        self.root = self.tree.getroot()
+
+    def save(self, method_info):
+        # main element
+        next_id = self.__get_next_method_id()
+        new_method = xml.SubElement(self.root, "method", id=str(next_id))
+
+        # sub elements
+        qualified_name = xml.SubElement(new_method, "qualified-name")
+        qualified_name.text = method_info.qualified_name
+
+        method_type = xml.SubElement(new_method, "type")
+        method_type.text = method_info.method_type
+
+        javadoc = xml.SubElement(new_method, "javadoc")
+        javadoc.text = method_info.javadoc
+
+        xml.indent(self.tree, space="\t", level=0)
+        self.tree.write(self.filename)
+
+        return self.tree
+
+    def __get_next_method_id(self):
+        values = []
+        for child in self.tree.iter('method'):
+            values.append(int(child.attrib.get('id')))
+        if len(values) == 0:
+            return 1
+        return max(values) + 1
+
 def main():
-    if len(sys.argv) != 2:
-        print("usage: python3 main.py config.yaml")
+    if len(sys.argv) != 3:
+        print("usage: python3 main.py config.yaml data.xml")
         sys.exit(1)
 
     config = FileProcessor(sys.argv[1]).load()
+    methods = []
     for package in config:
         html_processor = HtmlProcessor(requests.get(package.url).text)
         for method in package.methods:
-            extracted_method_data = html_processor.get_method_data(method)
-    
+            methods.append(html_processor.get_method_data(method))
+
+    xml_processor = XmlProcessor(sys.argv[2])
+    for method in methods:
+        xml_processor.save(method)
 
 if __name__ == "__main__":
     main()
