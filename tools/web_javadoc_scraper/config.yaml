@@ -1,0 +1,459 @@
+packages:
+    - package:
+        name: javax.servlet.ServletRequest
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html
+        sources:
+            - source:
+                name: getAttribute
+            - source:
+                name: getAttributeNames
+            - source:
+                name: getCharacterEncoding
+            - source:
+                name: getContentType
+            - source:
+                name: getParameter
+            - source:
+                name: getParameterNames
+            - source:
+                name: getParameterValues
+            - source:
+                name: getParameterMap
+            - source:
+                name: getProtocol
+            - source:
+                name: getScheme
+            - source:
+                name: getServerName
+            - source:
+                name: getRemoteAddr
+            - source:
+                name: getRemoteHost
+            - source:
+                name: getLocalName
+            - source:
+                name: getLocalAddr
+            - source:
+                name: getLocalAddr
+    - package:
+        name: javax.servlet.http.HttpServletRequest
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html
+        sources:
+            - source:
+                name: getAuthType
+            - source:
+                name: getHeader
+            - source:
+                name: getHeaders
+            - source:
+                name: getMethod
+            - source:
+                name: getPathInfo
+            - source:
+                name: getPathTranslated
+            - source:
+                name: getContextPath
+            - source:
+                name: getQueryString
+            - source:
+                name: getRemoteUser
+            - source:
+                name: getRequestedSessionId
+            - source:
+                name: getRequestURI
+            - source:
+                name: getRequestURL
+            - source:
+                name: getServletPath
+    - package:
+        name: javax.servlet.http.Cookie
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/Cookie.html
+        sources:
+            - source:
+                name: getComment
+            - source:
+                name: getDomain
+            - source:
+                name: getPath
+            - source:
+                name: getName
+            - source:
+                name: getValue
+    - package:
+        name: javax.servlet.ServletConfig
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletConfig.html
+        sources:
+            - source:
+                name: getInitParameter
+            - source:
+                name: getInitParameterNames
+    - package:
+        name: javax.servlet.GenericServlet
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/GenericServlet.html
+        sources:
+            - source:
+                name: getInitParameter
+            - source:
+                name: getInitParameterNames
+    - package:
+        name: java.sql.ResultSet
+        url: https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html
+        sources:
+            - source:
+                name: getString
+            - source:
+                name: getObject
+    - package:
+        name: java.awt.TextComponent
+        url: https://docs.oracle.com/javase/8/docs/api/java/awt/TextComponent.html
+        sources:
+            - source:
+                name: getSelectedText
+            - source:
+                name: getText
+    - package:
+        name: java.io.Console
+        url: https://docs.oracle.com/javase/8/docs/api/java/io/Console.html
+        sources:
+            - source:
+                name: readLine
+            - source:
+                name: readPassword
+    - package:
+        name: java.io.DataInputStream
+        url: https://docs.oracle.com/javase/8/docs/api/java/io/DataInputStream.html
+        sources:
+            - source:
+                name: readLine
+            - source:
+                name: readUTF
+    - package:
+        name: java.io.LineNumberReader
+        url: https://docs.oracle.com/javase/8/docs/api/java/io/LineNumberReader.html
+        sources:
+            - source:
+                name: readLine
+    - package:
+        name: javax.servlet.http.HttpSession
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpSession.html
+        sources:
+            - source:
+                name: getAttribute
+            - source:
+                name: getAttributeNames
+            - source:
+                name: getValue
+            - source:
+                name: getValueNames
+    - package:
+        name: java.lang.System
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/System.html
+        sources:
+            - source:
+                name: getProperty
+            - source:
+                name: getProperties
+            - source:
+                name: getenv
+    - package:
+        name: javax.servlet.ServletContext
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html
+        sources:
+            - source:
+                name: getResourceAsStream
+            - source:
+                name: getRealPath
+    - package:
+        name: java.util.Properties
+        url: https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html
+        sources:
+            - source:
+                name: getProperty
+    - package:
+        name: java.lang.Class
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html
+        sources:
+            - source:
+                name: getResource
+            - source:
+                name: getResourceAsStream
+    # - package:
+    #     name: javax.xml.xpath.XPath
+    #     url: https://docs.oracle.com/javase/8/docs/api/javax/xml/xpath/package-summary.html
+    #     sources:
+    #         - source:
+    #             name: evaluate
+    - package:
+        name: javax.xml.xpath.XPathExpression
+        url: https://docs.oracle.com/javase/8/docs/api/javax/xml/xpath/XPathExpression.html
+        sources:
+            - source:
+                name: evaluate
+    - package:
+        name: java.net.URLEncoder
+        url: https://docs.oracle.com/javase/8/docs/api/java/net/URLEncoder.html
+        sanitisers:
+            - sanitiser:
+                name: encode
+    - package:
+        name: java.net.URLDecoder
+        url: https://docs.oracle.com/javase/8/docs/api/java/net/URLDecoder.html
+        sanitisers:
+            - sanitiser:
+                name: decode
+    - package:
+        name: org.apache.commons.lang.StringEscapeUtils
+        url: https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringEscapeUtils.html
+        sanitisers:
+            - sanitiser:
+                name: escapeJava
+            - sanitiser:
+                name: unescapeJava
+            - sanitiser:
+                name: escapeHtml
+            - sanitiser:
+                name: unescapeHtml
+            - sanitiser:
+                name: escapeXml
+            - sanitiser:
+                name: unescapeXml
+            - sanitiser:
+                name: escapeCsv
+            - sanitiser:
+                name: unescapeCsv
+    - package:
+        name: java.lang.Runtime
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html
+        sinks:
+            - sink:
+                name: exec
+    - package:
+        name: java.lang.Thread
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html
+        sinks:
+            - sink:
+                name: sleep
+    - package:
+        name: java.lang.System
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/System.html
+        sinks:
+            - sink:
+                name: load
+            - sink:
+                name: loadLibrary
+    - package:
+        name: javax.servlet.http.Cookie
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/Cookie.html
+        sinks:
+            - sink:
+                name: setComment
+            - sink:
+                name: setDomain
+            - sink:
+                name: setPath
+            - sink:
+                name: setValue
+    - package:
+        name: java.io.PrintWriter
+        url: https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html
+        sinks:
+            - sink:
+                name: print
+            - sink:
+                name: println
+            - sink:
+                name: write
+    - package:
+        name: javax.servlet.ServletOutputStream
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletOutputStream.html
+        sinks:
+            - sink:
+                name: print
+            - sink:
+                name: println
+    - package:
+        name: javax.servlet.jsp.JspWriter
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/JspWriter.html
+        sinks:
+            - sink:
+                name: print
+            - sink:
+                name: println
+    - package:
+        name: javax.servlet.ServletRequest
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html
+        sinks:
+            - sink:
+                name: setAttribute
+            - sink:
+                name: setCharacterEncoding
+    - package:
+        name: javax.servlet.http.HttpServletResponse
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html
+        sinks:
+            - sink:
+                name: sendError
+            - sink:
+                name: setDateHeader
+            - sink:
+                name: addDateHeader
+            - sink:
+                name: setHeader
+            - sink:
+                name: addHeader
+            - sink:
+                name: setIntHeader
+            - sink:
+                name: addIntHeader
+    - package:
+        name: javax.servlet.ServletResponse
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletResponse.html
+        sinks:
+            - sink:
+                name: setCharacterEncoding
+            - sink:
+                name: setContentType
+    - package:
+        name: javax.servlet.http.HttpSession
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpSession.html
+        sinks:
+            - sink:
+                name: setAttribute
+            - sink:
+                name: putValue
+    - package:
+        name: javax.servlet.http.HttpServletResponse
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html
+        sinks:
+            - sink:
+                name: sendRedirect
+    - package:
+        name: javax.naming.directory.InitialDirContext
+        url: https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html
+        sinks:
+            - sink:
+                name: InitialDirContext
+            - sink:
+                name: search
+    - package:
+        name: javax.naming.directory.SearchControls
+        url: https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html
+        sinks:
+            - sink:
+                name: setReturningAttributes
+    - package:
+        name: java.io.PrintStream
+        url: https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html
+        sinks:
+            - sink:
+                name: print
+            - sink:
+                name: println
+    - package:
+        name: java.util.logging.Logger
+        url: https://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html
+        sinks:
+            - sink:
+                name: config
+            - sink:
+                name: fine
+            - sink:
+                name: finer
+            - sink:
+                name: finest
+            - sink:
+                name: info
+            - sink:
+                name: warning
+            - sink:
+                name: severe
+            - sink:
+                name: entering
+            - sink:
+                name: log
+    - package:
+        name: org.apache.commons.logging.Log
+        url: https://commons.apache.org/proper/commons-logging/apidocs/org/apache/commons/logging/Log.html
+        sinks:
+            - sink:
+                name: debug
+            - sink:
+                name: error
+            - sink:
+                name: fatal
+            - sink:
+                name: info
+            - sink:
+                name: trace
+            - sink:
+                name: warn
+    - package:
+        name: java.io.BufferedWriter
+        url: https://docs.oracle.com/javase/8/docs/api/java/io/BufferedWriter.html
+        sinks:
+            - sink:
+                name: write
+    - package:
+        name: javax.servlet.ServletContext
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html
+        sinks:
+            - sink:
+                name: log
+    - package:
+        name: javax.servlet.GenericServlet
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/servlet/GenericServlet.html
+        sinks:
+            - sink:
+                name: log
+    - package:
+        name: java.lang.Class
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html
+        sinks:
+            - sink:
+                name: getResource
+            - sink:
+                name: getResourceAsStream
+    - package:
+        name: javax.mail.internet.InternetAddress
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/mail/internet/InternetAddress.html
+        sinks:
+            - sink:
+                name: InternetAddress
+            - sink:
+                name: parse
+    - package:
+        name: java.lang.Class
+        url: https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html
+        sinks:
+            - sink:
+                name: forName
+            - sink:
+                name: getField
+            - sink:
+                name: getMethod
+            - sink:
+                name: getDeclaredField
+            - sink:
+                name: getDeclaredMethod
+    - package:
+        name: java.sql.DriverManager
+        url: https://docs.oracle.com/javase/8/docs/api/java/sql/DriverManager.html
+        sinks:
+            - sink:
+                name: getConnection
+    - package:
+        name: java.sql.Connection
+        url: https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html
+        sinks:
+            - sink:
+                name: prepareStatement
+            - sink:
+                name: prepareCall
+    - package:
+        name: javax.persistence.EntityManager
+        url: https://javaee.github.io/javaee-spec/javadocs/javax/persistence/EntityManager.html
+        sinks:
+            - sink:
+                name: createNativeQuery
+            - sink:
+                name: createQuery

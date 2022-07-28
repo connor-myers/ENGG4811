@@ -1,0 +1,682 @@
+<methods>
+	<method id="1">
+		<qualified-name>Object getAttribute(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the value of the named attribute as an Object, or null if no attribute of the given name exists. Attributes can be set two ways. The servlet container may set attributes to make available custom information about a request. For example, for requests made using HTTPS, the attribute javax.servlet.request.X509Certificate can be used to retrieve information on the certificate of the client. Attributes can also be set programatically using setAttribute(java.lang.String, java.lang.Object). This allows information to be embedded into a request before a RequestDispatcher call. Attribute names should follow the same conventions as package names. This specification reserves names matching java.*, javax.*, and sun.*. Parameters: name - a String specifying the name of the attribute Returns: an Object containing the value of the attribute, or null if the attribute does not exist</javadoc>
+	</method>
+	<method id="2">
+		<qualified-name>Enumeration&lt;String&gt; getAttributeNames()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns an Enumeration containing the names of the attributes available to this request. This method returns an empty Enumeration if the request has no attributes available to it. Returns: an Enumeration of strings containing the names of the request's attributes</javadoc>
+	</method>
+	<method id="3">
+		<qualified-name>String getCharacterEncoding()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the name of the character encoding used in the body of this request. This method returns null if no request encoding character encoding has been specified. The following methods for specifying the request character encoding are consulted, in decreasing order of priority: per request, per web app (using ServletContext.setRequestCharacterEncoding(java.lang.String), deployment descriptor), and per container (for all web applications deployed in that container, using vendor specific configuration). Returns: a String containing the name of the character encoding, or null if the request does not specify a character encoding</javadoc>
+	</method>
+	<method id="4">
+		<qualified-name>String getContentType()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the MIME type of the body of the request, or null if the type is not known. For HTTP servlets, same as the value of the CGI variable CONTENT_TYPE. Returns: a String containing the name of the MIME type of the request, or null if the type is not known</javadoc>
+	</method>
+	<method id="5">
+		<qualified-name>String getParameter(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the value of a request parameter as a String, or null if the parameter does not exist. Request parameters are extra information sent with the request. For HTTP servlets, parameters are contained in the query string or posted form data. You should only use this method when you are sure the parameter has only one value. If the parameter might have more than one value, use getParameterValues(java.lang.String). If you use this method with a multivalued parameter, the value returned is equal to the first value in the array returned by getParameterValues. If the parameter data was sent in the request body, such as occurs with an HTTP POST request, then reading the body directly via getInputStream() or getReader() can interfere with the execution of this method. Parameters: name - a String specifying the name of the parameter Returns: a String representing the single value of the parameter See Also: getParameterValues(java.lang.String)</javadoc>
+	</method>
+	<method id="6">
+		<qualified-name>Enumeration&lt;String&gt; getParameterNames()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns an Enumeration of String objects containing the names of the parameters contained in this request. If the request has no parameters, the method returns an empty Enumeration. Returns: an Enumeration of String objects, each String containing the name of a request parameter; or an empty Enumeration if the request has no parameters</javadoc>
+	</method>
+	<method id="7">
+		<qualified-name>String[] getParameterValues(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns an array of String objects containing all of the values the given request parameter has, or null if the parameter does not exist. If the parameter has a single value, the array has a length of 1. Parameters: name - a String containing the name of the parameter whose value is requested Returns: an array of String objects containing the parameter's values See Also: getParameter(java.lang.String)</javadoc>
+	</method>
+	<method id="8">
+		<qualified-name>Map&lt;String,String[]&gt; getParameterMap()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns a java.util.Map of the parameters of this request. Request parameters are extra information sent with the request. For HTTP servlets, parameters are contained in the query string or posted form data. Returns: an immutable java.util.Map containing parameter names as keys and parameter values as map values. The keys in the parameter map are of type String. The values in the parameter map are of type String array.</javadoc>
+	</method>
+	<method id="9">
+		<qualified-name>String getProtocol()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the name and version of the protocol the request uses in the form protocol/majorVersion.minorVersion, for example, HTTP/1.1. For HTTP servlets, the value returned is the same as the value of the CGI variable SERVER_PROTOCOL. Returns: a String containing the protocol name and version number</javadoc>
+	</method>
+	<method id="10">
+		<qualified-name>String getScheme()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the name of the scheme used to make this request, for example, http, https, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738. Returns: a String containing the name of the scheme used to make this request</javadoc>
+	</method>
+	<method id="11">
+		<qualified-name>String getServerName()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the host name of the server to which the request was sent. It is the value of the part before ":" in the Host header value, if any, or the resolved server name, or the server IP address. Returns: a String containing the name of the server</javadoc>
+	</method>
+	<method id="12">
+		<qualified-name>String getRemoteAddr()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the Internet Protocol (IP) address of the client or last proxy that sent the request. For HTTP servlets, same as the value of the CGI variable REMOTE_ADDR. Returns: a String containing the IP address of the client that sent the request</javadoc>
+	</method>
+	<method id="13">
+		<qualified-name>String getRemoteHost()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the fully qualified name of the client or the last proxy that sent the request. If the engine cannot or chooses not to resolve the hostname (to improve performance), this method returns the dotted-string form of the IP address. For HTTP servlets, same as the value of the CGI variable REMOTE_HOST. Returns: a String containing the fully qualified name of the client</javadoc>
+	</method>
+	<method id="14">
+		<qualified-name>String getLocalName()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the host name of the Internet Protocol (IP) interface on which the request was received. Returns: a String containing the host name of the IP on which the request was received. Since: Servlet 2.4</javadoc>
+	</method>
+	<method id="15">
+		<qualified-name>String getLocalAddr()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the Internet Protocol (IP) address of the interface on which the request was received. Returns: a String containing the IP address on which the request was received. Since: Servlet 2.4</javadoc>
+	</method>
+	<method id="16">
+		<qualified-name>String getLocalAddr()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the Internet Protocol (IP) address of the interface on which the request was received. Returns: a String containing the IP address on which the request was received. Since: Servlet 2.4</javadoc>
+	</method>
+	<method id="17">
+		<qualified-name>String getAuthType()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the name of the authentication scheme used to protect the servlet. All servlet containers support basic, form and client certificate authentication, and may additionally support digest authentication. If the servlet is not authenticated null is returned. Same as the value of the CGI variable AUTH_TYPE. Returns: one of the static members BASIC_AUTH, FORM_AUTH, CLIENT_CERT_AUTH, DIGEST_AUTH (suitable for == comparison) or the container-specific string indicating the authentication scheme, or null if the request was not authenticated.</javadoc>
+	</method>
+	<method id="18">
+		<qualified-name>String getHeader(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the value of the specified request header as a String. If the request did not include a header of the specified name, this method returns null. If there are multiple headers with the same name, this method returns the first head in the request. The header name is case insensitive. You can use this method with any request header. Parameters: name - a String specifying the header name Returns: a String containing the value of the requested header, or null if the request does not have a header of that name</javadoc>
+	</method>
+	<method id="19">
+		<qualified-name>Enumeration&lt;String&gt; getHeaders(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns all the values of the specified request header as an Enumeration of String objects. Some headers, such as Accept-Language can be sent by clients as several headers each with a different value rather than sending the header as a comma separated list. If the request did not include any headers of the specified name, this method returns an empty Enumeration. The header name is case insensitive. You can use this method with any request header. Parameters: name - a String specifying the header name Returns: an Enumeration containing the values of the requested header. If the request does not have any headers of that name return an empty enumeration. If the container does not allow access to header information, return null</javadoc>
+	</method>
+	<method id="20">
+		<qualified-name>String getMethod()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the name of the HTTP method with which this request was made, for example, GET, POST, or PUT. Same as the value of the CGI variable REQUEST_METHOD. Returns: a String specifying the name of the method with which this request was made</javadoc>
+	</method>
+	<method id="21">
+		<qualified-name>String getPathInfo()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns any extra path information associated with the URL the client sent when it made this request. The extra path information follows the servlet path but precedes the query string and will start with a "/" character. This method returns null if there was no extra path information. Same as the value of the CGI variable PATH_INFO. Returns: a String, decoded by the web container, specifying extra path information that comes after the servlet path but before the query string in the request URL; or null if the URL does not have any extra path information</javadoc>
+	</method>
+	<method id="22">
+		<qualified-name>String getPathTranslated()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns any extra path information after the servlet name but before the query string, and translates it to a real path. Same as the value of the CGI variable PATH_TRANSLATED. If the URL does not have any extra path information, this method returns null or the servlet container cannot translate the virtual path to a real path for any reason (such as when the web application is executed from an archive). The web container does not decode this string. Returns: a String specifying the real path, or null if the URL does not have any extra path information</javadoc>
+	</method>
+	<method id="23">
+		<qualified-name>String getContextPath()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the portion of the request URI that indicates the context of the request. The context path always comes first in a request URI. The path starts with a "/" character but does not end with a "/" character. For servlets in the default (root) context, this method returns "". The container does not decode this string. It is possible that a servlet container may match a context by more than one context path. In such cases this method will return the actual context path used by the request and it may differ from the path returned by the ServletContext.getContextPath() method. The context path returned by ServletContext.getContextPath() should be considered as the prime or preferred context path of the application. Returns: a String specifying the portion of the request URI that indicates the context of the request See Also: ServletContext.getContextPath()</javadoc>
+	</method>
+	<method id="24">
+		<qualified-name>String getQueryString()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the query string that is contained in the request URL after the path. This method returns null if the URL does not have a query string. Same as the value of the CGI variable QUERY_STRING. Returns: a String containing the query string or null if the URL contains no query string. The value is not decoded by the container.</javadoc>
+	</method>
+	<method id="25">
+		<qualified-name>String getRemoteUser()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the login of the user making this request, if the user has been authenticated, or null if the user has not been authenticated. Whether the user name is sent with each subsequent request depends on the browser and type of authentication. Same as the value of the CGI variable REMOTE_USER. Returns: a String specifying the login of the user making this request, or null if the user login is not known</javadoc>
+	</method>
+	<method id="26">
+		<qualified-name>String getRequestedSessionId()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the session ID specified by the client. This may not be the same as the ID of the current valid session for this request. If the client did not specify a session ID, this method returns null. Returns: a String specifying the session ID, or null if the request did not specify a session ID See Also: isRequestedSessionIdValid()</javadoc>
+	</method>
+	<method id="27">
+		<qualified-name>String getRequestURI()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the part of this request's URL from the protocol name up to the query string in the first line of the HTTP request. The web container does not decode this String. For example: First line of HTTP request Returned Value POST /some/path.html HTTP/1.1/some/path.html GET http://foo.bar/a.html HTTP/1.0 /a.html HEAD /xyz?a=b HTTP/1.1/xyz To reconstruct an URL with a scheme and host, use HttpUtils.getRequestURL(javax.servlet.http.HttpServletRequest). Returns: a String containing the part of the URL from the protocol name up to the query string See Also: HttpUtils.getRequestURL(javax.servlet.http.HttpServletRequest)</javadoc>
+	</method>
+	<method id="28">
+		<qualified-name>StringBuffer getRequestURL()</qualified-name>
+		<type>source</type>
+		<javadoc>Reconstructs the URL the client used to make the request. The returned URL contains a protocol, server name, port number, and server path, but it does not include query string parameters. If this request has been forwarded using RequestDispatcher.forward(javax.servlet.ServletRequest, javax.servlet.ServletResponse), the server path in the reconstructed URL must reflect the path used to obtain the RequestDispatcher, and not the server path specified by the client. Because this method returns a StringBuffer, not a string, you can modify the URL easily, for example, to append query parameters. This method is useful for creating redirect messages and for reporting errors. Returns: a StringBuffer object containing the reconstructed URL</javadoc>
+	</method>
+	<method id="29">
+		<qualified-name>String getServletPath()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the part of this request's URL that calls the servlet. This path starts with a "/" character and includes either the servlet name or a path to the servlet, but does not include any extra path information or a query string. Same as the value of the CGI variable SCRIPT_NAME. This method will return an empty string ("") if the servlet used to process this request was matched using the "/*" pattern. Returns: a String containing the name or path of the servlet being called, as specified in the request URL, decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.</javadoc>
+	</method>
+	<method id="30">
+		<qualified-name>public String getComment()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the comment describing the purpose of this cookie, or null if the cookie has no comment. Returns: the comment of the cookie, or null if unspecified See Also: setComment(java.lang.String)</javadoc>
+	</method>
+	<method id="31">
+		<qualified-name>public String getDomain()</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the domain name of this Cookie. Domain names are formatted according to RFC 2109. Returns: the domain name of this Cookie See Also: setDomain(java.lang.String)</javadoc>
+	</method>
+	<method id="32">
+		<qualified-name>public String getPath()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the path on the server to which the browser returns this cookie. The cookie is visible to all subpaths on the server. Returns: a String specifying a path that contains a servlet name, for example, /catalog See Also: setPath(java.lang.String)</javadoc>
+	</method>
+	<method id="33">
+		<qualified-name>public String getName()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the name of the cookie. The name cannot be changed after creation. Returns: the name of the cookie</javadoc>
+	</method>
+	<method id="34">
+		<qualified-name>public String getValue()</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the current value of this Cookie. Returns: the current value of this Cookie See Also: setValue(java.lang.String)</javadoc>
+	</method>
+	<method id="35">
+		<qualified-name>String getInitParameter(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the value of the initialization parameter with the given name. Parameters: name - the name of the initialization parameter whose value to get Returns: a String containing the value of the initialization parameter, or null if the initialization parameter does not exist</javadoc>
+	</method>
+	<method id="36">
+		<qualified-name>Enumeration&lt;String&gt; getInitParameterNames()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the names of the servlet's initialization parameters as an Enumeration of String objects, or an empty Enumeration if the servlet has no initialization parameters. Returns: an Enumeration of String objects containing the names of the servlet's initialization parameters</javadoc>
+	</method>
+	<method id="37">
+		<qualified-name>public String getInitParameter(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns a String containing the value of the named initialization parameter, or null if the parameter does not exist. See ServletConfig.getInitParameter(java.lang.String). This method is supplied for convenience. It gets the value of the named parameter from the servlet's ServletConfig object. Specified by: getInitParameter in interface ServletConfig Parameters: name - a String specifying the name of the initialization parameter Returns: String a String containing the value of the initialization parameter</javadoc>
+	</method>
+	<method id="38">
+		<qualified-name>public Enumeration&lt;String&gt; getInitParameterNames()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the names of the servlet's initialization parameters as an Enumeration of String objects, or an empty Enumeration if the servlet has no initialization parameters. See ServletConfig.getInitParameterNames(). This method is supplied for convenience. It gets the parameter names from the servlet's ServletConfig object. Specified by: getInitParameterNames in interface ServletConfig Returns: Enumeration an enumeration of String objects containing the names of the servlet's initialization parameters</javadoc>
+	</method>
+	<method id="39">
+		<qualified-name>String getString(int columnIndex) throws SQLException</qualified-name>
+		<type>source</type>
+		<javadoc>Retrieves the value of the designated column in the current row of this ResultSet object as a String in the Java programming language. Parameters: columnIndex - the first column is 1, the second is 2, ... Returns: the column value; if the value is SQL NULL, the value returned is null Throws: SQLException - if the columnIndex is not valid; if a database access error occurs or this method is called on a closed result set</javadoc>
+	</method>
+	<method id="40">
+		<qualified-name>Object getObject(int columnIndex) throws SQLException</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the value of the designated column in the current row of this ResultSet object as an Object in the Java programming language. This method will return the value of the given column as a Java object. The type of the Java object will be the default Java object type corresponding to the column's SQL type, following the mapping for built-in types specified in the JDBC specification. If the value is an SQL NULL, the driver returns a Java null. This method may also be used to read database-specific abstract data types. In the JDBC 2.0 API, the behavior of method getObject is extended to materialize data of SQL user-defined types. If Connection.getTypeMap does not throw a SQLFeatureNotSupportedException, then when a column contains a structured or distinct value, the behavior of this method is as if it were a call to: getObject(columnIndex, this.getStatement().getConnection().getTypeMap()). If Connection.getTypeMap does throw a SQLFeatureNotSupportedException, then structured values are not supported, and distinct values are mapped to the default Java class as determined by the underlying SQL type of the DISTINCT type. Parameters: columnIndex - the first column is 1, the second is 2, ... Returns: a java.lang.Object holding the column value Throws: SQLException - if the columnIndex is not valid; if a database access error occurs or this method is called on a closed result set</javadoc>
+	</method>
+	<method id="41">
+		<qualified-name>public String getSelectedText()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the selected text from the text that is presented by this text component. Returns: the selected text of this text component See Also: select(int, int)</javadoc>
+	</method>
+	<method id="42">
+		<qualified-name>public String getText()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the text that is presented by this text component. By default, this is an empty string. Returns: the value of this TextComponent See Also: setText(java.lang.String)</javadoc>
+	</method>
+	<method id="43">
+		<qualified-name>public String readLine(String fmt, Object... args)</qualified-name>
+		<type>source</type>
+		<javadoc>Provides a formatted prompt, then reads a single line of text from the console. Parameters: fmt - A format string as described in Format string syntax. args - Arguments referenced by the format specifiers in the format string. If there are more arguments than format specifiers, the extra arguments are ignored. The maximum number of arguments is limited by the maximum dimension of a Java array as defined by The Java&#8482; Virtual Machine Specification. Returns: A string containing the line read from the console, not including any line-termination characters, or null if an end of stream has been reached. Throws: IllegalFormatException - If a format string contains an illegal syntax, a format specifier that is incompatible with the given arguments, insufficient arguments given the format string, or other illegal conditions. For specification of all possible formatting errors, see the Details section of the formatter class specification. IOError - If an I/O error occurs.</javadoc>
+	</method>
+	<method id="44">
+		<qualified-name>public char[] readPassword(String fmt, Object... args)</qualified-name>
+		<type>source</type>
+		<javadoc>Provides a formatted prompt, then reads a password or passphrase from the console with echoing disabled. Parameters: fmt - A format string as described in Format string syntax for the prompt text. args - Arguments referenced by the format specifiers in the format string. If there are more arguments than format specifiers, the extra arguments are ignored. The maximum number of arguments is limited by the maximum dimension of a Java array as defined by The Java&#8482; Virtual Machine Specification. Returns: A character array containing the password or passphrase read from the console, not including any line-termination characters, or null if an end of stream has been reached. Throws: IllegalFormatException - If a format string contains an illegal syntax, a format specifier that is incompatible with the given arguments, insufficient arguments given the format string, or other illegal conditions. For specification of all possible formatting errors, see the Details section of the formatter class specification. IOError - If an I/O error occurs.</javadoc>
+	</method>
+	<method id="45">
+		<qualified-name>public final String readLine() throws IOException</qualified-name>
+		<type>source</type>
+		<javadoc>See the general contract of the readLine method of DataInput. Bytes for this operation are read from the contained input stream. Specified by: readLine in interface DataInput Returns: the next line of text from this input stream. Throws: IOException - if an I/O error occurs. See Also: BufferedReader.readLine(), FilterInputStream.in</javadoc>
+	</method>
+	<method id="46">
+		<qualified-name>public final String readUTF() throws IOException</qualified-name>
+		<type>source</type>
+		<javadoc>See the general contract of the readUTF method of DataInput. Bytes for this operation are read from the contained input stream. Specified by: readUTF in interface DataInput Returns: a Unicode string. Throws: EOFException - if this input stream reaches the end before reading all the bytes. IOException - the stream has been closed and the contained input stream does not support reading after close, or another I/O error occurs. UTFDataFormatException - if the bytes do not represent a valid modified UTF-8 encoding of a string. See Also: readUTF(java.io.DataInput)</javadoc>
+	</method>
+	<method id="47">
+		<qualified-name>public String readLine() throws IOException</qualified-name>
+		<type>source</type>
+		<javadoc>Read a line of text. Whenever a line terminator is read the current line number is incremented. Overrides: readLine in class BufferedReader Returns: A String containing the contents of the line, not including any line termination characters, or null if the end of the stream has been reached Throws: IOException - If an I/O error occurs See Also: Files.readAllLines(java.nio.file.Path, java.nio.charset.Charset)</javadoc>
+	</method>
+	<method id="48">
+		<qualified-name>Object getAttribute(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the object bound with the specified name in this session, or null if no object is bound under the name. Parameters: name - a string specifying the name of the object Returns: the object with the specified name Throws: IllegalStateException - if this method is called on an invalidated session</javadoc>
+	</method>
+	<method id="49">
+		<qualified-name>Enumeration&lt;String&gt; getAttributeNames()</qualified-name>
+		<type>source</type>
+		<javadoc>Returns an Enumeration of String objects containing the names of all the objects bound to this session. Returns: an Enumeration of String objects specifying the names of all the objects bound to this session Throws: IllegalStateException - if this method is called on an invalidated session</javadoc>
+	</method>
+	<method id="50">
+		<qualified-name>Object getValue(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns an Enumeration of String objects containing the names of all the objects bound to this session. Returns: an Enumeration of String objects specifying the names of all the objects bound to this session Throws: IllegalStateException - if this method is called on an invalidated session</javadoc>
+	</method>
+	<method id="51">
+		<qualified-name>String[] getValueNames()</qualified-name>
+		<type>source</type>
+		<javadoc>Binds an object to this session, using the name specified. If an object of the same name is already bound to the session, the object is replaced. After this method executes, and if the new object implements HttpSessionBindingListener, the container calls HttpSessionBindingListener.valueBound. The container then notifies any HttpSessionAttributeListeners in the web application. If an object was already bound to this session of this name that implements HttpSessionBindingListener, its HttpSessionBindingListener.valueUnbound method is called. If the value passed in is null, this has the same effect as calling removeAttribute(). Parameters: name - the name to which the object is bound; cannot be null value - the object to be bound Throws: IllegalStateException - if this method is called on an invalidated session</javadoc>
+	</method>
+	<method id="52">
+		<qualified-name>public static String getProperty(String key)</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the system property indicated by the specified key. First, if there is a security manager, its checkPropertyAccess method is called with the key as its argument. This may result in a SecurityException. If there is no current set of system properties, a set of system properties is first created and initialized in the same manner as for the getProperties method. Parameters: key - the name of the system property. Returns: the string value of the system property, or null if there is no property with that key. Throws: SecurityException - if a security manager exists and its checkPropertyAccess method doesn't allow access to the specified system property. NullPointerException - if key is null. IllegalArgumentException - if key is empty. See Also: setProperty(java.lang.String, java.lang.String), SecurityException, SecurityManager.checkPropertyAccess(java.lang.String), getProperties()</javadoc>
+	</method>
+	<method id="53">
+		<qualified-name>public static Properties getProperties()</qualified-name>
+		<type>source</type>
+		<javadoc>Determines the current system properties. First, if there is a security manager, its checkPropertiesAccess method is called with no arguments. This may result in a security exception. The current set of system properties for use by the getProperty(String) method is returned as a Properties object. If there is no current set of system properties, a set of system properties is first created and initialized. This set of system properties always includes values for the following keys: Key Description of Associated Value java.version Java Runtime Environment version java.vendor Java Runtime Environment vendor java.vendor.url Java vendor URL java.home Java installation directory java.vm.specification.version Java Virtual Machine specification version java.vm.specification.vendor Java Virtual Machine specification vendor java.vm.specification.name Java Virtual Machine specification name java.vm.version Java Virtual Machine implementation version java.vm.vendor Java Virtual Machine implementation vendor java.vm.name Java Virtual Machine implementation name java.specification.version Java Runtime Environment specification version java.specification.vendor Java Runtime Environment specification vendor java.specification.name Java Runtime Environment specification name java.class.version Java class format version number java.class.path Java class path java.library.path List of paths to search when loading libraries java.io.tmpdir Default temp file path java.compiler Name of JIT compiler to use java.ext.dirs Path of extension directory or directories Deprecated. This property, and the mechanism which implements it, may be removed in a future release. os.name Operating system name os.arch Operating system architecture os.version Operating system version file.separator File separator ("/" on UNIX) path.separator Path separator (":" on UNIX) line.separator Line separator ("\n" on UNIX) user.name User's account name user.home User's home directory user.dir User's current working directory Multiple paths in a system property value are separated by the path separator character of the platform. Note that even if the security manager does not permit the getProperties operation, it may choose to permit the getProperty(String) operation. Returns: the system properties Throws: SecurityException - if a security manager exists and its checkPropertiesAccess method doesn't allow access to the system properties. See Also: setProperties(java.util.Properties), SecurityException, SecurityManager.checkPropertiesAccess(), Properties</javadoc>
+	</method>
+	<method id="54">
+		<qualified-name>public static String getenv(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the value of the specified environment variable. An environment variable is a system-dependent external named value. If a security manager exists, its checkPermission method is called with a RuntimePermission("getenv."+name) permission. This may result in a SecurityException being thrown. If no exception is thrown the value of the variable name is returned. System properties and environment variables are both conceptually mappings between names and values. Both mechanisms can be used to pass user-defined information to a Java process. Environment variables have a more global effect, because they are visible to all descendants of the process which defines them, not just the immediate Java subprocess. They can have subtly different semantics, such as case insensitivity, on different operating systems. For these reasons, environment variables are more likely to have unintended side effects. It is best to use system properties where possible. Environment variables should be used when a global effect is desired, or when an external system interface requires an environment variable (such as PATH). On UNIX systems the alphabetic case of name is typically significant, while on Microsoft Windows systems it is typically not. For example, the expression System.getenv("FOO").equals(System.getenv("foo")) is likely to be true on Microsoft Windows. Parameters: name - the name of the environment variable Returns: the string value of the variable, or null if the variable is not defined in the system environment Throws: NullPointerException - if name is null SecurityException - if a security manager exists and its checkPermission method doesn't allow access to the environment variable name See Also: getenv(), ProcessBuilder.environment()</javadoc>
+	</method>
+	<method id="55">
+		<qualified-name>InputStream getResourceAsStream(String path)</qualified-name>
+		<type>source</type>
+		<javadoc>Returns the resource located at the named path as an InputStream object. The data in the InputStream can be of any type or length. The path must be specified according to the rules given in getResource. This method returns null if no resource exists at the specified path. Meta-information such as content length and content type that is available via getResource method is lost when using this method. The servlet container must implement the URL handlers and URLConnection objects necessary to access the resource. This method is different from java.lang.Class.getResourceAsStream, which uses a class loader. This method allows servlet containers to make a resource available to a servlet from any location, without using a class loader. Parameters: path - a String specifying the path to the resource Returns: the InputStream returned to the servlet, or null if no resource exists at the specified path</javadoc>
+	</method>
+	<method id="56">
+		<qualified-name>String getRealPath(String path)</qualified-name>
+		<type>source</type>
+		<javadoc>Gets the real path corresponding to the given virtual path. For example, if path is equal to /index.html, this method will return the absolute file path on the server's filesystem to which a request of the form http://&lt;host&gt;:&lt;port&gt;/&lt;contextPath&gt;/index.html would be mapped, where &lt;contextPath&gt; corresponds to the context path of this ServletContext. The real path returned will be in a form appropriate to the computer and operating system on which the servlet container is running, including the proper path separators. Resources inside the /META-INF/resources directories of JAR files bundled in the application's /WEB-INF/lib directory must be considered only if the container has unpacked them from their containing JAR file, in which case the path to the unpacked location must be returned. This method returns null if the servlet container is unable to translate the given virtual path to a real path. Parameters: path - the virtual path to be translated to a real path Returns: the real path, or null if the translation cannot be performed</javadoc>
+	</method>
+	<method id="57">
+		<qualified-name>public String getProperty(String key)</qualified-name>
+		<type>source</type>
+		<javadoc>Searches for the property with the specified key in this property list. If the key is not found in this property list, the default property list, and its defaults, recursively, are then checked. The method returns null if the property is not found. Parameters: key - the property key. Returns: the value in this property list with the specified key value. See Also: setProperty(java.lang.String, java.lang.String), defaults</javadoc>
+	</method>
+	<method id="58">
+		<qualified-name>public InputStream getResourceAsStream(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Finds a resource with a given name. The rules for searching resources associated with a given class are implemented by the defining class loader of the class. This method delegates to this object's class loader. If this object was loaded by the bootstrap class loader, the method delegates to ClassLoader.getSystemResourceAsStream(java.lang.String). Before delegation, an absolute resource name is constructed from the given resource name using this algorithm: If the name begins with a '/' ('\u002f'), then the absolute name of the resource is the portion of the name following the '/'. Otherwise, the absolute name is of the following form: modified_package_name/name Where the modified_package_name is the package name of this object with '/' substituted for '.' ('\u002e'). Parameters: name - name of the desired resource Returns: A InputStream object or null if no resource with this name is found Throws: NullPointerException - If name is null Since: JDK1.1</javadoc>
+	</method>
+	<method id="59">
+		<qualified-name>public InputStream getResourceAsStream(String name)</qualified-name>
+		<type>source</type>
+		<javadoc>Finds a resource with a given name. The rules for searching resources associated with a given class are implemented by the defining class loader of the class. This method delegates to this object's class loader. If this object was loaded by the bootstrap class loader, the method delegates to ClassLoader.getSystemResourceAsStream(java.lang.String). Before delegation, an absolute resource name is constructed from the given resource name using this algorithm: If the name begins with a '/' ('\u002f'), then the absolute name of the resource is the portion of the name following the '/'. Otherwise, the absolute name is of the following form: modified_package_name/name Where the modified_package_name is the package name of this object with '/' substituted for '.' ('\u002e'). Parameters: name - name of the desired resource Returns: A InputStream object or null if no resource with this name is found Throws: NullPointerException - If name is null Since: JDK1.1</javadoc>
+	</method>
+	<method id="60">
+		<qualified-name>Object evaluate(Object item, QName returnType) throws XPathExpressionException</qualified-name>
+		<type>source</type>
+		<javadoc>Evaluate the compiled XPath expression in the specified context and return the result as the specified type. See Evaluation of XPath Expressions for context item evaluation, variable, function and QName resolution and return type conversion. If returnType is not one of the types defined in XPathConstants, then an IllegalArgumentException is thrown. If a null value is provided for item, an empty document will be used for the context. If returnType is null, then a NullPointerException is thrown. Parameters: item - The starting context (a node, for example). returnType - The desired return type. Returns: The Object that is the result of evaluating the expression and converting the result to returnType. Throws: XPathExpressionException - If the expression cannot be evaluated. IllegalArgumentException - If returnType is not one of the types defined in XPathConstants. NullPointerException - If returnType is null.</javadoc>
+	</method>
+	<method id="61">
+		<qualified-name>public static String encode(String s)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Translates a string into x-www-form-urlencoded format. This method uses the platform's default encoding as the encoding scheme to obtain the bytes for unsafe characters. Parameters: s - String to be translated. Returns: the translated String.</javadoc>
+	</method>
+	<method id="62">
+		<qualified-name>public static String decode(String s)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Decodes a x-www-form-urlencoded string. The platform's default encoding is used to determine what characters are represented by any consecutive sequences of the form "%xy". Parameters: s - the String to decode Returns: the newly decoded String</javadoc>
+	</method>
+	<method id="63">
+		<qualified-name>public static final String escapeJava(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Escapes the characters in a String using Java String rules. Deals correctly with quotes and control-chars (tab, backslash, cr, ff, etc.) So a tab becomes the characters '\\' and 't'. The only difference between Java strings and JavaScript strings is that in JavaScript, a single quote and forward-slash (/) are escaped. Example: input string: He didn't say, "Stop!" output string: He didn't say, \"Stop!\" Parameters: input - String to escape values in, may be null Returns: String with escaped values, null if null string input</javadoc>
+	</method>
+	<method id="64">
+		<qualified-name>public static final String unescapeJava(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Unescapes any Java literals found in the String. For example, it will turn a sequence of '\' and 'n' into a newline character, unless the '\' is preceded by another '\'. Parameters: input - the String to unescape, may be null Returns: a new unescaped String, null if null string input</javadoc>
+	</method>
+	<method id="65">
+		<qualified-name>public static final String escapeHtml4(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Escapes the characters in a String using HTML entities. For example: "bread" &amp;amp; "butter" becomes: &amp;amp;quot;bread&amp;amp;quot; &amp;amp;amp; &amp;amp;quot;butter&amp;amp;quot;. Supports all known HTML 4.0 entities, including funky accents. Note that the commonly used apostrophe escape character (&amp;apos;) is not a legal entity and so is not supported). Parameters: input - the String to escape, may be null Returns: a new escaped String, null if null string input Since: 3.0 See Also: ISO Entities, HTML 3.2 Character Entities for ISO Latin-1, HTML 4.0 Character entity references, HTML 4.01 Character References, HTML 4.01 Code positions</javadoc>
+	</method>
+	<method id="66">
+		<qualified-name>public static final String unescapeHtml4(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Unescapes a string containing entity escapes to a string containing the actual Unicode characters corresponding to the escapes. Supports HTML 4.0 entities. For example, the string "&amp;lt;Fran&amp;ccedil;ais&amp;gt;" will become "&lt;Fran&#231;ais&gt;" If an entity is unrecognized, it is left alone, and inserted verbatim into the result string. e.g. "&amp;gt;&amp;zzzz;x" will become "&gt;&amp;zzzz;x". Parameters: input - the String to unescape, may be null Returns: a new unescaped String, null if null string input Since: 3.0</javadoc>
+	</method>
+	<method id="67">
+		<qualified-name>public static final String escapeXml(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Escapes the characters in a String using XML entities. For example: "bread" &amp; "butter" =&gt; &amp;quot;bread&amp;quot; &amp;amp; &amp;quot;butter&amp;quot;. Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does not support DTDs or external entities. Note that Unicode characters greater than 0x7f are as of 3.0, no longer escaped. If you still wish this functionality, you can achieve it via the following: StringEscapeUtils.ESCAPE_XML.with( NumericEntityEscaper.between(0x7f, Integer.MAX_VALUE) ); Parameters: input - the String to escape, may be null Returns: a new escaped String, null if null string input See Also: unescapeXml(java.lang.String)</javadoc>
+	</method>
+	<method id="68">
+		<qualified-name>public static final String unescapeXml(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Unescapes a string containing XML entity escapes to a string containing the actual Unicode characters corresponding to the escapes. Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does not support DTDs or external entities. Note that numerical \\u Unicode codes are unescaped to their respective Unicode characters. This may change in future releases. Parameters: input - the String to unescape, may be null Returns: a new unescaped String, null if null string input See Also: escapeXml(String), escapeXml10(String), escapeXml11(String)</javadoc>
+	</method>
+	<method id="69">
+		<qualified-name>public static final String escapeCsv(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Returns a String value for a CSV column enclosed in double quotes, if required. If the value contains a comma, newline or double quote, then the String value is returned enclosed in double quotes. Any double quote characters in the value are escaped with another double quote. If the value does not contain a comma, newline or double quote, then the String value is returned unchanged. see Wikipedia and RFC 4180. Parameters: input - the input CSV column String, may be null Returns: the input String, enclosed in double quotes if the value contains a comma, newline or double quote, null if null string input Since: 2.4</javadoc>
+	</method>
+	<method id="70">
+		<qualified-name>public static final String unescapeCsv(String input)</qualified-name>
+		<type>sanitiser</type>
+		<javadoc>Returns a String value for an unescaped CSV column. If the value is enclosed in double quotes, and contains a comma, newline or double quote, then quotes are removed. Any double quote escaped characters (a pair of double quotes) are unescaped to just one double quote. If the value is not enclosed in double quotes, or is and does not contain a comma, newline or double quote, then the String value is returned unchanged. see Wikipedia and RFC 4180. Parameters: input - the input CSV column String, may be null Returns: the input String, with enclosing double quotes removed and embedded double quotes unescaped, null if null string input Since: 2.4</javadoc>
+	</method>
+	<method id="71">
+		<qualified-name>public Process exec(String command) throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Executes the specified string command in a separate process. This is a convenience method. An invocation of the form exec(command) behaves in exactly the same way as the invocation exec(command, null, null). Parameters: command - a specified system command. Returns: A new Process object for managing the subprocess Throws: SecurityException - If a security manager exists and its checkExec method doesn't allow creation of the subprocess IOException - If an I/O error occurs NullPointerException - If command is null IllegalArgumentException - If command is empty See Also: exec(String[], String[], File), ProcessBuilder</javadoc>
+	</method>
+	<method id="72">
+		<qualified-name>public static void sleep(long millis) throws InterruptedException</qualified-name>
+		<type>sink</type>
+		<javadoc>Causes the currently executing thread to sleep (temporarily cease execution) for the specified number of milliseconds, subject to the precision and accuracy of system timers and schedulers. The thread does not lose ownership of any monitors. Parameters: millis - the length of time to sleep in milliseconds Throws: IllegalArgumentException - if the value of millis is negative InterruptedException - if any thread has interrupted the current thread. The interrupted status of the current thread is cleared when this exception is thrown.</javadoc>
+	</method>
+	<method id="73">
+		<qualified-name>public static void load(String filename)</qualified-name>
+		<type>sink</type>
+		<javadoc>Loads the native library specified by the filename argument. The filename argument must be an absolute path name. If the filename argument, when stripped of any platform-specific library prefix, path, and file extension, indicates a library whose name is, for example, L, and a native library called L is statically linked with the VM, then the JNI_OnLoad_L function exported by the library is invoked rather than attempting to load a dynamic library. A filename matching the argument does not have to exist in the file system. See the JNI Specification for more details. Otherwise, the filename argument is mapped to a native library image in an implementation-dependent manner. The call System.load(name) is effectively equivalent to the call: Runtime.getRuntime().load(name) Parameters: filename - the file to load. Throws: SecurityException - if a security manager exists and its checkLink method doesn't allow loading of the specified dynamic library UnsatisfiedLinkError - if either the filename is not an absolute path name, the native library is not statically linked with the VM, or the library cannot be mapped to a native library image by the host system. NullPointerException - if filename is null See Also: Runtime.load(java.lang.String), SecurityManager.checkLink(java.lang.String)</javadoc>
+	</method>
+	<method id="74">
+		<qualified-name>public static void loadLibrary(String libname)</qualified-name>
+		<type>sink</type>
+		<javadoc>Loads the native library specified by the libname argument. The libname argument must not contain any platform specific prefix, file extension or path. If a native library called libname is statically linked with the VM, then the JNI_OnLoad_libname function exported by the library is invoked. See the JNI Specification for more details. Otherwise, the libname argument is loaded from a system library location and mapped to a native library image in an implementation- dependent manner. The call System.loadLibrary(name) is effectively equivalent to the call Runtime.getRuntime().loadLibrary(name) Parameters: libname - the name of the library. Throws: SecurityException - if a security manager exists and its checkLink method doesn't allow loading of the specified dynamic library UnsatisfiedLinkError - if either the libname argument contains a file path, the native library is not statically linked with the VM, or the library cannot be mapped to a native library image by the host system. NullPointerException - if libname is null See Also: Runtime.loadLibrary(java.lang.String), SecurityManager.checkLink(java.lang.String)</javadoc>
+	</method>
+	<method id="75">
+		<qualified-name>public void setComment(String purpose)</qualified-name>
+		<type>sink</type>
+		<javadoc>Specifies a comment that describes a cookie's purpose. The comment is useful if the browser presents the cookie to the user. Comments are not supported by Netscape Version 0 cookies. Parameters: purpose - a String specifying the comment to display to the user See Also: getComment()</javadoc>
+	</method>
+	<method id="76">
+		<qualified-name>public void setDomain(String domain)</qualified-name>
+		<type>sink</type>
+		<javadoc>Specifies the domain within which this cookie should be presented. The form of the domain name is specified by RFC 2109. A domain name begins with a dot (.foo.com) and means that the cookie is visible to servers in a specified Domain Name System (DNS) zone (for example, www.foo.com, but not a.b.foo.com). By default, cookies are only returned to the server that sent them. Parameters: domain - the domain name within which this cookie is visible; form is according to RFC 2109 See Also: getDomain()</javadoc>
+	</method>
+	<method id="77">
+		<qualified-name>public void setPath(String uri)</qualified-name>
+		<type>sink</type>
+		<javadoc>Specifies a path for the cookie to which the client should return the cookie. The cookie is visible to all the pages in the directory you specify, and all the pages in that directory's subdirectories. A cookie's path must include the servlet that set the cookie, for example, /catalog, which makes the cookie visible to all directories on the server under /catalog. Consult RFC 2109 (available on the Internet) for more information on setting path names for cookies. Parameters: uri - a String specifying a path See Also: getPath()</javadoc>
+	</method>
+	<method id="78">
+		<qualified-name>public void setValue(String newValue)</qualified-name>
+		<type>sink</type>
+		<javadoc>Assigns a new value to this Cookie. If you use a binary value, you may want to use BASE64 encoding. With Version 0 cookies, values should not contain white space, brackets, parentheses, equals signs, commas, double quotes, slashes, question marks, at signs, colons, and semicolons. Empty values may not behave the same way on all browsers. Parameters: newValue - the new value of the cookie See Also: getValue()</javadoc>
+	</method>
+	<method id="79">
+		<qualified-name>public void print(boolean b)</qualified-name>
+		<type>sink</type>
+		<javadoc>Prints a boolean value. The string produced by String.valueOf(boolean) is translated into bytes according to the platform's default character encoding, and these bytes are written in exactly the manner of the write(int) method. Parameters: b - The boolean to be printed</javadoc>
+	</method>
+	<method id="80">
+		<qualified-name>public void println()</qualified-name>
+		<type>sink</type>
+		<javadoc>Terminates the current line by writing the line separator string. The line separator string is defined by the system property line.separator, and is not necessarily a single newline character ('\n'). Parameters: x - the boolean value to be printed</javadoc>
+	</method>
+	<method id="81">
+		<qualified-name>public void write(int c)</qualified-name>
+		<type>sink</type>
+		<javadoc>Writes a single character. Overrides: write in class Writer Parameters: c - int specifying a character to be written.</javadoc>
+	</method>
+	<method id="82">
+		<qualified-name>public void print(String s) throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Writes a String to the client, without a carriage return-line feed (CRLF) character at the end. Parameters: s - the String to send to the client Throws: IOException - if an input or output exception occurred</javadoc>
+	</method>
+	<method id="83">
+		<qualified-name>public void println() throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Writes a carriage return-line feed (CRLF) to the client. Throws: IOException - if an input or output exception occurred</javadoc>
+	</method>
+	<method id="84">
+		<qualified-name>public abstract void print(boolean b) throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Print a boolean value. The string produced by String.valueOf(boolean) is written to the JspWriter's buffer or, if no buffer is used, directly to the underlying writer. Parameters: b - The boolean to be printed Throws: IOException - If an error occured while writing</javadoc>
+	</method>
+	<method id="85">
+		<qualified-name>public abstract void println() throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Terminate the current line by writing the line separator string. The line separator string is defined by the system property line.separator, and is not necessarily a single newline character ('\n'). Throws: IOException - If an error occured while writing</javadoc>
+	</method>
+	<method id="86">
+		<qualified-name>void setAttribute(String name, Object o)</qualified-name>
+		<type>sink</type>
+		<javadoc>Stores an attribute in this request. Attributes are reset between requests. This method is most often used in conjunction with RequestDispatcher. Attribute names should follow the same conventions as package names. Names beginning with java.*, javax.*, and com.sun.*, are reserved for use by Sun Microsystems. If the object passed in is null, the effect is the same as calling removeAttribute(java.lang.String). It is warned that when the request is dispatched from the servlet resides in a different web application by RequestDispatcher, the object set by this method may not be correctly retrieved in the caller servlet. Parameters: name - a String specifying the name of the attribute o - the Object to be stored</javadoc>
+	</method>
+	<method id="87">
+		<qualified-name>void setCharacterEncoding(String env) throws UnsupportedEncodingException</qualified-name>
+		<type>sink</type>
+		<javadoc>Overrides the name of the character encoding used in the body of this request. This method must be called prior to reading request parameters or reading input using getReader(). Otherwise, it has no effect. Parameters: env - String containing the name of the character encoding. Throws: UnsupportedEncodingException - if this ServletRequest is still in a state where a character encoding may be set, but the specified encoding is invalid</javadoc>
+	</method>
+	<method id="88">
+		<qualified-name>void sendError(int sc, String msg) throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Sends an error response to the client using the specified status and clears the buffer. The server defaults to creating the response to look like an HTML-formatted server error page containing the specified message, setting the content type to "text/html". The caller is not responsible for escaping or re-encoding the message to ensure it is safe with respect to the current response encoding and content type. This aspect of safety is the responsibility of the container, as it is generating the error page containing the message. The server will preserve cookies and may clear or update any headers needed to serve the error page as a valid response. If an error-page declaration has been made for the web application corresponding to the status code passed in, it will be served back in preference to the suggested msg parameter and the msg parameter will be ignored. If the response has already been committed, this method throws an IllegalStateException. After using this method, the response should be considered to be committed and should not be written to. Parameters: sc - the error status code msg - the descriptive message Throws: IOException - If an input or output exception occurs IllegalStateException - If the response was committed</javadoc>
+	</method>
+	<method id="89">
+		<qualified-name>void setDateHeader(String name, long date)</qualified-name>
+		<type>sink</type>
+		<javadoc>Sets a response header with the given name and date-value. The date is specified in terms of milliseconds since the epoch. If the header had already been set, the new value overwrites the previous one. The containsHeader method can be used to test for the presence of a header before setting its value. Parameters: name - the name of the header to set date - the assigned date value See Also: containsHeader(java.lang.String), addDateHeader(java.lang.String, long)</javadoc>
+	</method>
+	<method id="90">
+		<qualified-name>void addDateHeader(String name, long date)</qualified-name>
+		<type>sink</type>
+		<javadoc>Adds a response header with the given name and date-value. The date is specified in terms of milliseconds since the epoch. This method allows response headers to have multiple values. Parameters: name - the name of the header to set date - the additional date value See Also: setDateHeader(java.lang.String, long)</javadoc>
+	</method>
+	<method id="91">
+		<qualified-name>void setHeader(String name, String value)</qualified-name>
+		<type>sink</type>
+		<javadoc>Sets a response header with the given name and value. If the header had already been set, the new value overwrites the previous one. The containsHeader method can be used to test for the presence of a header before setting its value. Parameters: name - the name of the header value - the header value If it contains octet string, it should be encoded according to RFC 2047 (http://www.ietf.org/rfc/rfc2047.txt) See Also: containsHeader(java.lang.String), addHeader(java.lang.String, java.lang.String)</javadoc>
+	</method>
+	<method id="92">
+		<qualified-name>void addHeader(String name, String value)</qualified-name>
+		<type>sink</type>
+		<javadoc>Adds a response header with the given name and value. This method allows response headers to have multiple values. Parameters: name - the name of the header value - the additional header value If it contains octet string, it should be encoded according to RFC 2047 (http://www.ietf.org/rfc/rfc2047.txt) See Also: setHeader(java.lang.String, java.lang.String)</javadoc>
+	</method>
+	<method id="93">
+		<qualified-name>void setIntHeader(String name, int value)</qualified-name>
+		<type>sink</type>
+		<javadoc>Sets a response header with the given name and integer value. If the header had already been set, the new value overwrites the previous one. The containsHeader method can be used to test for the presence of a header before setting its value. Parameters: name - the name of the header value - the assigned integer value See Also: containsHeader(java.lang.String), addIntHeader(java.lang.String, int)</javadoc>
+	</method>
+	<method id="94">
+		<qualified-name>void addIntHeader(String name, int value)</qualified-name>
+		<type>sink</type>
+		<javadoc>Adds a response header with the given name and integer value. This method allows response headers to have multiple values. Parameters: name - the name of the header value - the assigned integer value See Also: setIntHeader(java.lang.String, int)</javadoc>
+	</method>
+	<method id="95">
+		<qualified-name>void setCharacterEncoding(String charset)</qualified-name>
+		<type>sink</type>
+		<javadoc>Sets the character encoding (MIME charset) of the response being sent to the client, for example, to UTF-8. If the response character encoding has already been set by the ServletContext.setResponseCharacterEncoding(java.lang.String), deployment descriptor, or using the setContentType() or setLocale() methods, the value set in this method overrides any of those values. Calling setContentType(java.lang.String) with the String of text/html and calling this method with the String of UTF-8 is equivalent with calling setContentType with the String of text/html; charset=UTF-8. This method can be called repeatedly to change the character encoding. This method has no effect if it is called after getWriter has been called or after the response has been committed. Containers must communicate the character encoding used for the servlet response's writer to the client if the protocol provides a way for doing so. In the case of HTTP, the character encoding is communicated as part of the Content-Type header for text media types. Note that the character encoding cannot be communicated via HTTP headers if the servlet does not specify a content type; however, it is still used to encode text written via the servlet response's writer. Parameters: charset - a String specifying only the character set defined by IANA Character Sets (http://www.iana.org/assignments/character-sets) Since: Servlet 2.4 See Also: setContentType(java.lang.String), setLocale(java.util.Locale)</javadoc>
+	</method>
+	<method id="96">
+		<qualified-name>void setContentType(String type)</qualified-name>
+		<type>sink</type>
+		<javadoc>Sets the content type of the response being sent to the client, if the response has not been committed yet. The given content type may include a character encoding specification, for example, text/html;charset=UTF-8. The response's character encoding is only set from the given content type if this method is called before getWriter is called. This method may be called repeatedly to change content type and character encoding. This method has no effect if called after the response has been committed. It does not set the response's character encoding if it is called after getWriter has been called or after the response has been committed. Containers must communicate the content type and the character encoding used for the servlet response's writer to the client if the protocol provides a way for doing so. In the case of HTTP, the Content-Type header is used. Parameters: type - a String specifying the MIME type of the content See Also: setLocale(java.util.Locale), setCharacterEncoding(java.lang.String), getOutputStream(), getWriter()</javadoc>
+	</method>
+	<method id="97">
+		<qualified-name>void setAttribute(String name, Object value)</qualified-name>
+		<type>sink</type>
+		<javadoc>Binds an object to this session, using the name specified. If an object of the same name is already bound to the session, the object is replaced. After this method executes, and if the new object implements HttpSessionBindingListener, the container calls HttpSessionBindingListener.valueBound. The container then notifies any HttpSessionAttributeListeners in the web application. If an object was already bound to this session of this name that implements HttpSessionBindingListener, its HttpSessionBindingListener.valueUnbound method is called. If the value passed in is null, this has the same effect as calling removeAttribute(). Parameters: name - the name to which the object is bound; cannot be null value - the object to be bound Throws: IllegalStateException - if this method is called on an invalidated session</javadoc>
+	</method>
+	<method id="98">
+		<qualified-name>void putValue(String name, Object value)</qualified-name>
+		<type>sink</type>
+		<javadoc>Removes the object bound with the specified name from this session. If the session does not have an object bound with the specified name, this method does nothing. After this method executes, and if the object implements HttpSessionBindingListener, the container calls HttpSessionBindingListener.valueUnbound. The container then notifies any HttpSessionAttributeListeners in the web application. Parameters: name - the name of the object to remove from this session Throws: IllegalStateException - if this method is called on an invalidated session</javadoc>
+	</method>
+	<method id="99">
+		<qualified-name>void sendRedirect(String location) throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Sends a temporary redirect response to the client using the specified redirect location URL and clears the buffer. The buffer will be replaced with the data set by this method. Calling this method sets the status code to SC_FOUND 302 (Found). This method can accept relative URLs;the servlet container must convert the relative URL to an absolute URL before sending the response to the client. If the location is relative without a leading '/' the container interprets it as relative to the current request URI. If the location is relative with a leading '/' the container interprets it as relative to the servlet container root. If the location is relative with two leading '/' the container interprets it as a network-path reference (see RFC 3986: Uniform Resource Identifier (URI): Generic Syntax, section 4.2 "Relative Reference"). If the response has already been committed, this method throws an IllegalStateException. After using this method, the response should be considered to be committed and should not be written to. Parameters: location - the redirect location URL Throws: IOException - If an input or output exception occurs IllegalStateException - If the response was committed or if a partial URL is given and cannot be converted into a valid URL</javadoc>
+	</method>
+	<method id="100">
+		<qualified-name>protected InitialDirContext(boolean lazy) throws NamingException</qualified-name>
+		<type>sink</type>
+		<javadoc>Constructs an initial DirContext with the option of not initializing it. This may be used by a constructor in a subclass when the value of the environment parameter is not yet known at the time the InitialDirContext constructor is called. The subclass's constructor will call this constructor, compute the value of the environment, and then call init() before returning. Parameters: lazy - true means do not initialize the initial DirContext; false is equivalent to calling new InitialDirContext() Throws: NamingException - if a naming exception is encountered Since: 1.3 See Also: InitialContext.init(Hashtable)</javadoc>
+	</method>
+	<method id="101">
+		<qualified-name>public NamingEnumeration&lt;SearchResult&gt; search(String name, Attributes matchingAttributes) throws NamingException</qualified-name>
+		<type>sink</type>
+		<javadoc>Description copied from interface: DirContext Specified by: search in interface DirContext Parameters: name - the name of the context to search matchingAttributes - the attributes to search for Returns: an enumeration of SearchResult objects Throws: NamingException - if a naming exception is encountered</javadoc>
+	</method>
+	<method id="102">
+		<qualified-name>public void setReturningAttributes(String[] attrs)</qualified-name>
+		<type>sink</type>
+		<javadoc>Specifies the attributes that will be returned as part of the search. null indicates that all attributes will be returned. An empty array indicates no attributes are returned. Parameters: attrs - An array of attribute ids identifying the attributes that will be returned. Can be null. See Also: getReturningAttributes()</javadoc>
+	</method>
+	<method id="103">
+		<qualified-name>public void print(boolean b)</qualified-name>
+		<type>sink</type>
+		<javadoc>Prints a boolean value. The string produced by String.valueOf(boolean) is translated into bytes according to the platform's default character encoding, and these bytes are written in exactly the manner of the write(int) method. Parameters: b - The boolean to be printed</javadoc>
+	</method>
+	<method id="104">
+		<qualified-name>public void println()</qualified-name>
+		<type>sink</type>
+		<javadoc>Terminates the current line by writing the line separator string. The line separator string is defined by the system property line.separator, and is not necessarily a single newline character ('\n'). Parameters: x - The boolean to be printed</javadoc>
+	</method>
+	<method id="105">
+		<qualified-name>public void config(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a CONFIG message. If the logger is currently enabled for the CONFIG message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="106">
+		<qualified-name>public void fine(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a FINE message. If the logger is currently enabled for the FINE message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="107">
+		<qualified-name>public void finer(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a FINER message. If the logger is currently enabled for the FINER message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="108">
+		<qualified-name>public void finest(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a FINEST message. If the logger is currently enabled for the FINEST message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="109">
+		<qualified-name>public void info(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log an INFO message. If the logger is currently enabled for the INFO message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="110">
+		<qualified-name>public void warning(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a WARNING message. If the logger is currently enabled for the WARNING message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="111">
+		<qualified-name>public void severe(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a SEVERE message. If the logger is currently enabled for the SEVERE message level then the given message is forwarded to all the registered output Handler objects. Parameters: msg - The string message (or a key in the message catalog)</javadoc>
+	</method>
+	<method id="112">
+		<qualified-name>public void entering(String sourceClass, String sourceMethod)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a method entry. This is a convenience method that can be used to log entry to a method. A LogRecord with message "ENTRY", log level FINER, and the given sourceMethod and sourceClass is logged. Parameters: sourceClass - name of class that issued the logging request sourceMethod - name of method that is being entered</javadoc>
+	</method>
+	<method id="113">
+		<qualified-name>public void log(LogRecord record)</qualified-name>
+		<type>sink</type>
+		<javadoc>Log a LogRecord. All the other logging methods in this class call through this method to actually perform any logging. Subclasses can override this single method to capture all log activity. Parameters: record - the LogRecord to be published</javadoc>
+	</method>
+	<method id="114">
+		<qualified-name>void debug(Object message)</qualified-name>
+		<type>sink</type>
+		<javadoc>Logs a message with debug log level. Parameters:message - log this message</javadoc>
+	</method>
+	<method id="115">
+		<qualified-name>void error(Object message)</qualified-name>
+		<type>sink</type>
+		<javadoc>Logs a message with error log level. Parameters:message - log this message</javadoc>
+	</method>
+	<method id="116">
+		<qualified-name>void fatal(Object message)</qualified-name>
+		<type>sink</type>
+		<javadoc>Logs a message with fatal log level. Parameters:message - log this message</javadoc>
+	</method>
+	<method id="117">
+		<qualified-name>void info(Object message)</qualified-name>
+		<type>sink</type>
+		<javadoc>Logs a message with info log level. Parameters:message - log this message</javadoc>
+	</method>
+	<method id="118">
+		<qualified-name>void trace(Object message)</qualified-name>
+		<type>sink</type>
+		<javadoc>Logs a message with trace log level. Parameters:message - log this message</javadoc>
+	</method>
+	<method id="119">
+		<qualified-name>void warn(Object message)</qualified-name>
+		<type>sink</type>
+		<javadoc>Logs a message with warn log level. Parameters:message - log this message</javadoc>
+	</method>
+	<method id="120">
+		<qualified-name>public void write(int c) throws IOException</qualified-name>
+		<type>sink</type>
+		<javadoc>Writes a single character. Overrides: write in class Writer Parameters: c - int specifying a character to be written Throws: IOException - If an I/O error occurs</javadoc>
+	</method>
+	<method id="121">
+		<qualified-name>void log(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Writes the specified message to a servlet log file, usually an event log. The name and type of the servlet log file is specific to the servlet container. Parameters: msg - a String specifying the message to be written to the log file</javadoc>
+	</method>
+	<method id="122">
+		<qualified-name>public void log(String msg)</qualified-name>
+		<type>sink</type>
+		<javadoc>Writes the specified message to a servlet log file, prepended by the servlet's name. See ServletContext.log(String). Parameters: msg - a String specifying the message to be written to the log file</javadoc>
+	</method>
+	<method id="123">
+		<qualified-name>public InputStream getResourceAsStream(String name)</qualified-name>
+		<type>sink</type>
+		<javadoc>Finds a resource with a given name. The rules for searching resources associated with a given class are implemented by the defining class loader of the class. This method delegates to this object's class loader. If this object was loaded by the bootstrap class loader, the method delegates to ClassLoader.getSystemResourceAsStream(java.lang.String). Before delegation, an absolute resource name is constructed from the given resource name using this algorithm: If the name begins with a '/' ('\u002f'), then the absolute name of the resource is the portion of the name following the '/'. Otherwise, the absolute name is of the following form: modified_package_name/name Where the modified_package_name is the package name of this object with '/' substituted for '.' ('\u002e'). Parameters: name - name of the desired resource Returns: A InputStream object or null if no resource with this name is found Throws: NullPointerException - If name is null Since: JDK1.1</javadoc>
+	</method>
+	<method id="124">
+		<qualified-name>public InputStream getResourceAsStream(String name)</qualified-name>
+		<type>sink</type>
+		<javadoc>Finds a resource with a given name. The rules for searching resources associated with a given class are implemented by the defining class loader of the class. This method delegates to this object's class loader. If this object was loaded by the bootstrap class loader, the method delegates to ClassLoader.getSystemResourceAsStream(java.lang.String). Before delegation, an absolute resource name is constructed from the given resource name using this algorithm: If the name begins with a '/' ('\u002f'), then the absolute name of the resource is the portion of the name following the '/'. Otherwise, the absolute name is of the following form: modified_package_name/name Where the modified_package_name is the package name of this object with '/' substituted for '.' ('\u002e'). Parameters: name - name of the desired resource Returns: A InputStream object or null if no resource with this name is found Throws: NullPointerException - If name is null Since: JDK1.1</javadoc>
+	</method>
+	<method id="125">
+		<qualified-name>public InternetAddress()</qualified-name>
+		<type>sink</type>
+		<javadoc>Default constructor. Parameters: address - the address in RFC822 format Throws: AddressException - if the parse failed</javadoc>
+	</method>
+	<method id="126">
+		<qualified-name>public static InternetAddress[] parse(String addresslist) throws AddressException</qualified-name>
+		<type>sink</type>
+		<javadoc>Parse the given comma separated sequence of addresses into InternetAddress objects. Addresses must follow RFC822 syntax. Parameters: addresslist - comma separated address strings Returns: array of InternetAddress objects Throws: AddressException - if the parse failed</javadoc>
+	</method>
+	<method id="127">
+		<qualified-name>public static Class&lt;?&gt; forName(String className) throws ClassNotFoundException</qualified-name>
+		<type>sink</type>
+		<javadoc>Returns the Class object associated with the class or interface with the given string name. Invoking this method is equivalent to: Class.forName(className, true, currentLoader) where currentLoader denotes the defining class loader of the current class. For example, the following code fragment returns the runtime Class descriptor for the class named java.lang.Thread: Class t = Class.forName("java.lang.Thread") A call to forName("X") causes the class named X to be initialized. Parameters: className - the fully qualified name of the desired class. Returns: the Class object for the class with the specified name. Throws: LinkageError - if the linkage fails ExceptionInInitializerError - if the initialization provoked by this method fails ClassNotFoundException - if the class cannot be located</javadoc>
+	</method>
+	<method id="128">
+		<qualified-name>public Field[] getFields() throws SecurityException</qualified-name>
+		<type>sink</type>
+		<javadoc>Returns an array containing Field objects reflecting all the accessible public fields of the class or interface represented by this Class object. If this Class object represents a class or interface with no no accessible public fields, then this method returns an array of length 0. If this Class object represents a class, then this method returns the public fields of the class and of all its superclasses. If this Class object represents an interface, then this method returns the fields of the interface and of all its superinterfaces. If this Class object represents an array type, a primitive type, or void, then this method returns an array of length 0. The elements in the returned array are not sorted and are not in any particular order. Returns: the array of Field objects representing the public fields Throws: SecurityException - If a security manager, s, is present and the caller's class loader is not the same as or an ancestor of the class loader for the current class and invocation of s.checkPackageAccess() denies access to the package of this class. Since: JDK1.1 See The Java&#8482; Language Specification: 8.2 Class Members, 8.3 Field Declarations</javadoc>
+	</method>
+	<method id="129">
+		<qualified-name>public Method[] getMethods() throws SecurityException</qualified-name>
+		<type>sink</type>
+		<javadoc>Returns an array containing Method objects reflecting all the public methods of the class or interface represented by this Class object, including those declared by the class or interface and those inherited from superclasses and superinterfaces. If this Class object represents a type that has multiple public methods with the same name and parameter types, but different return types, then the returned array has a Method object for each such method. If this Class object represents a type with a class initialization method &lt;clinit&gt;, then the returned array does not have a corresponding Method object. If this Class object represents an array type, then the returned array has a Method object for each of the public methods inherited by the array type from Object. It does not contain a Method object for clone(). If this Class object represents an interface then the returned array does not contain any implicitly declared methods from Object. Therefore, if no methods are explicitly declared in this interface or any of its superinterfaces then the returned array has length 0. (Note that a Class object which represents a class always has public methods, inherited from Object.) If this Class object represents a primitive type or void, then the returned array has length 0. Static methods declared in superinterfaces of the class or interface represented by this Class object are not considered members of the class or interface. The elements in the returned array are not sorted and are not in any particular order. Returns: the array of Method objects representing the public methods of this class Throws: SecurityException - If a security manager, s, is present and the caller's class loader is not the same as or an ancestor of the class loader for the current class and invocation of s.checkPackageAccess() denies access to the package of this class. Since: JDK1.1 See The Java&#8482; Language Specification: 8.2 Class Members, 8.4 Method Declarations</javadoc>
+	</method>
+	<method id="130">
+		<qualified-name>public Field[] getDeclaredFields() throws SecurityException</qualified-name>
+		<type>sink</type>
+		<javadoc>Returns an array of Field objects reflecting all the fields declared by the class or interface represented by this Class object. This includes public, protected, default (package) access, and private fields, but excludes inherited fields. If this Class object represents a class or interface with no declared fields, then this method returns an array of length 0. If this Class object represents an array type, a primitive type, or void, then this method returns an array of length 0. The elements in the returned array are not sorted and are not in any particular order. Returns: the array of Field objects representing all the declared fields of this class Throws: SecurityException - If a security manager, s, is present and any of the following conditions is met: the caller's class loader is not the same as the class loader of this class and invocation of s.checkPermission method with RuntimePermission("accessDeclaredMembers") denies access to the declared fields within this class the caller's class loader is not the same as or an ancestor of the class loader for the current class and invocation of s.checkPackageAccess() denies access to the package of this class Since: JDK1.1 See The Java&#8482; Language Specification: 8.2 Class Members, 8.3 Field Declarations</javadoc>
+	</method>
+	<method id="131">
+		<qualified-name>public Method[] getDeclaredMethods() throws SecurityException</qualified-name>
+		<type>sink</type>
+		<javadoc>Returns an array containing Method objects reflecting all the declared methods of the class or interface represented by this Class object, including public, protected, default (package) access, and private methods, but excluding inherited methods. If this Class object represents a type that has multiple declared methods with the same name and parameter types, but different return types, then the returned array has a Method object for each such method. If this Class object represents a type that has a class initialization method &lt;clinit&gt;, then the returned array does not have a corresponding Method object. If this Class object represents a class or interface with no declared methods, then the returned array has length 0. If this Class object represents an array type, a primitive type, or void, then the returned array has length 0. The elements in the returned array are not sorted and are not in any particular order. Returns: the array of Method objects representing all the declared methods of this class Throws: SecurityException - If a security manager, s, is present and any of the following conditions is met: the caller's class loader is not the same as the class loader of this class and invocation of s.checkPermission method with RuntimePermission("accessDeclaredMembers") denies access to the declared methods within this class the caller's class loader is not the same as or an ancestor of the class loader for the current class and invocation of s.checkPackageAccess() denies access to the package of this class Since: JDK1.1 See The Java&#8482; Language Specification: 8.2 Class Members, 8.4 Method Declarations</javadoc>
+	</method>
+	<method id="132">
+		<qualified-name>public static Connection getConnection(String url, Properties info) throws SQLException</qualified-name>
+		<type>sink</type>
+		<javadoc>Attempts to establish a connection to the given database URL. The DriverManager attempts to select an appropriate driver from the set of registered JDBC drivers. Note: If a property is specified as part of the url and is also specified in the Properties object, it is implementation-defined as to which value will take precedence. For maximum portability, an application should only specify a property once. Parameters: url - a database url of the form jdbc:subprotocol:subname info - a list of arbitrary string tag/value pairs as connection arguments; normally at least a "user" and "password" property should be included Returns: a Connection to the URL Throws: SQLException - if a database access error occurs or the url is null SQLTimeoutException - when the driver has determined that the timeout value specified by the setLoginTimeout method has been exceeded and has at least tried to cancel the current database connection attempt</javadoc>
+	</method>
+	<method id="133">
+		<qualified-name>PreparedStatement prepareStatement(String sql) throws SQLException</qualified-name>
+		<type>sink</type>
+		<javadoc>Creates a PreparedStatement object for sending parameterized SQL statements to the database. A SQL statement with or without IN parameters can be pre-compiled and stored in a PreparedStatement object. This object can then be used to efficiently execute this statement multiple times. Note: This method is optimized for handling parametric SQL statements that benefit from precompilation. If the driver supports precompilation, the method prepareStatement will send the statement to the database for precompilation. Some drivers may not support precompilation. In this case, the statement may not be sent to the database until the PreparedStatement object is executed. This has no direct effect on users; however, it does affect which methods throw certain SQLException objects. Result sets created using the returned PreparedStatement object will by default be type TYPE_FORWARD_ONLY and have a concurrency level of CONCUR_READ_ONLY. The holdability of the created result sets can be determined by calling getHoldability(). Parameters: sql - an SQL statement that may contain one or more '?' IN parameter placeholders Returns: a new default PreparedStatement object containing the pre-compiled SQL statement Throws: SQLException - if a database access error occurs or this method is called on a closed connection</javadoc>
+	</method>
+	<method id="134">
+		<qualified-name>CallableStatement prepareCall(String sql) throws SQLException</qualified-name>
+		<type>sink</type>
+		<javadoc>Creates a CallableStatement object for calling database stored procedures. The CallableStatement object provides methods for setting up its IN and OUT parameters, and methods for executing the call to a stored procedure. Note: This method is optimized for handling stored procedure call statements. Some drivers may send the call statement to the database when the method prepareCall is done; others may wait until the CallableStatement object is executed. This has no direct effect on users; however, it does affect which method throws certain SQLExceptions. Result sets created using the returned CallableStatement object will by default be type TYPE_FORWARD_ONLY and have a concurrency level of CONCUR_READ_ONLY. The holdability of the created result sets can be determined by calling getHoldability(). Parameters: sql - an SQL statement that may contain one or more '?' parameter placeholders. Typically this statement is specified using JDBC call escape syntax. Returns: a new default CallableStatement object containing the pre-compiled SQL statement Throws: SQLException - if a database access error occurs or this method is called on a closed connection</javadoc>
+	</method>
+	<method id="135">
+		<qualified-name>Query createNativeQuery(String sqlString)</qualified-name>
+		<type>sink</type>
+		<javadoc>Create an instance of Query for executing a native SQL statement, e.g., for update or delete. If the query is not an update or delete query, query execution will result in each row of the SQL result being returned as a result of type Object[] (or a result of type Object if there is only one column in the select list.) Column values are returned in the order of their appearance in the select list and default JDBC type mappings are applied. Parameters: sqlString - a native SQL query string Returns: the new query instance</javadoc>
+	</method>
+	<method id="136">
+		<qualified-name>Query createQuery(String qlString)</qualified-name>
+		<type>sink</type>
+		<javadoc>Create an instance of Query for executing a Java Persistence query language statement. Parameters: qlString - a Java Persistence query string Returns: the new query instance Throws: IllegalArgumentException - if the query string is found to be invalid</javadoc>
+	</method>
+</methods>
