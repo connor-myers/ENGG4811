@@ -72,11 +72,26 @@ class HtmlProcessor:
         self.html_parser = BeautifulSoup(html, 'html.parser')
     def get_method_data(self, method):
         start = self.html_parser.find("a", attrs = {'name': lambda L: L and L.startswith(method.name)})
-        pre = start.findNext("pre")
+       
+        # sometimes the method from dataset does not exist in java 8
+        # this makes it easy to spot and remove
+        try:
+            pre = start.findNext("pre")
+        except:
+            print("Could not find method: %s" % method.name)
+            sys.exit(1)
+
         div = pre.findNext("div")
+
+        # java 8 javadoc format slightly changes if method is deprecated
+        # still good data, though, so lets use it!
+        span = div.findChildren("span", attrs = {"class" : "deprecatedLabel"})
+        if len(span) != 0 and span[0] is not None:
+            div = div.findNext("div")
+
         dl = div.findNext("dl")
 
-        cleaned_pre = " ".join(pre.get_text().replace("\n", " ").split())
+        cleaned_pre = " ".join(pre.get_text().replace("\n", " ").replace("@Deprecated", "").split())
         cleaned_div = " ".join(div.get_text().replace("\n", " ").split())
         cleaned_dl = " ".join(dl.get_text().replace("\n", " ").split())
 
