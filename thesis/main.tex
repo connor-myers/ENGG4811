@@ -1,7 +1,20 @@
-\documentclass[12pt]{report}
+\documentclass[12pt,twoside]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-%\usepackage{{images/}}
+\graphicspath{{images/}}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% \fancyhead{}
+% \fancyhead[RO, LE]{Inferring security-relevant properties from Java documentation}
+% \fancyfoot{}
+% \fancyfoot[LE, RO]{\thepage}
+% \fancyfoot[LO, CE]{Chapter \thechapter}
+% \fancyfoot[CO, RE]{Connor Myers}
+
+\usepackage[sorting=none]{biblatex}
+\addbibresource{references.bib}
 
 \title{
     {Inferring security-relevant properties from Java documentation}\\
@@ -56,5 +69,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, s
 
 \chapter{Conclusion}
 \input{chapters/conclusion.tex}
+
+\printbibliography
 
 \end{document}
