@@ -1,125 +1,22 @@
-@book{NielsonFlemming2005Popa,
-abstract = {Program analysis concerns static techniques for computing reliable approximate information about the dynamic behaviour of programs. Applications include compilers (for code improvement), software validation (for detecting errors in algorithms or breaches of security) and transformations between data representation (for solving problems such as the Y2K problem). This book is unique in giving an overview of the four major approaches to program analysis: data flow analysis, constraint based analysis, abstract interpretation, and type and effect systems. The presentation demonstrates the extensive similarities between the approaches; this will aid the reader in choosing the right approach and in enhancing it with insights from the other approaches. The book covers basic semantic properties as well as more advanced algorithmic techniques. The book is aimed at M.Sc. and Ph.D. students but will be valuable also for experienced researchers and professionals.},
-publisher = {Springer-Verlag},
-booktitle = {Principles of program analysis},
-isbn = {3-540-65410-0},
-year = {2005},
-title = {Principles of program analysis / Flemming Nielson, Hanne Riis Nielson, Chris Hankin.},
-edition = {1st ed. 1999.},
-language = {eng},
-address = {Berlin ; Heidelberg ; New York},
-author = {Nielson, Flemming and Nielson, Hanne Riis and Hankin, Chris},
-keywords = {Computer programming}
+@book{principles_program_analysis,
+author = {Nielson, Flemming and Nielson, Hanne and Hankin, Chris},
+year = {1999},
+month = {01},
+title = {Principles of Program Analysis},
+isbn = {978-3-642-08474-4},
+doi = {10.1007/978-3-662-03811-6}
 }
 
-@misc{sonarqube,
-  author = {SonarSource},
-  title = {SonarQube},
-  url = {https://www.sonarqube.org/},
-  year = {2022}
-}
-
-@misc{spotbugs,
-  title = {SpotBugs},
-  url = {https://spotbugs.github.io/},
-  year = {2022}
-}
-
-@misc{snykcode,
-  title = {SnykCode},
-  author = {Snyk},
-  url = {https://snyk.io/},
-  year = {2022}
-}
-
-@misc{infer,
-  title = {Infer},
-  author = {Facebook},
-  url = {https://fbinfer.com/},
-  year = {2022}
-}
-
-@misc{Nichols2020,
-  doi = {10.48550/ARXIV.2003.03001},
-  
-  url = {https://arxiv.org/abs/2003.03001},
-  
-  author = {Nichols, William R.},
-  
-  keywords = {Software Engineering (cs.SE), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  
-  title = {The Cost and Benefits of Static Analysis During Development},
-  
-  publisher = {arXiv},
-  
-  year = {2020},
-  
-  copyright = {arXiv.org perpetual, non-exclusive license}
-}
-
-@inproceedings{ZampettiFiorella2017HOSP,
-issn = {2160-1852},
-abstract = {Static analysis tools are often used by software developers to entail early detection of potential faults, vulnerabilities, code smells, or to assess the source code adherence to coding standards and guidelines. Also, their adoption within Continuous Integration (CI) pipelines has been advocated by researchers and practitioners. This paper studies the usage of static analysis tools in 20 Java open source projects hosted on GitHub and using Travis CI as continuous integration infrastructure. Specifically, we investigate (i) which tools are being used and how they are configured for the CI, (ii) what types of issues make the build fail or raise warnings, and (iii) whether, how, and after how long are broken builds and warnings resolved. Results indicate that in the analyzed projects build breakages due to static analysis tools are mainly related to adherence to coding standards, and there is also some attention to missing licenses. Build failures related to tools identifying potential bugs or vulnerabilities occur less frequently, and in some cases such tools are activated in a "softer" mode, without making the build fail. Also, the study reveals that build breakages due to static analysis tools are quickly fixed by actually solving the problem, rather than by disabling the warning, and are often properly documented.},
-pages = {334--344},
-publisher = {IEEE},
-booktitle = {2017 IEEE/ACM 14th International Conference on Mining Software Repositories (MSR)},
-isbn = {1538615444},
-year = {2017},
-title = {How Open Source Projects Use Static Code Analysis Tools in Continuous Integration Pipelines},
-copyright = {Copyright 2017 Elsevier B.V., All rights reserved.},
-language = {eng},
-author = {Zampetti, Fiorella and Scalabrino, Simone and Oliveto, Rocco and Canfora, Gerardo and Di Penta, Massimiliano},
-keywords = {Continuous Integration ; Data mining ; Empirical Study ; Encoding ; History ; Java ; Open Source Projects ; Pipelines ; Software ; Static Analysis Tools ; Tools}
-}
-
-@article{RAHIMZADEH2021102588,
-title = {A fully automated deep learning-based network for detecting COVID-19 from a new and large lung CT scan dataset},
-journal = {Biomedical Signal Processing and Control},
-volume = {68},
-pages = {102588},
-year = {2021},
-issn = {1746-8094},
-doi = {https://doi.org/10.1016/j.bspc.2021.102588},
-url = {https://www.sciencedirect.com/science/article/pii/S1746809421001853},
-author = {Mohammad Rahimzadeh and Abolfazl Attar and Seyed Mohammad Sakhaei},
-keywords = {Deep learning, Convolutional neural networks, COVID-19, Coronavirus, Radiology, CT scan, Medical image analysis, Automatic medical diagnosis, Lung CT scan dataset},
-abstract = {This paper aims to propose a high-speed and accurate fully-automated method to detect COVID-19 from the patient's chest CT scan images. We introduce a new dataset that contains 48,260 CT scan images from 282 normal persons and 15,589 images from 95 patients with COVID-19 infections. At the first stage, this system runs our proposed image processing algorithm that analyzes the view of the lung to discard those CT images that inside the lung is not properly visible in them. This action helps to reduce the processing time and false detections. At the next stage, we introduce a novel architecture for improving the classification accuracy of convolutional networks on images containing small important objects. Our architecture applies a new feature pyramid network designed for classification problems to the ResNet50V2 model so the model becomes able to investigate different resolutions of the image and do not lose the data of small objects. As the infections of COVID-19 exist in various scales, especially many of them are tiny, using our method helps to increase the classification performance remarkably. After running these two phases, the system determines the condition of the patient using a selected threshold. We are the first to evaluate our system in two different ways on Xception, ResNet50V2, and our model. In the single image classification stage, our model achieved 98.49% accuracy on more than 7996 test images. At the patient condition identification phase, the system correctly identified almost 234 of 245 patients with high speed. Our dataset is accessible at https://github.com/mr7495/COVID-CTset.}
-}
-
-@book{DengLi2018Dlin,
-abstract = {Deep learning has revolutionized a number of applications in artificial intelligence, including speech, vision, natural language, game playing, healthcare, and robotics. In particular, the recent striking success of deep learning in a wide variety of Natural Language Processing (NLP) application areas has been taken as a landmark of deep learning in one of the most important tasks in Artificial Intelligence. The book presents the state-of-the-art of deep learning research, and its applications in major NLP tasks including speech recognition, lexical analysis, parsing, knowledge graph, machine translation, information retrieval, question answering, sentiment analysis, social computing, spoken language understanding, and dialogue systems. The self-contained, comprehensive chapters have been written by leading researchers in the field. It appeals undergraduate and graduate students, post-doctoral researchers, lecturers, and industrial researchers and anyone interested in deep learning and natural language processing.},
-publisher = {Springer},
-booktitle = {Deep learning in natural language processing},
-isbn = {9789811052088},
-year = {2018},
-title = {Deep learning in natural language processing / Li Deng, Yang Liu, editors.},
-language = {eng},
-address = {Singapore},
-author = {Deng, Li and Liu, Yang},
-keywords = {Natural language processing (Computer science); Computational linguistics; Artificial intelligence; Natural language processing (Computer science)}
-}
-
-@misc{CodeBERT,
-  doi = {10.48550/ARXIV.2002.08155},
-  
-  url = {https://arxiv.org/abs/2002.08155},
-  
-  author = {Feng, Zhangyin and Guo, Daya and Tang, Duyu and Duan, Nan and Feng, Xiaocheng and Gong, Ming and Shou, Linjun and Qin, Bing and Liu, Ting and Jiang, Daxin and Zhou, Ming},
-  
-  keywords = {Computation and Language (cs.CL), Programming Languages (cs.PL), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  
-  title = {CodeBERT: A Pre-Trained Model for Programming and Natural Languages},
-  
-  publisher = {arXiv},
-  
-  year = {2020},
-  
-  copyright = {arXiv.org perpetual, non-exclusive license}
+@unknown{costs_static_analysis,
+author = {Nichols, William},
+year = {2020},
+month = {03},
+title = {The Cost and Benefits of Static Analysis During Development}
 }
 
 @article{moller2012static,
   title={Static program analysis},
-  author={M{\o}ller, Anders and Schwartzbach, Michael I},
+  author={Møller, Anders and Schwartzbach, Michael I},
   journal={Notes. Feb},
   year={2012}
 }
@@ -135,87 +32,20 @@ keywords = {Natural language processing (Computer science); Computational lingui
   publisher={IEEE}
 }
 
-@inproceedings{DBLP:journals/corr/BahdanauCB14,
-  author    = {Dzmitry Bahdanau and
-               Kyunghyun Cho and
-               Yoshua Bengio},
-  editor    = {Yoshua Bengio and
-               Yann LeCun},
-  title     = {Neural Machine Translation by Jointly Learning to Align and Translate},
-  booktitle = {3rd International Conference on Learning Representations, {ICLR} 2015,
-               San Diego, CA, USA, May 7-9, 2015, Conference Track Proceedings},
-  year      = {2015},
-  url       = {http://arxiv.org/abs/1409.0473},
-  timestamp = {Wed, 17 Jul 2019 10:40:54 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/BahdanauCB14.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@inproceedings{ZampettiFiorella2017HOSP,
+author = {Zampetti, Fiorella and Scalabrino, Simone and Oliveto, Rocco and Canfora, Gerardo and Di Penta, Massimiliano},
+year = {2017},
+month = {05},
+pages = {334-344},
+title = {How Open Source Projects Use Static Code Analysis Tools in Continuous Integration Pipelines},
+doi = {10.1109/MSR.2017.2}
 }
 
-@article{DBLP:journals/corr/abs-1211-5063,
-  author    = {Razvan Pascanu and
-               Tom{\'{a}}s Mikolov and
-               Yoshua Bengio},
-  title     = {Understanding the exploding gradient problem},
-  journal   = {CoRR},
-  volume    = {abs/1211.5063},
-  year      = {2012},
-  url       = {http://arxiv.org/abs/1211.5063},
-  eprinttype = {arXiv},
-  eprint    = {1211.5063},
-  timestamp = {Mon, 28 Dec 2020 11:31:02 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1211-5063.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-
-@article{10.1162/neco.1997.9.8.1735,
-    author = {Hochreiter, Sepp and Schmidhuber, Jürgen},
-    title = "{Long Short-Term Memory}",
-    journal = {Neural Computation},
-    volume = {9},
-    number = {8},
-    pages = {1735-1780},
-    year = {1997},
-    month = {11},
-    abstract = "{Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. LSTM is local in space and time; its computational complexity per time step and weight is O. 1. Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms.}",
-    issn = {0899-7667},
-    doi = {10.1162/neco.1997.9.8.1735},
-    url = {https://doi.org/10.1162/neco.1997.9.8.1735},
-    eprint = {https://direct.mit.edu/neco/article-pdf/9/8/1735/813796/neco.1997.9.8.1735.pdf},
-}
-
-@book{salem2022recurrent,
-  title={Recurrent Neural Networks: From Simple to Gated Architectures},
-  author={Salem, F.M.},
-  isbn={9783030899295},
-  url={https://books.google.com.au/books?id=bJpXEAAAQBAJ},
-  year={2022},
-  publisher={Springer}
-}
-
-@inproceedings{sundermeyer2012lstm,
-  title={LSTM neural networks for language modeling},
-  author={Sundermeyer, Martin and Schl{\"u}ter, Ralf and Ney, Hermann},
-  booktitle={Thirteenth annual conference of the international speech communication association},
-  year={2012}
-}
-
-@article{DBLP:journals/corr/VaswaniSPUJGKP17,
-  author    = {Ashish Vaswani and
-               Noam Shazeer and
-               Niki Parmar and
-               Jakob Uszkoreit and
-               Llion Jones and
-               Aidan N. Gomez and
-               Lukasz Kaiser and
-               Illia Polosukhin},
-  title     = {Attention Is All You Need},
-  journal   = {CoRR},
-  volume    = {abs/1706.03762},
-  year      = {2017},
-  url       = {http://arxiv.org/abs/1706.03762},
-  eprinttype = {arXiv},
-  eprint    = {1706.03762},
-  timestamp = {Sat, 23 Jan 2021 01:20:40 +0100},
-  biburl    = {https://dblp.org/rec/journals/corr/VaswaniSPUJGKP17.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
+@unknown{RAHIMZADEH2021102588,
+author = {Rahimzadeh, Mohammad and Attar, Abolfazl and Sakhaei, Seyed},
+year = {2020},
+month = {06},
+pages = {},
+title = {A Fully Automated Deep Learning-based Network For Detecting COVID-19 from a New And Large Lung CT Scan Dataset},
+doi = {10.1101/2020.06.08.20121541}
 }
