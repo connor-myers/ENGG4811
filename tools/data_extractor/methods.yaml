@@ -497,7 +497,8 @@ packages:
                 name: prepareCall
     - package:
         name: javax.persistence.EntityManager
-        url: https://javaee.github.io/javaee-spec/javadocs/javax/persistence/EntityManager.html
+        file: EntityManager.java
+        type: interface
         sinks:
             - sink:
                 name: createNativeQuery
