@@ -47,6 +47,9 @@ class FileProcessor():
         self.contents = self.__load_file()
         self.parsed = javalang.parse.parse(self.contents)
 
+        self.comments_regex_1 = re.compile("/\*.*?\*/", re.DOTALL)
+        self.comments_regex_2 = re.compile("//.*?\n")
+
     def __load_file(self):
         return Path(self.path).read_text()
 
@@ -91,55 +94,8 @@ class FileProcessor():
                 if method_node.documentation is None:
                     continue
                 javadoc = self.__clean_javadoc(method_node.documentation)
-                # trickier to get code
 
-        return MethodData(javadoc, code, method_info.method_type)
-
-    def __get_method_start_end(self, method_node):
-        startpos  = None
-        endpos    = None
-        startline = None
-        endline   = None
-        for path, node in self.parsed:
-            if startpos is not None and method_node not in path:
-                endpos = node.position
-                endline = node.position.line if node.position is not None else None
-                break
-            if startpos is None and node == method_node:
-                startpos = node.position
-                startline = node.position.line if node.position is not None else None
-        return startpos, endpos, startline, endline
-
-    def __get_method_text(self, startpos, endpos, startline, endline, last_endline_index):
-        if startpos is None:
-            return "", None, None, None
-        else:
-            startline_index = startline - 1 
-            endline_index = endline - 1 if endpos is not None else None 
-
-            # 1. check for and fetch annotations
-            if last_endline_index is not None:
-                for line in self.contents[(last_endline_index + 1):(startline_index)]:
-                    if "@" in line: 
-                        startline_index = startline_index - 1
-            meth_text = "<ST>".join(self.contents[startline_index:endline_index])
-            meth_text = meth_text[:meth_text.rfind("}") + 1] 
-
-            # 2. remove trailing rbrace for last methods & any external content/comments
-            # if endpos is None and 
-            if not abs(meth_text.count("}") - meth_text.count("{")) == 0:
-                # imbalanced braces
-                brace_diff = abs(meth_text.count("}") - meth_text.count("{"))
-
-                for _ in range(brace_diff):
-                    meth_text  = meth_text[:meth_text.rfind("}")]    
-                    meth_text  = meth_text[:meth_text.rfind("}") + 1]     
-
-            meth_lines = meth_text.split("<ST>")  
-            meth_text  = "".join(meth_lines)                   
-            last_endline_index = startline_index + (len(meth_lines) - 1) 
-
-            return meth_text, (startline_index + 1), (last_endline_index + 1), last_endline_index
+                return MethodData(javadoc, code, method_info.method_type)
 
     def __clean_javadoc(self, javadoc):
         clean = javadoc
@@ -148,6 +104,17 @@ class FileProcessor():
 
         clean = re.sub(self.html_regex, "", clean)  # remove html tags
         clean = re.sub(self.links_regex, "", clean)  # remove links
+        clean = ' '.join(clean.split())  # cursed method of replacing multiple spaces with 1
+
+        return clean
+
+    def __clean_code(self, code):
+        clean = re.sub(self.comments_regex_1, "", code)
+        clean = re.sub(self.comments_regex_2, "", clean)
+
+        for search, replacement in self.code_replacements:
+            clean = clean.replace(search, replacement)
+
         clean = ' '.join(clean.split())  # cursed method of replacing multiple spaces with 1
 
         return clean
