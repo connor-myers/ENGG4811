@@ -1,72 +1,72 @@
 packages:
-    # - package:
-    #     name: javax.servlet.ServletRequest
-    #     file: ServletRequest.java
-    #     type: interface
-    #     sources:
-    #         - source:
-    #             name: getAttribute
-    #         - source:
-    #             name: getAttributeNames
-    #         - source:
-    #             name: getCharacterEncoding
-    #         - source:
-    #             name: getContentType
-    #         - source:
-    #             name: getParameter
-    #         - source:
-    #             name: getParameterNames
-    #         - source:
-    #             name: getParameterValues
-    #         - source:
-    #             name: getParameterMap
-    #         - source:
-    #             name: getProtocol
-    #         - source:
-    #             name: getScheme
-    #         - source:
-    #             name: getServerName
-    #         - source:
-    #             name: getRemoteAddr
-    #         - source:
-    #             name: getRemoteHost
-    #         - source:
-    #             name: getLocalName
-    #         - source:
-    #             name: getLocalAddr
-    #         - source:
-    #             name: getLocalAddr
-    # - package:
-    #     name: javax.servlet.http.HttpServletRequest
-    #     file: HttpServletRequest.java
-    #     type: interface
-    #     sources:
-    #         - source:
-    #             name: getAuthType
-    #         - source:
-    #             name: getHeader
-    #         - source:
-    #             name: getHeaders
-    #         - source:
-    #             name: getMethod
-    #         - source:
-    #             name: getPathInfo
-    #         - source:
-    #             name: getPathTranslated
-    #         - source:
-    #             name: getContextPath
-    #         - source:
-    #             name: getQueryString
-    #         - source:
-    #             name: getRemoteUser
-    #         - source:
-    #             name: getRequestedSessionId
-    #         - source:
-    #             name: getRequestURI
-    #         - source:
-    #             name: getRequestURL
-    #         - source:
-    #             name: getServletPath
+    - package:
+        name: javax.servlet.ServletRequest
+        file: ServletRequest.java
+        type: interface
+        sources:
+            - source:
+                name: getAttribute
+            - source:
+                name: getAttributeNames
+            - source:
+                name: getCharacterEncoding
+            - source:
+                name: getContentType
+            - source:
+                name: getParameter
+            - source:
+                name: getParameterNames
+            - source:
+                name: getParameterValues
+            - source:
+                name: getParameterMap
+            - source:
+                name: getProtocol
+            - source:
+                name: getScheme
+            - source:
+                name: getServerName
+            - source:
+                name: getRemoteAddr
+            - source:
+                name: getRemoteHost
+            - source:
+                name: getLocalName
+            - source:
+                name: getLocalAddr
+            - source:
+                name: getLocalAddr
+    - package:
+        name: javax.servlet.http.HttpServletRequest
+        file: HttpServletRequest.java
+        type: interface
+        sources:
+            - source:
+                name: getAuthType
+            - source:
+                name: getHeader
+            - source:
+                name: getHeaders
+            - source:
+                name: getMethod
+            - source:
+                name: getPathInfo
+            - source:
+                name: getPathTranslated
+            - source:
+                name: getContextPath
+            - source:
+                name: getQueryString
+            - source:
+                name: getRemoteUser
+            - source:
+                name: getRequestedSessionId
+            - source:
+                name: getRequestURI
+            - source:
+                name: getRequestURL
+            - source:
+                name: getServletPath
     - package:
         name: javax.servlet.http.Cookie
         file: Cookie.java
