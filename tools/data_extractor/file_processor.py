@@ -100,53 +100,43 @@ class FileProcessor():
         return names
 
     def __get_method_data(self, method_info):
+        methods_data = []
         for _, method_node in self.parsed.filter(javalang.tree.MethodDeclaration):
             if method_node.name == method_info.name:
                 if method_node.documentation is None:
                     continue
                 javadoc = self.__clean_javadoc(method_node.documentation)
                 start, end = self.__get_start_and_end(method_node)
-                print(start)
-                print(end)
+                if start is None or end is None:
+                    continue
                 code = self.__clean_code(self.__get_method_code(start, end))
+                #print(self.__get_method_code(start, end))
                 print(code)
 
-                return MethodData(javadoc, code, method_info.method_type)
+                methods_data.append(MethodData(javadoc, code, method_info.method_type))
+        return methods_data
 
     def __get_method_code(self, start, end):
         code = []
-        for i in range(start - 1, end):
+        for i in range(start - 1, end - 1):
             code.append(self.contents_split[i])
-        return ' '.join(code)
+        return '\n'.join(code)
 
 
-    def __get_start_and_end(self, node):
-        """Finds start and end line of a node.
-        :return: start line, end line
-        """
-        max_line = node.position.line
-
-        def traverse(node):
-            try:
-                for child in node.children:
-                    if isinstance(child, list) and (len(child) > 0):
-                        for item in child:
-                            traverse(item)
-                    else:
-                        if hasattr(child, '_position'):
-                            nonlocal max_line
-                            if child._position.line > max_line:
-                                max_line = child._position.line
-                                return
-            except:
-                return
-
-        traverse(node)
-
-        if self.type_class is not ClassTypes.INTERFACE:
-            return node.position.line, max_line + 1 # dont ask
-
-        return node.position.line, max_line
+    def __get_start_and_end(self, method_node):
+        startpos  = None
+        endpos    = None
+        startline = None
+        endline   = None
+        for path, node in self.parsed:
+            if startpos is not None and method_node not in path:
+                endpos = node.position
+                endline = node.position.line if node.position is not None else None
+                break
+            if startpos is None and node == method_node:
+                startpos = node.position
+                startline = node.position.line if node.position is not None else None
+        return startline, endline
 
     def __clean_javadoc(self, javadoc):
         clean = javadoc
@@ -160,12 +150,19 @@ class FileProcessor():
         return clean
 
     def __clean_code(self, code):
-        clean = re.sub(self.comments_regex_1, "", code)
-        clean = re.sub(self.comments_regex_2, "", clean)
+        clean = self.__remove_comments(code)
 
         for search, replacement in self.code_replacements:
             clean = clean.replace(search, replacement)
 
         clean = ' '.join(clean.split())  # cursed method of replacing multiple spaces with 1
 
+        # i want to die
+        clean = " ".join(filter(lambda x:x[0]!='@', clean.split()))
+
         return clean
+
+    def __remove_comments(self, string):
+        string = re.sub(re.compile("/\*.*?\*/",re.DOTALL ) ,"" ,string) # remove all occurrences streamed comments (/*COMMENT */) from string
+        string = re.sub(re.compile("//.*?\n" ) ,"" ,string) # remove all occurrence single-line comments (//COMMENT\n ) from string
+        return string
