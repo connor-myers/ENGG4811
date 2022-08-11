@@ -13,8 +13,15 @@ def main():
     for data in data_to_load:
         data = data["package"]
         all_methods_data = all_methods_data + FileProcessor(os.path.join(files_dir, data["file"]), data["type"]).get_all_data(data)
-    # save into datafile
-    # save...
+        #print(len(FileProcessor(os.path.join(files_dir, data["file"]), data["type"]).get_all_data(data)))
+    
+    # count= 0
+    # for thing in all_methods_data:
+    #     for bruh in thing:
+    #         bruh.print()
+    #         count += 1
+
+    # print(count)
 
         
 if __name__ == "__main__":

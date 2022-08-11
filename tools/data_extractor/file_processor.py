@@ -95,6 +95,7 @@ class FileProcessor():
         # all nones
         if "none" in data:
             for none in data["nones"]:
+                count += 1
                 names.append(MethodInfo(none["none"]["name"], MethodTypes.NONE))
 
         return names
@@ -104,14 +105,14 @@ class FileProcessor():
         for _, method_node in self.parsed.filter(javalang.tree.MethodDeclaration):
             if method_node.name == method_info.name:
                 if method_node.documentation is None:
+                    #print(method_node.name)
                     continue
                 javadoc = self.__clean_javadoc(method_node.documentation)
-                start, end = self.__get_start_and_end(method_node)
+                start, end, startpos, endpos = self.__get_start_and_end(method_node)
                 if start is None or end is None:
+                    #print(method_node.name)
                     continue
                 code = self.__clean_code(self.__get_method_code(start, end))
-                #print(self.__get_method_code(start, end))
-                print(code)
 
                 methods_data.append(MethodData(javadoc, code, method_info.method_type))
         return methods_data
@@ -136,7 +137,7 @@ class FileProcessor():
             if startpos is None and node == method_node:
                 startpos = node.position
                 startline = node.position.line if node.position is not None else None
-        return startline, endline
+        return startline, endline, startpos, endpos
 
     def __clean_javadoc(self, javadoc):
         clean = javadoc
