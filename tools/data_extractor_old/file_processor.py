@@ -116,6 +116,20 @@ class FileProcessor():
                     continue
                 code = self.__clean_code(self.__get_method_code(start, end))
 
+                parameters = []
+                for parameter in method_node.parameters:
+                    # print(parameter.name)
+                    # print(parameter.type.name)
+                    # print(type(parameter.type.dimensions))
+                    #if len(parameter.type.dimensions) != 0:
+                        
+                #sys.exit(1)
+                    print(method_node.name)
+                    print(parameter)
+                    print("############")
+
+                #qualified_name = 
+
                 methods_data.append(MethodData(method_info.package_name, method_node.name, javadoc, code, method_info.method_type))
         return methods_data
 
