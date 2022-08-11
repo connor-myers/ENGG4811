@@ -6,10 +6,10 @@ import sys
 import re
 
 class MethodTypes(Enum):
-    SOURCE = 1
-    SINK = 2
-    SANITISER = 3
-    NONE = 4
+    SOURCE = "Source"
+    SINK = "Sink"
+    SANITISER = "Sanitiser"
+    NONE = "None"
 
 class ClassTypes(Enum):
     CLASS = 1,
@@ -18,6 +18,7 @@ class ClassTypes(Enum):
 
 class MethodData():
     def __init__(self, javadoc, code, method_type):
+        self.name = "temp"
         self.javadoc = javadoc 
         self.code = code
         self.method_type = method_type
