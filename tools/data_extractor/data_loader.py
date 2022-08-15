@@ -42,9 +42,9 @@ class MethodLoader():
             
         code = code.rstrip()
 
-        # todo: set name to actual qualified name (not trivial to do with javalang)
+        qualified_name = f"{class_data.name}.{self.method_info.name}({self.__get_method_parameters(code)})"
 
-        return MethodData(self.method_info.name, self.method_info.method_type, code, javadoc)
+        return MethodData(qualified_name, self.method_info.method_type, code, javadoc)
 
     def __get_method_code(self, class_data):
         startline, endline, startpos, endpos = self.__get_method_margins(class_data)
@@ -78,6 +78,9 @@ class MethodLoader():
                 startline = node.position.line if node.position is not None else None
 
         return startline, endline, startpos, endpos
+
+    def __get_method_parameters(self, code):
+        return code[code.find("(") + 1:code.find(")")]        
 
 class ClassLoader():
     def __init__(self, class_info):
