@@ -11,7 +11,10 @@ class ClassData():
 
 class MethodData():
     def __init__(self, name, method_type, code, javadoc):
-        x = 1
+        self.name = name
+        self.method_type = method_type
+        self.code = code
+        self.javadoc = javadoc
 
 class MethodLoader():
     def __init__(self, method_info):
