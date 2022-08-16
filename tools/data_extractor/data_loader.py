@@ -14,7 +14,7 @@ class ClassData():
         self.class_type = class_type
         self.methods_data = []
 
-        self.class_text = Path(os.path.join(class_files_dir, self.path)).read_text()
+        self.class_text = Path(self.path).read_text()
         self.class_text_split = self.class_text.split("\n")
         self.parsed = javalang.parse.parse(self.class_text)
 
@@ -87,7 +87,7 @@ class ClassLoader():
         self.class_info = class_info
     
     def load(self):
-        class_data = ClassData(self.class_info.name, self.class_info.path, self.class_info.class_type)
+        class_data = ClassData(self.class_info.name, os.path.join(class_files_dir, self.class_info.path), self.class_info.class_type)
 
         # O(n^2) makes me sad but because multiple methods can have same name, this is the easiest way to do this
         for method_info in self.class_info.methods:

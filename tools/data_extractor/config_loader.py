@@ -19,10 +19,10 @@ class ClassInfo():
         self.methods.append(method_info)
 
 class MethodType(Enum):
-    SOURCE = "source"
-    SANITISER = "sanitiser"
-    SINK = "sink"
-    NONE = "none"
+    SOURCE = "source" # 0
+    SANITISER = "sanitiser" #1
+    SINK = "sink" # 2
+    NONE = "none" # 3
 
 class MethodInfo():
     def __init__(self, name, method_type):

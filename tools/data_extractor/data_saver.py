@@ -3,7 +3,7 @@ import xml.etree.ElementTree as xml
 class DataSaver:
     def __init__(self, filename):
         self.filename = filename
-        self.tree = xml.parse(filename)
+        self.tree = xml.parse(f"{self.filename}.xml")
         self.root = self.tree.getroot()
 
         self.num_sources = 0
@@ -11,7 +11,7 @@ class DataSaver:
         self.num_sanitisers = 0
         self.num_none = 0
 
-    def save_method_data(self, method_data):
+    def save_method_data_as_xml(self, method_data):
         # main element
         next_id = self.__get_next_method_id()
         new_method = xml.SubElement(self.root, "method", id=str(next_id))
@@ -34,7 +34,7 @@ class DataSaver:
 
         # make it look pretty!
         xml.indent(self.tree, space="\t", level=0)
-        self.tree.write(self.filename)
+        self.tree.write(f"{self.filename}.xml")
 
         # what did we actually get?
         if method_data.method_type.value == "source":
