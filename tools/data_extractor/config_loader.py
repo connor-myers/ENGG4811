@@ -34,6 +34,11 @@ class ConfigLoader():
         self.filename = filename
         self.classes_info = []
 
+        self.num_sources = 0
+        self.num_sinks = 0
+        self.num_sanitisers = 0
+        self.num_none = 0
+
     def load(self):
         with open(self.filename, 'r') as file:
             packages = yaml.safe_load(file)
@@ -47,6 +52,18 @@ class ConfigLoader():
                 method = method["method"]
                 class_info.add_method_info(MethodInfo(method["name"], method["type"]))
 
+                if method["type"] == "source":
+                    self.num_sources += 1
+                if method["type"] == "sink":
+                    self.num_sinks += 1
+                if method["type"] == "sanitiser":
+                    self.num_sanitisers += 1
+                if method["type"] == "none":
+                    self.num_none += 1
+
             self.classes_info.append(class_info)
                 
         return self.classes_info
+
+    def print(self):
+        print(f"Loaded:\n\t sources: {self.num_sources} \n\t sinks: {self.num_sinks} \n\t sanitisers: {self.num_sanitisers} \n\t none: {self.num_none}")

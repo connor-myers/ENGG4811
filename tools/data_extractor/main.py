@@ -5,7 +5,11 @@ from data_saver import DataSaver
 
 def main():
     # load meta info
-    classes_info = ConfigLoader("config.yaml").load()
+    config_loader = ConfigLoader("config.yaml")
+    classes_info = config_loader.load()
+
+    # print stats on data loader
+    config_loader.print()
     
     # load data
     classes_data = []
@@ -19,6 +23,9 @@ def main():
         for method_data in class_data.methods_data:
             clean_method_data = data_cleaner.clean_method_data(method_data)
             data_saver.save_method_data(clean_method_data)
+
+    # print stats
+    data_saver.print()
 
 if __name__ == "__main__":
     main()

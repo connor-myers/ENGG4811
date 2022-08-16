@@ -6,6 +6,11 @@ class DataSaver:
         self.tree = xml.parse(filename)
         self.root = self.tree.getroot()
 
+        self.num_sources = 0
+        self.num_sinks = 0
+        self.num_sanitisers = 0
+        self.num_none = 0
+
     def save_method_data(self, method_data):
         # main element
         next_id = self.__get_next_method_id()
@@ -19,7 +24,7 @@ class DataSaver:
         # cwe.text = clean_input.cwe
 
         type = xml.SubElement(new_method, "type")
-        type.text = method_data.method_type.value
+        type.text = method_data.method_type.value.title()
 
         javadoc = xml.SubElement(new_method, "javadoc")
         javadoc.text = method_data.javadoc
@@ -30,6 +35,16 @@ class DataSaver:
         # make it look pretty!
         xml.indent(self.tree, space="\t", level=0)
         self.tree.write(self.filename)
+
+        # what did we actually get?
+        if method_data.method_type.value == "source":
+            self.num_sources += 1
+        if method_data.method_type.value == "sink":
+            self.num_sinks += 1
+        if method_data.method_type.value == "sanitiser":
+            self.num_sanitisers += 1
+        if method_data.method_type.value == "none":
+            self.num_none += 1
 
         # updated xml but not saving to disk (yet)
         return self.tree
@@ -42,5 +57,8 @@ class DataSaver:
         if len(values) == 0:
             return 1    
         return max(values) + 1
+
+    def print(self):
+        print(f"Saved:\n\t sources: {self.num_sources} \n\t sinks: {self.num_sinks} \n\t sanitisers: {self.num_sanitisers} \n\t none: {self.num_none}")
 
 
