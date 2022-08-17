@@ -1,6 +1,5 @@
-import math
 import random
-import sys
+import os
 
 from config_loader import ConfigLoader, MethodType
 from data_loader import ClassLoader
@@ -9,7 +8,7 @@ from data_saver import DataSaver
 
 def main():
     # load meta info
-    config_loader = ConfigLoader("config.yaml")
+    config_loader = ConfigLoader(os.path.join("input", "config.yaml"))
     classes_info = config_loader.load()
 
     # load data
