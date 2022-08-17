@@ -23,6 +23,7 @@ def main():
     nones = []
     data_cleaner = DataCleaner()
     for class_data in classes_data:
+        # todo: make it so classes from the same package cannot appear in the same dataset (i.e. training, testing, validiation...)
         for method_data in class_data.methods_data:
             clean_method_data = data_cleaner.clean_method_data(method_data)
             if clean_method_data.method_type == MethodType.SOURCE:
@@ -44,13 +45,13 @@ def main():
     data_saver.save_all_as_xml("data.xml", sources, sinks, sanitisers, nones)
 
     # print some stats
-    print("total loaded:")
+    print(f"total loaded={len(sources)+len(sinks)+len(sanitisers)+len(nones)}")
     print(f"\tnum sources={len(sources)}")
     print(f"\tnum sinks={len(sinks)}")
     print(f"\tnum sanitisers={len(sanitisers)}")
     print(f"\tnum nones={len(nones)}")
 
-    print("total saved:")
+    print(f"total saved={data_saver.num_sources_saved+data_saver.num_sinks_saved+data_saver.num_sanitisers_saved+data_saver.num_nones_saved}")
     print(f"\tnum sources={data_saver.num_sources_saved}")
     print(f"\tnum sinks={data_saver.num_sinks_saved}")
     print(f"\tnum sanitisers={data_saver.num_sanitisers_saved}")
