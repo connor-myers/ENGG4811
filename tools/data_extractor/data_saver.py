@@ -14,6 +14,11 @@ class DataSaver:
         self.root = xml.Element("methods")
         self.tree = xml.ElementTree(self.root)
 
+        self.num_sources_saved = 0
+        self.num_sinks_saved = 0
+        self.num_sanitisers_saved = 0
+        self.num_nones_saved = 0
+
         # create output directory
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
@@ -51,6 +56,15 @@ class DataSaver:
         for method in methods:
             json_object = {"code" : method.code, "javadoc" : method.javadoc, "label" : method_type}
             json_objects.append(json_object)
+
+            if method_type == 0:
+                self.num_sources_saved += 1
+            if method_type == 1:
+                self.num_sinks_saved += 1 
+            if method_type == 2:
+                self.num_sanitisers_saved += 1 
+            if method_type == 3:
+                self.num_nones_saved += 1 
 
         index = 0
         for i in range(num_train):

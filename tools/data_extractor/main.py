@@ -6,7 +6,6 @@ from config_loader import ConfigLoader, MethodType
 from data_loader import ClassLoader
 from data_cleaner import DataCleaner
 from data_saver import DataSaver
-from none_loader import NoneLoader
 
 def main():
     # load meta info
@@ -43,6 +42,19 @@ def main():
     data_saver = DataSaver("output")
     data_saver.save_all_as_json(sources, sinks, sanitisers, nones)
     data_saver.save_all_as_xml("data.xml", sources, sinks, sanitisers, nones)
+
+    # print some stats
+    print("total loaded:")
+    print(f"\tnum sources={len(sources)}")
+    print(f"\tnum sinks={len(sinks)}")
+    print(f"\tnum sanitisers={len(sanitisers)}")
+    print(f"\tnum nones={len(nones)}")
+
+    print("total saved:")
+    print(f"\tnum sources={data_saver.num_sources_saved}")
+    print(f"\tnum sinks={data_saver.num_sinks_saved}")
+    print(f"\tnum sanitisers={data_saver.num_sanitisers_saved}")
+    print(f"\tnum nones={data_saver.num_nones_saved}")
 
 if __name__ == "__main__":
     main()
