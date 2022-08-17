@@ -640,3 +640,803 @@ packages:
             - method:
                 name: createQuery
                 type: sink
+    - package:
+        name: com.opensymphony.xwork2.config.providers
+        file: XmlConfigurationProvider.java
+        type: abstract
+        methods:
+            - method:
+                name: buildResults
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: Validate.java
+        type: class
+        methods:
+            - method:
+                name: finite
+                type: none
+    - package:
+        name: org.apache.commons.lang3.tuple
+        file: MutablePair.java
+        type: class
+        methods:
+            - method:
+                name: setValue
+                type: none
+    - package:
+        name: org.apache.struts2.util.tomcat.buf
+        file: Ascii.java
+        type: class
+        methods:
+            - method:
+                name: isDigit
+                type: none
+    - package:
+        name: org.apache.commons.lang3.builder
+        file: CompareToBuilder.java
+        type: class
+        methods:
+            - method:
+                name: append
+                type: none
+    - package:
+        name: org.apache.struts2.portlet.dispatcher
+        file: Jsr168Dispatcher.java
+        type: class
+        methods:
+            - method:
+                name: createPortletServletResponse
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.utils
+        file: DateUtils.java
+        type: class
+        methods:
+            - method:
+                name: parseStandardDate
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: EncodingMap.java
+        type: class
+        methods:
+            - method:
+                name: removeJava2IANAMapping
+                type: none
+    - package:
+        name: org.apache.commons.lang3.builder
+        file: ToStringStyle.java
+        type: abstract
+        methods:
+            - method:
+                name: setNullText
+                type: none
+    - package:
+        name: org.apache.struts2.views.xslt
+        file: AdapterFactory.java
+        type: class
+        methods:
+            - method:
+                name: adaptDocument
+                type: none
+    - package:
+        name: org.apache.struts2.util.tomcat.buf
+        file: ByteChunk.java
+        type: class
+        methods:
+            - method:
+                name: setOptimizedWrite
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.async.methods
+        file: AbstractCharResponseConsumer.java
+        type: abstract
+        methods:
+            - method:
+                name: buildResult
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: StringUtils.java
+        type: class
+        methods:
+            - method:
+                name: prependIfMissing
+                type: none
+    - package:
+        name: com.opensymphony.xwork2
+        file: TextProviderSupport.java
+        type: class
+        methods:
+            - method:
+                name: getLocale
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.config
+        file: ConnectionConfig.java
+        type: class
+        methods:
+            - method:
+                name: getSocketTimeout
+                type: none
+    - package:
+        name: org.apache.struts2.util.tomcat.buf
+        file: MessageBytes.java
+        type: class
+        methods:
+            - method:
+                name: setLong
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: ArrayUtils.java
+        type: class
+        methods:
+            - method:
+                name: contains
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.compiler
+        file: TagPluginManager.java
+        type: class
+        methods:
+            - method:
+                name: invokePlugin
+                type: none
+    - package:
+        name: org.apache.commons.lang3.text.translate
+        file: UnicodeEscaper.java
+        type: class
+        methods:
+            - method:
+                name: toUtf16Escape
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.servlet
+        file: JspCServletContext.java
+        type: class
+        methods:
+            - method:
+                name: removeAttribute
+                type: none
+    - package:
+        name: com.opensymphony.xwork2.util.location
+        file: LocationUtils.java
+        type: class
+        methods:
+            - method:
+                name: getLocation
+                type: none
+    - package:
+        name: org.apache.commons.lang3.exception
+        file: ExceptionUtils.java
+        type: class
+        methods:
+            - method:
+                name: getStackTrace
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.runtime
+        file: InstanceHelper.java
+        type: class
+        methods:
+            - method:
+                name: getClassLoaderInstanceManager
+                type: none
+    - package:
+        name: com.opensymphony.xwork2
+        file: DefaultUnknownHandlerManager.java
+        type: class
+        methods:
+            - method:
+                name: handleUnknownAction
+                type: none
+    - package:
+        name: org.apache.struts2.interceptor
+        file: ScopeInterceptor.java
+        type: class
+        methods:
+            - method:
+                name: setAutoCreateSession
+                type: none
+    - package:
+        name: org.apache.struts2.showcase.source
+        file: ViewSourceAction.java
+        type: class
+        methods:
+            - method:
+                name: setConfig
+                type: none
+    - package:
+        name: org.apache.commons.lang3.mutable
+        file: MutableByte.java
+        type: class
+        methods:
+            - method:
+                name: longValue
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.runtime
+        file: JspWriterImpl.java
+        type: class
+        methods:
+            - method:
+                name: print
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.impl.cookie
+        file: BasicClientCookie.java
+        type: class
+        methods:
+            - method:
+                name: setHttpOnly
+                type: none
+    - package:
+        name: org.apache.struts2.interceptor
+        file: CookieInterceptor.java
+        type: class
+        methods:
+            - method:
+                name: injectIntoCookiesAwareAction
+                type: none
+    - package:
+        name: org.apache.struts2.views.velocity
+        file: VelocityManager.java
+        type: class
+        methods:
+            - method:
+                name: prepareChainedContexts
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: ArrayUtils.java
+        type: class
+        methods:
+            - method:
+                name: toPrimitive
+                type: none
+    - package:
+        name: com.opensymphony.xwork2.util
+        file: ProxyUtil.java
+        type: class
+        methods:
+            - method:
+                name: isProxyMember
+                type: none
+    - package:
+        name: org.apache.struts2.dispatcher
+        file: ChartResult.java
+        type: class
+        methods:
+            - method:
+                name: doExecute
+                type: none
+    - package:
+        name: org.apache.commons.lang3.exception
+        file: ContextedException.java
+        type: class
+        methods:
+            - method:
+                name: getRawMessage
+                type: none
+    - package:
+        name: org.apache.struts2.portlet.result
+        file: PortletResult.java
+        type: class
+        methods:
+            - method:
+                name: setTitle
+                type: none
+    - package:
+        name: com.opensymphony.xwork2.inject
+        file: ContainerImpl.java
+        type: class
+        methods:
+            - method:
+                name: findInject
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: UTF8Reader.java
+        type: class
+        methods:
+            - method:
+                name: read
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.impl.auth
+        file: NTLMEngineImpl.java
+        type: class
+        methods:
+            - method:
+                name: lmHash
+                type: none
+    - package:
+        name: org.apache.struts2.portlet.servlet
+        file: PortletServletRequest.java
+        type: class
+        methods:
+            - method:
+                name: getRemoteAddr
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: CharSet.java
+        type: class
+        methods:
+            - method:
+                name: contains
+                type: none
+    - package:
+        name: org.apache.struts2.json
+        file: JSONInterceptor.java
+        type: class
+        methods:
+            - method:
+                name: setNoCache
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: XMLStringBuffer.java
+        type: class
+        methods:
+            - method:
+                name: append
+                type: none
+    - package:
+        name: com.opensymphony.xwork2
+        file: ActionContext.java
+        type: class
+        methods:
+            - method:
+                name: getServletResponse
+                type: none
+    - package:
+        name: org.apache.struts2.interceptor
+        file: BackgroundProcess.java
+        type: class
+        methods:
+            - method:
+                name: getResult
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: StringUtils.java
+        type: class
+        methods:
+            - method:
+                name: isEmpty
+                type: none
+    - package:
+        name: org.apache.struts2.json
+        file: JSONInterceptor.java
+        type: class
+        methods:
+            - method:
+                name: setIncludeProperties
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: XMLEncodingDetector.java
+        type: class
+        methods:
+            - method:
+                name: skipString
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: StringUtils.java
+        type: class
+        methods:
+            - method:
+                name: replaceOnce
+                type: none
+    - package:
+        name: com.opensymphony.xwork2.util
+        file: NamedVariablePatternMatcher.java
+        type: class
+        methods:
+            - method:
+                name: compilePattern
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.impl.classic
+        file: HttpClientBuilder.java
+        type: class
+        methods:
+            - method:
+                name: useSystemProperties
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: RegExUtils.java
+        type: class
+        methods:
+            - method:
+                name: removeAll
+                type: none
+    - package:
+        name: com.opensymphony.xwork2.util
+        file: AbstractLocalizedTextProvider.java
+        type: abstract
+        methods:
+            - method:
+                name: findText
+                type: none
+    - package:
+        name: org.apache.struts2.jasper
+        file: JspCompilationContext.java
+        type: class
+        methods:
+            - method:
+                name: getOutputDir
+                type: none
+    - package:
+        name: org.apache.commons.lang3.text
+        file: StrBuilder.java
+        type: class
+        methods:
+            - method:
+                name: appendln
+                type: none
+    - package:
+        name: org.apache.struts2.result
+        file: StrutsResultSupport.java
+        type: abstract
+        methods:
+            - method:
+                name: setEncode
+                type: none
+    - package:
+        name: org.apache.struts2.tiles
+        file: StrutsTilesAnnotationProcessor.java
+        type: class
+        methods:
+            - method:
+                name: buildTilesDefinition
+                type: none
+    - package:
+        name: org.apache.struts2.json.smd
+        file: SMDGenerator.java
+        type: class
+        methods:
+            - method:
+                name: getSMDMethodParameterAnnotation
+                type: none
+    - package:
+        name: org.apache.struts2.views.java
+        file: Attributes.java
+        type: class
+        methods:
+            - method:
+                name: addIfExists
+                type: none
+    - package:
+        name: org.apache.commons.lang3.builder
+        file: HashCodeBuilder.java
+        type: class
+        methods:
+            - method:
+                name: isRegistered
+                type: none
+    - package:
+        name: org.apache.commons.lang3.text
+        file: StrTokenizer.java
+        type: class
+        methods:
+            - method:
+                name: addToken
+                type: none
+    - package:
+        name: org.apache.struts2.convention
+        file: DefaultResultMapBuilder.java
+        type: class
+        methods:
+            - method:
+                name: createResultConfig
+                type: none
+    - package:
+        name: org.apache.struts2.portlet.servlet
+        file: PortletHttpSession.java
+        type: class
+        methods:
+            - method:
+                name: getPortletSession
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.compiler
+        file: TagFileProcessor.java
+        type: class
+        methods:
+            - method:
+                name: parseTagFileDirectives
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: ClassUtils.java
+        type: class
+        methods:
+            - method:
+                name: getName
+                type: none
+    - package:
+        name: org.apache.commons.lang3.tuple
+        file: Pair.java
+        type: abstract
+        methods:
+            - method:
+                name: ofNonNull
+                type: none
+    - package:
+        name: org.apache.commons.lang3.text
+        file: StrBuilder.java
+        type: class
+        methods:
+            - method:
+                name: capacity
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.impl.cache
+        file: CachedHttpResponseGenerator.java
+        type: class
+        methods:
+            - method:
+                name: generateNotModifiedResponse
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.ssl
+        file: SSLConnectionSocketFactoryBuilder.java
+        type: class
+        methods:
+            - method:
+                name: setTlsVersions
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: XMLString.java
+        type: class
+        methods:
+            - method:
+                name: clear
+                type: none
+    - package:
+        name: org.apache.struts2.dispatcher
+        file: Dispatcher.java
+        type: class
+        methods:
+            - method:
+                name: createContextMap
+                type: none
+    - package:
+        name: org.apache.commons.lang3.text
+        file: StrBuilder.java
+        type: class
+        methods:
+            - method:
+                name: lastIndexOf
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.impl.classic
+        file: HttpClientBuilder.java
+        type: class
+        methods:
+            - method:
+                name: setUserTokenHandler
+                type: none
+    - package:
+        name: org.apache.struts2.interceptor
+        file: CookieProviderInterceptor.java
+        type: class
+        methods:
+            - method:
+                name: addCookiesToResponse
+                type: none
+    - package:
+        name: org.apache.commons.lang3.concurrent
+        file: ConstantInitializer.java
+        type: class
+        methods:
+            - method:
+                name: get
+                type: none
+    - package:
+        name: org.apache.commons.lang3.builder
+        file: ToStringStyle.java
+        type: abstract
+        methods:
+            - method:
+                name: appendDetail
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: Functions.java
+        type: class
+        methods:
+            - method:
+                name: getAsBoolean
+                type: none
+    - package:
+        name: org.apache.commons.lang3.reflect
+        file: MemberUtils.java
+        type: class
+        methods:
+            - method:
+                name: getObjectTransformationCost
+                type: none
+    - package:
+        name: org.apache.commons.lang3.reflect
+        file: TypeUtils.java
+        type: class
+        methods:
+            - method:
+                name: substituteTypeVariables
+                type: none
+    - package:
+        name: org.apache.commons.lang3.reflect
+        file: FieldUtils.java
+        type: class
+        methods:
+            - method:
+                name: getDeclaredField
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: StringUtils.java
+        type: class
+        methods:
+            - method:
+                name: replace
+                type: none
+    - package:
+        name: org.apache.commons.lang3
+        file: CharSetUtils.java
+        type: class
+        methods:
+            - method:
+                name: containsAny
+                type: none
+    - package:
+        name: org.apache.commons.lang3.mutable
+        file: MutableShort.java
+        type: class
+        methods:
+            - method:
+                name: decrement
+                type: none
+    - package:
+        name: org.apache.struts2.portlet.servlet
+        file: PortletServletOutputStream.java
+        type: class
+        methods:
+            - method:
+                name: getOutputStream
+                type: none
+    - package:
+        name: org.apache.struts2.interceptor
+        file: ExecuteAndWaitInterceptor.java
+        type: class
+        methods:
+            - method:
+                name: setExecuteAfterValidationPass
+                type: none
+    - package:
+        name: org.apache.struts2.interceptor
+        file: BackgroundProcess.java
+        type: class
+        methods:
+            - method:
+                name: getInvocation
+                type: none
+    - package:
+        name: org.apache.commons.lang3.builder
+        file: StandardToStringStyle.java
+        type: class
+        methods:
+            - method:
+                name: setFieldSeparatorAtStart
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: ASCIIReader.java
+        type: class
+        methods:
+            - method:
+                name: ready
+                type: none
+    - package:
+        name: com.opensymphony.xwork2.validator.validators
+        file: ConditionalVisitorFieldValidator.java
+        type: class
+        methods:
+            - method:
+                name: validate
+                type: none
+    - package:
+        name: org.apache.commons.lang3.mutable
+        file: MutableShort.java
+        type: class
+        methods:
+            - method:
+                name: equals
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.compiler
+        file: ErrorDispatcher.java
+        type: class
+        methods:
+            - method:
+                name: jspError
+                type: none
+    - package:
+        name: org.apache.struts2.views.java
+        file: DefaultTheme.java
+        type: class
+        methods:
+            - method:
+                name: insertTagHandlerFactory
+                type: none
+    - package:
+        name: org.apache.struts2.util
+        file: StrutsUtil.java
+        type: class
+        methods:
+            - method:
+                name: makeSelectList
+                type: none
+    - package:
+        name: org.apache.hc.client5.http.entity
+        file: EntityBuilder.java
+        type: class
+        methods:
+            - method:
+                name: isChunked
+                type: none
+    - package:
+        name: org.apache.commons.lang3.builder
+        file: CompareToBuilder.java
+        type: class
+        methods:
+            - method:
+                name: append
+                type: none
+    - package:
+        name: org.apache.struts2.json
+        file: JSONResult.java
+        type: class
+        methods:
+            - method:
+                name: setWrapSuffix
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: XMLEncodingDetector.java
+        type: class
+        methods:
+            - method:
+                name: createReader
+                type: none
+    - package:
+        name: org.apache.struts2.rest.handler
+        file: FormUrlEncodedHandler.java
+        type: class
+        methods:
+            - method:
+                name: getExtension
+                type: none
+    - package:
+        name: org.apache.struts2.jasper.xmlparser
+        file: XMLChar.java
+        type: class
+        methods:
+            - method:
+                name: isValidNmtoken
+                type: none
+    - package:
+        name: org.apache.struts2.json
+        file: JSONUtil.java
+        type: class
+        methods:
+            - method:
+                name: serialize
+                type: none
