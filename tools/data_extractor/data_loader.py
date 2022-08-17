@@ -97,5 +97,6 @@ class ClassLoader():
                     if method_data is None:
                         continue
                     class_data.add_method_data(method_data)
+                    break # comment out if want duplicated (functions with same name but different paramters)
 
         return class_data
