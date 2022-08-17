@@ -3,31 +3,33 @@ import xml.etree.ElementTree as xml
 import json
 import math
 import random
+import os
+import shutil
 
 from config_loader import MethodType
 
 class DataSaver:
-    def __init__(self, filename):
-        self.filename = filename
-        self.tree = xml.parse(f"{self.filename}.xml")
-        self.root = self.tree.getroot()
+    def __init__(self, output_dir):
+        self.output_dir = output_dir
+        self.root = xml.Element("methods")
+        self.tree = xml.ElementTree(self.root)
 
-        self.num_sources = 0
-        self.num_sinks = 0
-        self.num_sanitisers = 0
-        self.num_none = 0
+        # create output directory
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+        else:
+            shutil.rmtree(self.output_dir)
+            os.makedirs(self.output_dir)
 
     def save_all_as_json(self, sources, sinks, sanitisers, nones):
-        train = open("train.jsonl", "w+")
-        test = open("test.jsonl", "w+")
-        valid = open("valid.jsonl", "w+")
+        train = open(os.path.join(self.output_dir, "train.jsonl"), "w+")
+        test = open(os.path.join(self.output_dir, "test.jsonl"), "w+")
+        valid = open(os.path.join(self.output_dir, "valid.jsonl"), "w+")
 
         sources_json = []
         sinks_json = []
         sanitisers_json = []
         nones_json = []
-
-        # make into json
 
         self.save_method_data(sources, train, test, valid, 0)
         self.save_method_data(sinks, train, test, valid, 1)
@@ -66,7 +68,15 @@ class DataSaver:
             valid.write("\n")
             index += 1
 
-    def save_method_data_as_xml(self, method_data):
+    def save_all_as_xml(self, filename, sources, sinks, sanitisers, nones):
+        all_examples = sources + sinks + sanitisers + nones
+
+        for example in all_examples:
+            self.__save_method_data_as_xml(example)
+
+        self.tree.write( os.path.join(self.output_dir, filename))
+
+    def __save_method_data_as_xml(self, method_data):
         # main element
         next_id = self.__get_next_method_id()
         new_method = xml.SubElement(self.root, "method", id=str(next_id))
@@ -89,17 +99,7 @@ class DataSaver:
 
         # make it look pretty!
         xml.indent(self.tree, space="\t", level=0)
-        self.tree.write(f"{self.filename}.xml")
-
-        # what did we actually get?
-        if method_data.method_type.value == "source":
-            self.num_sources += 1
-        if method_data.method_type.value == "sink":
-            self.num_sinks += 1
-        if method_data.method_type.value == "sanitiser":
-            self.num_sanitisers += 1
-        if method_data.method_type.value == "none":
-            self.num_none += 1
+        #self.tree.write(f"{self.filename}.xml")
 
         # updated xml but not saving to disk (yet)
         return self.tree
@@ -112,8 +112,3 @@ class DataSaver:
         if len(values) == 0:
             return 1    
         return max(values) + 1
-
-    def print(self):
-        print(f"Saved:\n\t sources: {self.num_sources} \n\t sinks: {self.num_sinks} \n\t sanitisers: {self.num_sanitisers} \n\t none: {self.num_none}")
-
-

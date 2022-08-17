@@ -44,7 +44,13 @@ class ConfigLoader():
             packages = yaml.safe_load(file)
 
         for package in packages["packages"]:
+
+            if package["package"] is None:
+                print(package)
+                sys.exit(1)
+
             package = package["package"]
+
             class_info = ClassInfo(package["name"], package["file"], package["type"])
 
             methods = package["methods"]

@@ -1,5 +1,6 @@
 import math
 import random
+import sys
 
 from config_loader import ConfigLoader, MethodType
 from data_loader import ClassLoader
@@ -20,6 +21,7 @@ def main():
     sources = []
     sinks = []
     sanitisers = []
+    nones = []
     data_cleaner = DataCleaner()
     for class_data in classes_data:
         for method_data in class_data.methods_data:
@@ -30,26 +32,17 @@ def main():
                 sinks.append(clean_method_data)
             if clean_method_data.method_type == MethodType.SANITISER:
                 sanitisers.append(clean_method_data)
+            if clean_method_data.method_type == MethodType.NONE:
+                nones.append(clean_method_data)
 
-    num_none_examples = math.floor((len(sources) + len(sinks) + len(sanitisers)) / 3)
+    random.shuffle(sources)
+    random.shuffle(sinks)
+    random.shuffle(sanitisers)
+    random.shuffle(nones)
 
-    # load some random none functions
-    none_loader = NoneLoader("projects/")
-
-    nones = []
-    nones_not_clean = none_loader.get_none_examples()
-    count = 0
-    for i in range(num_none_examples):
-        none_example = random.choice(nones_not_clean)
-        clean_none_example = data_cleaner.clean_method_data(none_example)
-        nones.append(clean_none_example)
-
-        count += 1
-        if count >= num_none_examples:
-            break
-
-    data_saver = DataSaver("data")
+    data_saver = DataSaver("output")
     data_saver.save_all_as_json(sources, sinks, sanitisers, nones)
+    data_saver.save_all_as_xml("data.xml", sources, sinks, sanitisers, nones)
 
 if __name__ == "__main__":
     main()
