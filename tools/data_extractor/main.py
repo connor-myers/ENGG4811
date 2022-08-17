@@ -1,7 +1,7 @@
 import math
 import random
 
-from config_loader import ConfigLoader
+from config_loader import ConfigLoader, MethodType
 from data_loader import ClassLoader
 from data_cleaner import DataCleaner
 from data_saver import DataSaver
@@ -12,41 +12,44 @@ def main():
     config_loader = ConfigLoader("config.yaml")
     classes_info = config_loader.load()
 
-    # print stats on data loader
-    config_loader.print()
-    
     # load data
     classes_data = []
     for class_info in classes_info:
         classes_data.append(ClassLoader(class_info).load())
 
-
-    # clean and save data
+    sources = []
+    sinks = []
+    sanitisers = []
     data_cleaner = DataCleaner()
-    data_saver = DataSaver("data")
     for class_data in classes_data:
         for method_data in class_data.methods_data:
             clean_method_data = data_cleaner.clean_method_data(method_data)
-            data_saver.save_method_data_as_xml(clean_method_data)
+            if clean_method_data.method_type == MethodType.SOURCE:
+                sources.append(clean_method_data)
+            if clean_method_data.method_type == MethodType.SINK:
+                sinks.append(clean_method_data)
+            if clean_method_data.method_type == MethodType.SANITISER:
+                sanitisers.append(clean_method_data)
 
-    num_none_examples = math.floor((data_saver.num_sources + data_saver.num_sinks + data_saver.num_sanitisers) / 3)
+    num_none_examples = math.floor((len(sources) + len(sinks) + len(sanitisers)) / 3)
 
     # load some random none functions
     none_loader = NoneLoader("projects/")
-    none_examples = none_loader.get_none_examples()
+
+    nones = []
+    nones_not_clean = none_loader.get_none_examples()
     count = 0
     for i in range(num_none_examples):
-        none_example = random.choice(none_examples)
+        none_example = random.choice(nones_not_clean)
         clean_none_example = data_cleaner.clean_method_data(none_example)
-        data_saver.save_method_data_as_xml(clean_none_example)
+        nones.append(clean_none_example)
 
         count += 1
         if count >= num_none_examples:
             break
 
-    # print stats
-    data_saver.print()
-
+    data_saver = DataSaver("data")
+    data_saver.save_all_as_json(sources, sinks, sanitisers, nones)
 
 if __name__ == "__main__":
     main()

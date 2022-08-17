@@ -35,6 +35,7 @@ class NoneLoader():
                     continue
                 else:
                     none_examples.append(method_data)
+                    break
         return none_examples
     
     def __get_java_files(self):
