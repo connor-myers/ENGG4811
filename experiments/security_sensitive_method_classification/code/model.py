@@ -1,32 +1,17 @@
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
-import torch
 import torch.nn as nn
-import torch
-from torch.autograd import Variable
-import copy
-import torch.nn.functional as F
-from torch.nn import BCELoss, MSELoss
 
-    
-    
-class Model(nn.Module):   
-    def __init__(self, encoder,config,tokenizer,args):
+from transformers import RobertaConfig, RobertaTokenizer, RobertaModel
+
+def init_model(model_name, tokenizer_name):
+    config = RobertaConfig.from_pretrained(model_name)
+    tokenizer = RobertaTokenizer.from_pretrained(tokenizer_name)
+    encoder = RobertaModel.from_pretrained(model_name,config=config)
+
+    return Model(encoder, config, tokenizer)
+
+class Model(nn.Module):
+    def __init__(self, encoder,config,tokenizer):
         super(Model, self).__init__()
         self.encoder = encoder
         self.config=config
         self.tokenizer=tokenizer
-        self.args=args
-    
-        
-    def forward(self, input_ids=None,labels=None): 
-        logits=self.encoder(input_ids,attention_mask=input_ids.ne(1))[0]
-        prob=torch.softmax(logits,-1)
-        if labels is not None:
-            loss_fct = nn.CrossEntropyLoss(ignore_index=-1)
-            loss = loss_fct(logits,labels)
-            return loss,prob
-        else:
-            return prob
-        
- 
