@@ -8,7 +8,7 @@ Taint analysis is a type of information-flow analysis that considers all user in
 Most taint analyis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is some process (usually a method or function call) that make untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source is able to reach a sink (a security sensitive operation) without first going through a sanitiser. \\
 
 \noindent
-Taint analysis can be performed statically or dynamically (i.e., on some form of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer, SonarQube, and SinkTank. Consider the motivating example in Figure \ref{figure-taint-example} which shows a simplistic SQL injection attack in Java.\\
+Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer\footnote{\url{https://fbinfer.com}}, and SonarQube\footnote{\url{https://www.sonarqube.org}}. Consider the motivating example in Figure \ref{figure-taint-example} which shows a simplistic SQL injection attack in Java.\\
 
 \begin{figure}[H]
     \lstinputlisting[style=mystyle, language=Java]{code/path-traversal-bad.java}
@@ -26,7 +26,7 @@ Furthermore, in the code example we can see this variable `name' being used to g
 In order for this user input to be safely included in the SQL query, it first needs to be sanitised by a \emph{sanitiser}. An example of a sanitiser for input into an SQL query is org.apache.commons.lang.StringEscapeUtils.escapeSql() which will remove any SQL control characters from a string, such as `;'.\\
 
 \noindent
-While Figure \ref{figure-taint-example} is simplistic and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, that is only possible because the methods being used, i.e. getParameter(), executeQuery(), and escapeSql() are all common methods that will inevitably be listed as sources, sinks, and sanitisers respectively in any good taint analysis tool. Issues with the performance of taint-analysis tools can occur when the list of sensitive methods for a project is not complete. I.e., the taint-analysis configuration is missing real sources, sinks, and sanitisers that are used in the codebase of a project and can therefore not generate an optimum analysis.
+While Figure \ref{figure-taint-example} is simplistic and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, that is only possible because the methods being used, i.e. getParameter(), executeQuery(), and escapeSql(), are all common methods that will inevitably be listed as sources, sinks, and sanitisers respectively in any good taint analysis tool. Issues with the performance of taint-analysis tools can occur when the list of sensitive methods for a project is not complete. I.e., the taint-analysis configuration is missing real sources, sinks, and sanitisers and can therefore not generate an optimum analysis.
 
 \newpage
 
@@ -34,14 +34,16 @@ While Figure \ref{figure-taint-example} is simplistic and contrived example, it 
 
 \subsection*{Transformer Architecture}
 
-\subsection*{Fine-Tuning}
-
 \subsection*{Pre-trained Models}
 
-\subsubsection*{RoBERTa}
+\subsubsection*{Fine-Tuning}
 
-\subsubsection*{CodeBERT}
+\subsection*{Key Terminology}
 
-\subsubsection*{UniXCoder}
+\subsubsection{Tensor}
 
-\subsubsection*{CodeT5}
+\subsubsection{Tokeniser}
+
+\subsubsection{Embeddings}
+
+\subsubsection{Loss}
