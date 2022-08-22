@@ -5,7 +5,7 @@ import configparser
 import json
 import math
 
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, SequentialSampler, DataLoader
 
 from model import init_model
 
@@ -95,7 +95,8 @@ def main():
         train_dataset = TextDataset(model.tokenizer, config, pooling_type, config.get("train", "train_data_file"))
         train()
     elif task == "eval":
-        eval()
+        eval_dataset = TextDataset(model.tokenizer, config, pooling_type, config.get("eval", "eval_data_file"))
+        eval(model, eval_dataset, config, device)
     elif task == "test":
         test()
     else:
@@ -104,7 +105,25 @@ def main():
 def train():
     print("we do a little training")
 
-def eval():
+def eval(model, eval_dataset, config, device):
+    saved_model_path = config.get("DEFAULT", "saved_model_path")
+    batch_size = config.getint("eval", "batch_size")
+
+    eval_sampler = SequentialSampler(eval_dataset)
+    eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=batch_size,num_workers=4,pin_memory=True)
+
+    model.eval()
+
+    for batch in eval_dataloader:
+        inputs = batch[0].to(device)        
+        label = batch[1].to(device)
+
+        with torch.no_grad():
+            #lm_loss,logit = model(inputs,label)
+            model(inputs,label)
+
+        sys.exit(1)
+
     print("we do a little evaluating")
 
 def test():

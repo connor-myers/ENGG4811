@@ -13,11 +13,12 @@ def init_model(model_name, tokenizer_name, pooling_type):
     return Model(encoder, config, tokenizer, pooling)
 
 class Model(nn.Module):
-    def __init__(self, encoder,config,tokenizer,pooling):
+    def __init__(self, encoder, config, tokenizer, pooling):
         super(Model, self).__init__()
         self.encoder = encoder
         self.config=config
         self.tokenizer=tokenizer
         self.pooling = pooling
-    def forward():
-        x = 1
+
+    def forward(self, input_ids, labels):
+        logits = self.encoder(input_ids, attention_mask=input_ids.ne(1))[0]
