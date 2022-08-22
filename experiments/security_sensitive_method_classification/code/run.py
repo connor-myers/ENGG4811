@@ -119,8 +119,11 @@ def eval(model, eval_dataset, config, device):
         label = batch[1].to(device)
 
         with torch.no_grad():
-            #lm_loss,logit = model(inputs,label)
-            model(inputs,label)
+            lm_loss,logit = model(inputs,label)
+            print(lm_loss)
+            print("#")
+            print(logit)
+            #model(inputs,label)
 
         sys.exit(1)
 
