@@ -1,9 +1,47 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, semper id dui finibus, suscipit pretium purus. Duis vehicula eleifend justo, at cursus turpis vulputate eget. Nullam vestibulum id neque a convallis. Sed molestie vehicula turpis, vel aliquet felis efficitur a. Fusce accumsan metus augue, id sagittis eros elementum vitae. Cras vel ultrices odio. Sed ac augue ex. Etiam tristique dignissim nibh, sit amet tincidunt libero tempor sit amet. Suspendisse tincidunt vitae ligula a posuere. Morbi euismod felis quis risus malesuada cursus. Curabitur imperdiet pretium odio, ac posuere turpis vehicula in. Praesent venenatis urna in augue congue elementum. Nam ligula nibh, rhoncus vitae luctus vel, feugiat sed neque. Curabitur ut arcu sed magna vulputate sollicitudin id a libero. Praesent tempus leo vel eros ornare mollis. Sed suscipit at mi ut viverra.
+There are several key ideas that should be explained before the thesis topic can be appreciated fully.
 
-Maecenas vitae tempus arcu. Nullam maximus id ligula a finibus. Aliquam laoreet faucibus sem. Mauris interdum erat vel pretium iaculis. Sed et pretium arcu, at condimentum lorem. Suspendisse tincidunt neque vel ullamcorper consequat. Phasellus eget ligula quis velit fringilla porttitor. Pellentesque quis risus id erat euismod bibendum mattis nec sapien. Duis gravida, turpis at dapibus consequat, ex mi tempor augue, in scelerisque mi nisi ut lorem. Donec orci tellus, lobortis ac pretium non, elementum et dolor. Morbi sed hendrerit erat. Praesent nec ante lorem. Vestibulum dapibus varius nisl at hendrerit. Praesent aliquam vehicula dolor et pulvinar. Aenean facilisis leo eget lacus rhoncus, ac tempus urna molestie. Vivamus efficitur erat quis felis pulvinar mattis quis volutpat lorem.
+\section*{Taint Analysis}
 
-Nullam luctus velit varius massa suscipit fringilla. Quisque egestas diam nec eros sagittis posuere. Sed venenatis facilisis nibh ac mattis. Morbi a mi at est vehicula imperdiet. Fusce tempus justo at tortor volutpat vulputate. Vestibulum molestie congue interdum. Nullam auctor faucibus risus ac hendrerit. Nulla viverra fermentum vulputate. Nulla mattis elementum ligula. Fusce eu tellus sapien. Maecenas scelerisque odio lacus, quis venenatis sapien molestie semper. Donec in consequat libero, quis euismod tellus.
+Taint analysis is a type of information-flow analysis that considers all user inputted data (sources) as malicious, and follows the flow of this `tainted' data to determine if it is used as input into a security sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
 
-Vestibulum eget lobortis lorem, id aliquam leo. Morbi ornare, enim et iaculis luctus, erat dui rutrum ligula, vel aliquam libero nisi vitae eros. Proin sodales ipsum nec ipsum tristique, porttitor sagittis tortor rhoncus. Integer auctor rutrum imperdiet. Nulla sollicitudin facilisis mauris, in mattis lorem ultrices quis. Curabitur neque lectus, auctor at ullamcorper et, porta eu nulla. Cras efficitur felis in ipsum volutpat, vitae condimentum velit ornare.
+\noindent
+Most taint analyis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is some process (usually a method or function call) that make untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source is able to reach a sink (a security sensitive operation) without first going through a sanitiser. \\
 
-Donec consectetur, libero tempus sollicitudin gravida, felis erat aliquam libero, viverra maximus lacus nisi in lacus. Aenean hendrerit volutpat felis, sed viverra ex accumsan a. Vivamus vel tortor viverra nisi tincidunt dapibus. Proin diam libero, varius at turpis et, tincidunt congue arcu. Nunc tristique elit libero, nec rutrum quam aliquet at. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum at nisi quis nulla malesuada tempor. Mauris eu felis risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec convallis est ex, vitae facilisis eros commodo in. Nullam faucibus nunc ac magna congue, et porttitor magna eleifend. Nunc at velit ullamcorper, pellentesque lorem in, dictum arcu. Suspendisse nec auctor velit. Mauris congue magna molestie augue maximus, ac hendrerit ante viverra. Pellentesque convallis nisl et felis venenatis varius.
+\noindent
+Taint analysis can be performed statically or dynamically (i.e., on some form of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer, SonarQube, and SinkTank. Consider the motivating example in Figure \ref{figure-taint-example} which shows a simplistic SQL injection attack in Java.\\
+
+\begin{figure}[H]
+    \lstinputlisting[style=mystyle, language=Java]{code/path-traversal-bad.java}
+    \caption{A contrived example of a SQL injection vulnerability that would be detected by a taint-analysis tool.}
+    \label{figure-taint-example}
+\end{figure}
+
+\noindent
+From Figure \ref{figure-taint-example}, we can see getParameter() is a source. This is because getParameter() retrieves the value of a parameter in a HTTP request, which can be arbitrarily set by the user. Because it can be set by the user, from a security perspective, the variable `name' in this code is considered tainted. Taint analysis tools cannot just `know' that a particular method call is a source, however. Most taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{sink-tank-default-source-config} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}. That is, a taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered tainted in the first place. For larger projects, however, where there is lots of custom written code, or niche libraries are being used, the provided dataset of sensitive methods often proves insufficient. Therefore, developers must inspect the code manually and create a list of sensitive methods particular to that project/library. Naturally, creating a custom taint analysis configuration for a particular software project is a time-consuming and laborious process that, if automated, would provide significant utility to large software projects.\\
+
+\noindent
+Furthermore, in the code example we can see this variable `name' being used to generate an SQL query which is then executed (executing an SQL query is obviously considered a security sensitive operation, i.e., a sink.) without any sort of validation that the name variable contains a legitimate or valid value. In this code, a malicious actor could decide their name is now `;DROP ALL TABLES;' and the code will happily delete the entire database. \\
+
+\noindent
+In order for this user input to be safely included in the SQL query, it first needs to be sanitised by a \emph{sanitiser}. An example of a sanitiser for input into an SQL query is org.apache.commons.lang.StringEscapeUtils.escapeSql() which will remove any SQL control characters from a string, such as `;'.\\
+
+\noindent
+While Figure \ref{figure-taint-example} is simplistic and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, that is only possible because the methods being used, i.e. getParameter(), executeQuery(), and escapeSql() are all common methods that will inevitably be listed as sources, sinks, and sanitisers respectively in any good taint analysis tool. Issues with the performance of taint-analysis tools can occur when the list of sensitive methods for a project is not complete. I.e., the taint-analysis configuration is missing real sources, sinks, and sanitisers that are used in the codebase of a project and can therefore not generate an optimum analysis.
+
+\newpage
+
+\section*{Deep Learning}
+
+\subsection*{Transformer Architecture}
+
+\subsection*{Fine-Tuning}
+
+\subsection*{Pre-trained Models}
+
+\subsubsection*{RoBERTa}
+
+\subsubsection*{CodeBERT}
+
+\subsubsection*{UniXCoder}
+
+\subsubsection*{CodeT5}
