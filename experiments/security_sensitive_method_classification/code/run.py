@@ -1,25 +1,26 @@
 import torch
+import configparser
+
+import sys
 
 from model import init_model, Model
 
-# model stuff
-tokeniser_name = "microsoft/unixcoder-base"
-encoder_name = "microsoft/unixcoder-base"
-
-# classification stuff
-labels = ["source", "sink", "sanitiser", "none"]
-
-task = "train"
-# task = "eval"
-# task = "test"
-
 def main():
+    # load config
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    # process args
+    if len(sys.argv) != 3:
+        sys.exit(1)
+    model_name = sys.argv[1]
+    task = sys.argv[2]
+
     # try to load some kind of gpu (cuda / mps); settle on cpu
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # initialise the model
-    model = init_model(encoder_name, tokeniser_name)
-    model.config.num_labels = len(labels)
+    model = init_model(config[model_name]['model'], config[model_name]['tokeniser'])
 
     # load gpu
     model.to(device)
