@@ -11,16 +11,19 @@ def main():
     config.read('config.ini')
 
     # process args
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
+        print("usage: python3 run.py model_name task pooling_type")
         sys.exit(1)
+    
     model_name = sys.argv[1]
     task = sys.argv[2]
+    pooling_type = sys.argv[3]
 
     # try to load some kind of gpu (cuda / mps); settle on cpu
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # initialise the model
-    model = init_model(config[model_name]['model'], config[model_name]['tokeniser'])
+    model = init_model(config[model_name]['model'], config[model_name]['tokeniser'], pooling_type)
 
     # load gpu
     model.to(device)
