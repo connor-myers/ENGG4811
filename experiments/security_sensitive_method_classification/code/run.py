@@ -110,7 +110,7 @@ def main():
     else:
         print("bad task")
 
-def train():
+def train(train_dataset, config, model):
     print("we do a little training")
 
 def eval(model, eval_dataset, config, device):
@@ -118,8 +118,8 @@ def eval(model, eval_dataset, config, device):
     batch_size = config.getint("eval", "batch_size")
 
     # load previous model
-    # model.load_state_dict(torch.load(saved_model_path)) 
-    # model.to(device)
+    model.load_state_dict(torch.load(saved_model_path)) 
+    model.to(device)
 
     eval_sampler = SequentialSampler(eval_dataset)
     eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=batch_size,num_workers=4,pin_memory=True)
