@@ -6,8 +6,8 @@ import json
 import math
 
 from torch.utils.data import Dataset, SequentialSampler, DataLoader
-
-from model import init_model
+from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification
+from model import MyRobertaSequenceClassification, Model
 
 class TextDataset(Dataset):
     class InputFeatures(object):
@@ -83,7 +83,13 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
 
     # initialise the model
-    model = init_model(config[model_name]['model'], config[model_name]['tokeniser'], pooling_type)
+    #model = init_model(config[model_name]['model'], config[model_name]['tokeniser'], pooling_type)
+    model_config = RobertaConfig.from_pretrained(config.get(model_name, "model"))
+    model_config.num_labels = 4
+    model_tokenizer = RobertaTokenizer.from_pretrained(config.get(model_name, "tokeniser"))
+    model_encoder = MyRobertaSequenceClassification.from_pretrained(config.get(model_name, "model"), config=model_config)
+
+    model = Model(model_encoder, model_config, model_tokenizer, config)
 
     # load gpu
     model.to(device)
@@ -120,12 +126,8 @@ def eval(model, eval_dataset, config, device):
 
         with torch.no_grad():
             lm_loss,logit = model(inputs,label)
-            print(lm_loss)
-            print("#")
-            print(logit)
-            #model(inputs,label)
-
-        sys.exit(1)
+        
+        
 
     print("we do a little evaluating")
 
