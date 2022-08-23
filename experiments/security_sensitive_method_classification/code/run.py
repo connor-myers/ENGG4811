@@ -5,6 +5,8 @@ import configparser
 import json
 import math
 
+import numpy as np
+
 from torch.utils.data import Dataset, SequentialSampler, DataLoader
 from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification
 from model import MyRobertaSequenceClassification, Model
@@ -115,21 +117,47 @@ def eval(model, eval_dataset, config, device):
     saved_model_path = config.get("DEFAULT", "saved_model_path")
     batch_size = config.getint("eval", "batch_size")
 
+    # load previous model
+    # model.load_state_dict(torch.load(saved_model_path)) 
+    # model.to(device)
+
     eval_sampler = SequentialSampler(eval_dataset)
     eval_dataloader = DataLoader(eval_dataset, sampler=eval_sampler, batch_size=batch_size,num_workers=4,pin_memory=True)
 
+    eval_loss = 0.0
+    nb_eval_steps = 0
+
     model.eval()
 
+    logits = []
+    labels = []
     for batch in eval_dataloader:
         inputs = batch[0].to(device)        
         label = batch[1].to(device)
 
         with torch.no_grad():
-            lm_loss,logit = model(inputs,label)
-        
-        
+            lm_loss, logit = model(inputs,label)
+            eval_loss += lm_loss.mean().item()
+            logits.append(logit.cpu().numpy())
+            labels.append(label.cpu().numpy())
 
-    print("we do a little evaluating")
+        nb_eval_steps += 1
+
+    logits=np.concatenate(logits,0)
+    labels=np.concatenate(labels,0)
+    preds=logits.argmax(-1)
+    eval_acc=np.mean(labels==preds)
+    eval_loss = eval_loss / nb_eval_steps
+    perplexity = torch.tensor(eval_loss)
+            
+    result = {
+        "eval_loss": float(perplexity),
+        "eval_acc":round(eval_acc,4),
+    }
+
+    print(result)
+
+    return result
 
 def test():
     print("we do a little testing")
