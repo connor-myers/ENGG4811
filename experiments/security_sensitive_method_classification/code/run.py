@@ -46,7 +46,7 @@ class TextDataset(Dataset):
             input_tokens = [tokenizer.cls_token] + nl_tokens + [tokenizer.sep_token] + code_tokens + [tokenizer.sep_token] # sep on end?
         if pooling_type == "mean":
             # change later
-            input_tokens = [tokenizer.cls_token] + nl_tokens + [tokenizer.sep_token] + code_tokens + [tokenizer.sep_token]
+            input_tokens = nl_tokens + [tokenizer.sep_token] + code_tokens
         if pooling_type == "max":
             # change later
             input_tokens = [tokenizer.cls_token] + nl_tokens + [tokenizer.sep_token] + code_tokens + [tokenizer.sep_token]
