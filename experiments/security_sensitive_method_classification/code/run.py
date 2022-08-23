@@ -7,9 +7,10 @@ import math
 
 import numpy as np
 
-from torch.utils.data import Dataset, SequentialSampler, DataLoader
-from transformers import RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification
+from torch.utils.data import Dataset, SequentialSampler, DataLoader, RandomSampler
+from transformers import RobertaConfig, RobertaTokenizer, AdamW, get_linear_schedule_with_warmup
 from model import MyRobertaSequenceClassification, Model
+from tqdm import tqdm
 
 class TextDataset(Dataset):
     class InputFeatures(object):
@@ -46,6 +47,9 @@ class TextDataset(Dataset):
             input_tokens = [tokenizer.cls_token] + nl_tokens + [tokenizer.sep_token] + code_tokens + [tokenizer.sep_token] # sep on end?
         if pooling_type == "mean":
             # change later
+            partition_size =  math.floor((config.getint("DEFAULT", "block_size") - 2) / 2)
+            code_tokens = code_tokens[:partition_size]
+            nl_tokens = nl_tokens[:partition_size]
             input_tokens = nl_tokens + [tokenizer.sep_token] + code_tokens
         if pooling_type == "max":
             # change later
@@ -101,7 +105,7 @@ def main():
     # start doing the task
     if task == "train":
         train_dataset = TextDataset(model.tokenizer, config, pooling_type, config.get("train", "train_data_file"))
-        train()
+        train(train_dataset, config, model, device)
     elif task == "eval":
         eval_dataset = TextDataset(model.tokenizer, config, pooling_type, config.get("eval", "eval_data_file"))
         eval(model, eval_dataset, config, device)
@@ -110,8 +114,59 @@ def main():
     else:
         print("bad task")
 
-def train(train_dataset, config, model):
-    print("we do a little training")
+def train(train_dataset, config, model, device):
+    learning_rate = 2e-5
+    adam_epsilon = 1e-8
+    weight_decay = 0.0
+    num_epochs = config.getint("train", "num_epochs")
+
+    train_sampler = RandomSampler(train_dataset)
+    train_dataloader = DataLoader(train_dataset, sampler=train_sampler, 
+                                  batch_size=config.getint("train", "batch_size"),
+                                  num_workers=4,pin_memory=True)
+
+    # Prepare optimizer and schedule (linear warmup and decay)
+    no_decay = ['bias', 'LayerNorm.weight']
+    optimizer_grouped_parameters = [
+        {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+         'weight_decay': weight_decay},
+        {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
+    ]
+    optimizer = AdamW(optimizer_grouped_parameters, lr=learning_rate,
+     eps=adam_epsilon)
+    max_steps = len(train_dataloader) * num_epochs
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=max_steps*0.1,
+                                                num_training_steps=max_steps)
+
+    for idx in range(num_epochs): 
+        bar = tqdm(train_dataloader,total=len(train_dataloader))
+        losses=[]
+        for step, batch in enumerate(bar):
+            inputs = batch[0].to(device)     
+            #print(inputs)
+            #print(type(inputs))   
+            labels=batch[1].to(device) 
+            model.train()
+            #print(inputs.size())
+            loss,logits = model(inputs,labels)
+            #loss,logits = model.forward(inputs,labels)
+
+            if 1 > 1:
+                loss = loss.mean()  # mean() to average on multi-gpu parallel training
+
+
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+
+            losses.append(loss.item())
+            bar.set_description("epoch {} loss {}".format(idx,round(np.mean(losses),3)))
+            optimizer.step()
+            optimizer.zero_grad()
+            scheduler.step()  
+                
+    model_to_save = model.module if hasattr(model,'module') else model
+    output_dir = "trained.bin"            
+    torch.save(model_to_save.state_dict(), output_dir)
 
 def eval(model, eval_dataset, config, device):
     saved_model_path = config.get("DEFAULT", "saved_model_path")

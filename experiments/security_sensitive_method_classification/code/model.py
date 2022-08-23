@@ -43,21 +43,22 @@ class MyRobertaClassificationHead(nn.Module):
         self.out_proj = nn.Linear(config.hidden_size, config.num_labels)
 
     def forward(self, features, attention_mask):
-        #x = features[:, 0, :]  # take <s> token (equiv. to [CLS])
+        x = features[:, 0, :]  # take <s> token (equiv. to [CLS])
 
         # MAX POOLING
         #max_pooled = features.max(dim=1).values
-        x = features * attention_mask.unsqueeze(-1) # get rid of padding embeddings
-        max_pooled = torch.max(x, axis=1).values
-        mean_pooled = x.sum(axis=1) / attention_mask.sum(axis=-1).unsqueeze(-1) 
+        # this pooling should 100% be done by an external module before being passed onto this
+        # x = features * attention_mask.unsqueeze(-1) # get rid of padding embeddings
+        # max_pooled = torch.max(x, axis=1).values
+        # mean_pooled = x.sum(axis=1) / attention_mask.sum(axis=-1).unsqueeze(-1) 
 
-        # print(features)
+        # # print(features)
 
-        # print(features.sum(axis=1))
-        #print(features)
-        # print(max_pooled)
+        # # print(features.sum(axis=1))
+        # #print(features)
+        # # print(max_pooled)
 
-        x = mean_pooled
+        # x = mean_pooled
         x = self.dropout(x)
         x = self.dense(x)
         x = torch.tanh(x)
