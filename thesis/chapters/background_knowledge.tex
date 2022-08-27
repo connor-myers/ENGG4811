@@ -28,9 +28,29 @@ In order for this user input to be safely included in the SQL query, it first ne
 \noindent
 While Figure \ref{figure-taint-example} is simplistic and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, that is only possible because the methods being used, i.e. getParameter(), executeQuery(), and escapeSql(), are all common methods that will inevitably be listed as sources, sinks, and sanitisers respectively in any good taint analysis tool. Issues with the performance of taint-analysis tools can occur when the list of sensitive methods for a project is not complete. I.e., the taint-analysis configuration is missing real sources, sinks, and sanitisers and can therefore not generate an optimum analysis.
 
-\newpage
-
 \section*{Deep Learning}
+
+Deep-learning is a subtopic within the broader category of machine learning whereby many layers of neural networks (hence `deep' learning) learn representations of data for applictions in: image classification, machine translation, and autonomous vehicles \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
+
+\begin{figure}[h]
+    \begin{center}
+            \includegraphics[scale=0.65]{images/neuron_diagram.png}
+    \end{center}
+    \caption{Diagram of a singular neuron}
+    \label{neurondiagram}
+\end{figure}
+
+\noindent
+Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden-layer, or, if this neuron is within the first layer of the hidden-network, directly from the input layer. Each edge (that is, each connection between an input and the neuron in-question) is a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. Naturally, a weight, in simplistic terms, refers to how much the input signal should be amplified or reduced (i.e., the input signal --- which is just a number --- is multiplied by the weight on each edge).\\
+
+\noindent
+After all these input values are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is simply a default value for the node that will be added to the node (positive or negative) that will be added to the final sum of a node, irrespective of the input values. In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are all linear), and thereby enable the network to learn more sophisticated representations, this summed value is passed through an \emph{activation function} before producing the final value of the neuron. A common choice of activation function is a sigmoid function, although there are many others commonly in use each having their own positives and negatives. Depending on where this node is located in the network, this output value $y_{j}$ will feed into yet another node or the final output layer.\\
+
+\noindent
+The key idea is that, initially, the weights and biases are initialised \emph{randomly}. A neural network must be \emph{trained}, it is said, so that these weights and biases are set appropriately and the model can `learn' generalised representations of data and therefore do something useful, such as classify data (e.g., image recognition) or generate new data (e.g.,machine translation). How exactly this training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (that is input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the output generated from the input more closely resembles the expected output. After doing this over a diverse and appropriate dataset for a sufficient number of examples, a neural network can have the weights and biases of its corresponding neurons adjusted in such a way that it can make predictions on data is has not yet seen before --- that is, it has learned \emph{general} representations of the data.\\
+
+\noindent
+So far, we have only discussed the function of one neuron in isolation. While this was critcal for a basic understanding of deep-learning as it relates to this thesis, it undermines the sheer scale of the models that will be employed this thesis project. One such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters (that is, 125M weights and biases that need to be calibrated) and was trained on a corpus of almost 10 million examples. Despite using 16 interconnected NVIDIA Tesla V100 GPUs, pre-training still took more than 6 hours. 
 
 \subsection*{Transformer Architecture}
 
