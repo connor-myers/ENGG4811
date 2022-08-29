@@ -11,6 +11,12 @@
 \usepackage{color}
 \usepackage{float}
 
+\usepackage{enumitem}
+
+\newlist{questions}{enumerate}{2}
+\setlist[questions,1]{label=RQ\arabic*.,ref=RQ\arabic*}
+\setlist[questions,2]{label=(\alph*),ref=\thequestionsi(\alph*)}
+
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,

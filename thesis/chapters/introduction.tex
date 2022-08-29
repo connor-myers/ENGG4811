@@ -16,13 +16,26 @@ There are numerous approaches one may take to perform this automatic classificat
 Using machine learning to classify security sensitive methods is not novel in the literature. For example, \emph{SuSi} \cite{susi} uses a machine learning approach to identify sources, sinks, and sanitisers in the Android Framework, and \emph{SWAN} \cite{swanassist} takes a similar approach on an alternative dataset. All applications of deep-learning to security sensitive method classification are argubably very similar. They typically extract many features from the method definition and code and feed these features into a machine learning model. Notably, the machine learning models do not work on the code directly (i.e., no natural language processing; the model does not consider the context of the code); specific features are first extracted from the code. For example, one feature that \emph{SWAN} extracts from the code is the boolean value of whether or not the class being analysed contains the keyword `SQL' in its qualified name. While this may sound like a simple feature, which it is, \emph{SWAN} uses 206 of these features to conduct its analysis. And, more importantly, the Javadoc for codes is not used.\\ 
 
 \noindent
-Since these approaches notably did not use natural-language processing, nor was the documentation of the codes considered, we propose an alternative methodology for the classification of security sensitive methods by using state-of-the-art pre-trained machine learning models for natural language processing. 
+Since these approaches notably did not use natural-language processing, nor was the documentation of the codes considered, we propose an alternative methodology for the classification of security sensitive methods by using state-of-the-art pre-trained machine learning models on not only the method's code, but also its natural-langauge description; i.e., Javadoc. 
 
 \section{Topic Definition}
 Manual configuration of program analysis tools is a labourious and error-prone task. As such, methodologies for automatically configuring program analyses, such as taint-analysis, by automatically identifying security sensitive methods in a software project will enable taint-analysis tools to operate more effectively and reduce the cost and errors associated with manual configuration.\\
 
 \noindent
 This idea of automatically classifying security sensitive methods is not new to the literature, and a variety of techniques have been applied to this task and seen some success, such as the `Merlin project's use of dynamic-analysis and probabilistic techniques \cite{merlin}, and Sas et al.'s combined approach of pattern-matching and machine-learning classification task on a diverse set of features \cite{autodetection}.\\
+
+\noindent
+In this thesis, we introduce a novel technique for the automatic classification of security sensitive methods in Java, using a machine-learning approach that utilises not only the code of the method being analysed, but also its accompanying Java documentation. To our knowledge, exploiting natural-language descriptions of code using advanced machine learning models (i.e., the new, state-of-the-art Transformer architecture) has not yet been applied to this problem of security sensitive method classification.\\
+
+\noindent
+It is believed, despite Javadoc being an informal description of code, it may contain valuable information regarding the security of Java methods. Furthemore, it is also hypothesised that powerful pre-trained models such as CodeBERT \cite{CodeBERT} will outperform existing models in this space. This leads us to our research question:
+
+% \begin{enumerate}
+\begin{questions}
+    \item Do bimodal (code \emph{and} natural-langauge) classification models outperform unimodal (code alone) models? I.e., Does Javadoc contain useful security information? If so, can machine-learning models exploit this information?
+    \item Does the Transformer architecture out-perform other model architectures at this task?
+    \item Does automatically generating a taint-analysis configuration file improve the analysis conducted by existing taint-analysis tools?
+\end{questions}
 
 \noindent
 
