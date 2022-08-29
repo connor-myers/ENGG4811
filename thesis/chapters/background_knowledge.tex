@@ -99,10 +99,19 @@ Long short-term memory networks (LSTMs) are one methodology of having an RNN rem
 \subsubsection{Transformer Architecture}
 
 \noindent
-It is not an exageration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times) and thereby introducing the world to the Transformer architecture completely revolutionalised not just natural-language processing, but all fields within machine-learning.\\
+It is not an exageration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times) and thereby the introduction of the Transformer architecture has completely revolutionalised not just natural-language processing, but all fields within machine-learning.\\
 
 \noindent
-Given Transformers are currently the cutting-edge technology for most machine-learning tasks, how exactly they function is out of scope for this thesis. However, for the purposes of this thesis, all that needs to be understood is that they do everything RNNs can do, only better.\\
+Given Transformers are currently the cutting-edge technology for most machine-learning tasks, explaining exactly how they function is out-of-scope for this undergraduate thesis. However, for the purposes of this thesis, all that needs to be understood is that they, essentially, do everything RNNs can do, only better.\\
+
+\noindent
+Perhaps the most useful property of the Transformer architecture is input processing can be parallelised. That is, all tokens of an input sequence can be processed simultaneously. This means these models can more efficiently exploit GPUs, which excel at parallelised workflows. With parallelisation built into the architecture, this translates to extraordinary performance improvements compared to traditional architectures \cite{attention}.\\
+
+\noindent
+Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand the context of tokens (notably, future context as well) much better than RNNs, including LSTMs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold, however, is for small amounts of data. With tasks that have very small amounts of training data, LTSMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training-time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
+
+\noindent
+There is one caveat to this improved performance; a limitation built into the Transformer architecture. Unlike RNNs, which can have an input sequence of any length, Transformers must have a fixed-length input. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. For most use-cases, this is not an issue, i.e., 512 tokens are more than enough. However for our use-case --- a classification task on Java methods --- the sequence of input tokens can quite often be longer than 512 tokens for some inputs. How our model handles input larger than 512 tokens is an important question and is surprisingly not so trivial, especially for our bimodal use-case. We will return to this question later in this thesis.\\
 
 \begin{figure}[t]
     \begin{center}
@@ -112,14 +121,15 @@ Given Transformers are currently the cutting-edge technology for most machine-le
     \label{transformer}
 \end{figure}
 
+\subsection{Key Concepts and Terminology}
 
-\subsection*{Pre-trained Models}
+\subsubsection{Pre-trained models}
 
-\subsubsection*{Fine-Tuning}
+\subsubsection{Fine-tuning}
 
-\subsection*{Key Terminology}
+\subsubsection{PyTorch}
 
-\subsubsection{Tensor}
+Explain tensors here as well
 
 \subsubsection{Tokeniser}
 
