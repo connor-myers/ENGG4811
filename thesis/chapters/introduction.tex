@@ -18,6 +18,16 @@ Using machine learning to classify security sensitive methods is not novel in th
 \noindent
 Since these approaches notably did not use natural-language processing, nor was the documentation of the codes considered, we propose an alternative methodology for the classification of security sensitive methods by using state-of-the-art pre-trained machine learning models for natural language processing. 
 
+\section{Topic Definition}
+Manual configuration of program analysis tools is a labourious and error-prone task. As such, methodologies for automatically configuring program analyses, such as taint-analysis, by automatically identifying security sensitive methods in a software project will enable taint-analysis tools to operate more effectively and reduce the cost and errors associated with manual configuration.\\
+
+\noindent
+This idea of automatically classifying security sensitive methods is not new to the literature, and a variety of techniques have been applied to this task and seen some success, such as the `Merlin project's use of dynamic-analysis and probabilistic techniques \cite{merlin}, and Sas et al.'s combined approach of pattern-matching and machine-learning classification task on a diverse set of features \cite{autodetection}.\\
+
+\noindent
+
+% While some papers have looked at using machine-learning techniques for this task, the techniques are dated natural-language processing techniques on the method's code, nor on the accompanying Javadoc. That is, each feature of the code was considered in isolation --- the context that the key. After the publication of Vaswani et al.'s revolutionary paper, \emph{Attention is all you need}, laying the foundation for the Transformer architecture of machine-learning models, 
+
 
 
 % \noindent

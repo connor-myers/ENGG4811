@@ -1,6 +1,6 @@
 There are several key ideas that should be explained before the thesis topic can be appreciated fully.
 
-\section*{Taint Analysis}
+\section{Taint Analysis}
 
 Taint analysis is a type of information-flow analysis that considers all user inputted data (sources) as malicious, and follows the flow of this `tainted' data to determine if it is used as input into a security sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
 
@@ -28,9 +28,9 @@ In order for this user input to be safely included in the SQL query, it first ne
 \noindent
 While Figure \ref{figure-taint-example} is simplistic and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, that is only possible because the methods being used, i.e. getParameter(), executeQuery(), and escapeSql(), are all common methods that will inevitably be listed as sources, sinks, and sanitisers respectively in any good taint analysis tool. Issues with the performance of taint-analysis tools can occur when the list of sensitive methods for a project is not complete. I.e., the taint-analysis configuration is missing real sources, sinks, and sanitisers and can therefore not generate an optimum analysis.
 
-\section*{Deep Learning}
+\section{Deep Learning}
 
-Deep-learning is a subtopic within the broader category of machine learning whereby many layers of neural networks (hence `deep' learning) learn representations of data for applictions in: image classification, machine translation, and autonomous vehicles \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
+Deep-learning is a subtopic within the broader category of machine learning whereby many layers of artificial neurons (hence `deep' learning) learn representations of data for applictions in: image classification, machine translation, and autonomous vehicles \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
 
 \begin{figure}[h]
     \begin{center}
@@ -47,12 +47,71 @@ Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural netw
 After all these input values are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is simply a default value for the node that will be added to the node (positive or negative) that will be added to the final sum of a node, irrespective of the input values. In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are all linear), and thereby enable the network to learn more sophisticated representations, this summed value is passed through an \emph{activation function} before producing the final value of the neuron. A common choice of activation function is a sigmoid function, although there are many others commonly in use each having their own positives and negatives. Depending on where this node is located in the network, this output value $y_{j}$ will feed into yet another node or the final output layer.\\
 
 \noindent
-The key idea is that, initially, the weights and biases are initialised \emph{randomly}. A neural network must be \emph{trained}, it is said, so that these weights and biases are set appropriately and the model can `learn' generalised representations of data and therefore do something useful, such as classify data (e.g., image recognition) or generate new data (e.g.,machine translation). How exactly this training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (that is input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the output generated from the input more closely resembles the expected output. After doing this over a diverse and appropriate dataset for a sufficient number of examples, a neural network can have the weights and biases of its corresponding neurons adjusted in such a way that it can make predictions on data is has not yet seen before --- that is, it has learned \emph{general} representations of the data.\\
+The key idea is that, initially, the weights and biases are initialised \emph{randomly}. A neural network must be \emph{trained}, it is said, so that these weights and biases are set appropriately and the model can `learn' generalised representations of data and therefore do something useful, such as classify data (e.g., image recognition) or generate new data (e.g.,machine translation). How exactly this training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (that is input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the output generated from the input more closely resembles the expected output.\\
 
 \noindent
-So far, we have only discussed the function of one neuron in isolation. While this was critcal for a basic understanding of deep-learning as it relates to this thesis, it undermines the sheer scale of the models that will be employed this thesis project. One such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters (that is, 125M weights and biases that need to be calibrated) and was trained on a corpus of almost 10 million examples. Despite using 16 interconnected NVIDIA Tesla V100 GPUs, pre-training still took more than 6 hours. 
+It is important to note that we do not want our weights and biases adjusting \emph{too} much for particular inputs. That is, the network is not learning general patterns but rather representations specific to the input data. This is known as \emph{overfitting}, and it will become a key problem further along in thesis topic. \\
 
-\subsection*{Transformer Architecture}
+\noindent
+After training a network over a diverse (to avoid overfitting) and appropriate dataset for a sufficient number of examples, a neural network can have the weights and biases of its corresponding neurons adjusted in such a way that it can make predictions on data it has not yet seen before --- that is, it has learned \emph{general} representations of the data.\\
+
+\noindent
+So far, we have only discussed the function of one neuron in isolation. While this is critcal for a basic understanding of deep-learning as it relates to this thesis topic, it undermines the sheer scale of the models that will be employed this thesis project. One such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters (that is, 125M weights and biases that need to be calibrated) and was pre-trained on a corpus of almost 10 million examples. Despite using 16 interconnected NVIDIA Tesla V100 GPUs, pre-training still took more than 6 hours. 
+
+\subsection{Network Architectures}
+There are a variety of architectures of neural networks. Choice of architecture is critical and it fundamentally effects all aspects of a model.
+
+\subsubsection{Recurrent Neural Networks}
+
+\noindent
+Natural language processing, just one application of deep-learning, for which this thesis topic is concerned about in particular, had for many years typically been done with Recurrent Neural Networks (RNNs). More specifically, it was done with long short-term memory networks (LSTM) which are a subclass of RNNs.\\
+
+\noindent
+RNNs were vital for natural-language processing as this architecture of neural-network is capable of `memory'. That is, the output generated from previous inputs affects future inputs. For natural-language processing, what this means is that these models can understand \emph{context}. Having a model understand context is vital because, depending on where a word is used in a sentence (or where an identifier or code keyword is used in a program) it can have an entirely different meaning. \\
+
+\noindent
+Take the following example...\\
+
+\noindent
+As demonstrated above, it is easy to see why models that do not have memory are simply not powerful enough for applications requiring context, such as natural-language processing. This understanding of context comes with many issues, however. RNNs understand context by feeding the output of a previous input into the next input. This means that input into an RNN must be processed linearly and options for parallelisation are limited. Due to this lack of parallelisation, RNNs cannot optimally exploit the parallel workflows that modern GPUs excel at and are therefore extremely slow and computationally expensive compared to other model architectures \cite{patiexploring}. Furthermore, this context (i.e., memory of previous inputs) that travels the network sequentially slowly vanishes. That is, for very long inputs the `context' created at the start of an input (sentence, code, etc...) may have, for all intents and purposes, disappeared by the end of the input. In other words, RNNs have a hard-time remembering context for large inputs. Furthermore, most RNNs cannot understand \emph{future} contexts. For example, it may be the case in some code that a keyword further ahead in an input affects the meaning of an input before it. Typical RNNs (excluding bidirectional RNNs\footnote{Bidirectional RNNs can understand future context, but they are extremely slow \cite{ZhangAston2021DiDL}.}) are simply not capable of learning such behaviour.
+
+\subsubsection{Long Short Term Memory (LSTM)}
+
+\noindent
+Long short-term memory networks (LSTMs) are one methodology of having an RNN remember context for longer inputs. LSTMs accomplish this by adding `gating-units' to each node, which act to reduce the gradient vanishing and exploding problems, respectively. The exact function of how these gating units work is out of scope, however all one needs to know about them is that this longer-term memory comes at a significant performance cost. These gating-units and, by extension LSTMs, are notoriously slow to train and, in general, are extremely computationally expensive \cite{sundermeyer2012lstm}.
+
+\subsubsection{Summary of RNNs}
+\textbf{Pros}
+\begin{enumerate}
+    \item Understand context
+    \item ...
+\end{enumerate}
+
+\textbf{Cons}
+\begin{enumerate}
+    \item Extremely slow to train
+    \item Computationally expensive
+    \item Most RNNs cannot understand future context
+    \item Difficulty processing long inputs
+    \item Suffer particularly from vanishing and exploding gradient problems
+\end{enumerate}
+
+\subsubsection{Transformer Architecture}
+
+\noindent
+It is not an exageration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times) and thereby introducing the world to the Transformer architecture completely revolutionalised not just natural-language processing, but all fields within machine-learning.\\
+
+\noindent
+Given Transformers are currently the cutting-edge technology for most machine-learning tasks, how exactly they function is out of scope for this thesis. However, for the purposes of this thesis, all that needs to be understood is that they do everything RNNs could do, only better.\\
+
+\begin{figure}[t]
+    \begin{center}
+            \includegraphics[scale=0.65]{images/transformer.png}
+    \end{center}
+    \caption{Model architecture of the Transformer \cite{attention}}
+    \label{transformer}
+\end{figure}
+
 
 \subsection*{Pre-trained Models}
 
