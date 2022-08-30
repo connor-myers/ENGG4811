@@ -30,7 +30,7 @@ While Figure \ref{figure-taint-example} is simplistic and contrived example, it 
 
 \section{Deep Learning}
 
-Deep-learning is a subtopic within the broader category of machine learning whereby many layers of artificial neurons (hence `deep' learning) learn representations of data for applictions in: image classification, machine translation, and autonomous vehicles \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
+Deep-learning is a subtopic within the broader category of machine learning whereby many layers of artificial neurons (hence `deep' learning) learn representations of data for applications such as: image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
 
 \begin{figure}[h]
     \begin{center}
@@ -44,7 +44,10 @@ Deep-learning is a subtopic within the broader category of machine learning wher
 Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden-layer, or, if this neuron is within the first layer of the hidden-network, directly from the input layer. Each edge (that is, each connection between an input and the neuron in-question) is a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. Naturally, a weight, in simplistic terms, refers to how much the input signal should be amplified or reduced (i.e., the input signal --- which is just a number --- is multiplied by the weight on each edge).\\
 
 \noindent
-After all these input values are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is simply a default value for the node that will be added to the node (positive or negative) that will be added to the final sum of a node, irrespective of the input values. In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are all linear), and thereby enable the network to learn more sophisticated representations, this summed value is passed through an \emph{activation function} before producing the final value of the neuron. A common choice of activation function is a sigmoid function, although there are many others commonly in use each having their own positives and negatives. Depending on where this node is located in the network, this output value $y_{j}$ will feed into yet another node or the final output layer.\\
+After all these input values are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is simply a default value for the node that will be added to the node (positive or negative) that will be added to the final sum of a node, irrespective of the input values.\\
+
+\noindent
+In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are all linear), and thereby enable the network to learn more sophisticated representations, this summed value is passed through an \emph{activation function} before producing the final value of the neuron. A common choice of activation function is a sigmoid function, although there are many others commonly in use each having their own positives and negatives. Depending on where this node is located in the network, this output value $y_{j}$ will feed into yet another node or the final output layer.\\
 
 \noindent
 The key idea is that, initially, the weights and biases are initialised \emph{randomly}. A neural network must be \emph{trained}, it is said, so that these weights and biases are set appropriately and the model can `learn' generalised representations of data and therefore do something useful, such as classify data (e.g., image recognition) or generate new data (e.g.,machine translation). How exactly this training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (that is input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the output generated from the input more closely resembles the expected output.\\
@@ -81,12 +84,14 @@ As demonstrated above, it is easy to see why models that do not have memory are 
 Long short-term memory networks (LSTMs) are one methodology of having an RNN remember context for longer inputs. LSTMs accomplish this by adding `gating-units' to each node, which act to reduce the gradient vanishing and exploding problems, respectively. The exact function of how these gating units work is out of scope, however all one needs to know about them is that this longer-term memory comes at a significant performance cost. These gating-units and, by extension LSTMs, are notoriously slow to train and, in general, are extremely computationally expensive \cite{sundermeyer2012lstm}.
 
 \subsubsection{Summary of RNNs}
+\noindent
 \textbf{Pros}
 \begin{enumerate}
     \item Understand context
     \item ...
 \end{enumerate}
 
+\noindent
 \textbf{Cons}
 \begin{enumerate}
     \item Extremely slow to train
@@ -149,17 +154,23 @@ This dicussion of pre-trained models will continue in the literature review, whe
 PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will be using for this project. PyTorch makes the process of loading pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow} and Keras \cite{keras}. PyTorch has been selected as examples of how to use CodeBERT and its derivatives (the pre-trained models we will be using in project) were done in PyTorch, simplifying the development of our model.\\
 
 \noindent
-PyTorch simply provides a framework to do machine learning work, but it does not provide the implementation of the models, nor the pre-trained weights to load into the models. For that, we will use Huggingface. Huggingface provides not only implementations of models that can be loaded into frameworks like PyTorch, Tensorflow, Keras, and etc..., but also a cloud-platform to host pre-trained models \cite{huggingface}. 
+PyTorch simply provides a framework to do machine learning work, but it does not provide the implementation of the models, nor the pre-trained weights to load into the models. For that, we will use Huggingface. Huggingface provides not only implementations of models that can be loaded into frameworks like PyTorch, Tensorflow, Keras, and etc..., but also a cloud-platform to host pre-trained models \cite{huggingface}.\\
+
+\noindent
+\textbf{Tensors}\\
+
+\noindent
+Tensors are an important data structure in machine-learning frameworks, and they will come-up frequently later in this thesis. The precise definition of tensors is best left for mathematicians and physicists, but for our purposes we will treat a tensor as multidimensional arrays of numbers that work well on GPUs \cite{deeplearning-mit}.
 
 \subsubsection{Tokeniser}
 
 Tokenisation is an important step when doing natural-language processing. When processing natural-language, or code, we cannot input as text into the model directly. First, we must \emph{tokenise} the text. That is, break the input down into tokens which the model does understand.\\
 
 \noindent
-Earlier, we briefly mentioned that RoBERTa and, by extension, CodeBERT has a 512 token limit. This means we can only input 512 \emph{tokens} at a time. Usually, a token corresponds to more than one character so this 512 token limit allows for input much greater than 512 tokens.\\
+Earlier, we briefly mentioned that RoBERTa and, by extension, CodeBERT has a 512 token limit. This means we can only input 512 \emph{tokens} at a time. Usually, a token corresponds to more than one character so this 512 token limit allows for input much greater than 512 characters.\\
 
 \noindent
-The CodeBERT tokeniser has learned what tokens are important for natural-langauge and code, and will therefore tokenise input appropriately for that context. For this project, we do not necessarily have to add additional tokens to the tokeniser\footnote{We will be adding additional tokens, but for an alternative reason. We will come back to this later.} as the CodeBERT tokeniser has already learned how to do this during pre-training.\\
+The CodeBERT tokeniser has learned what tokens are important for natural-langauge and code, and will therefore tokenise input appropriately for that context. For this project, we do not necessarily have to add additional tokens to the tokeniser\footnote{We will be adding additional tokens, but for an alternative reason. We will come back to this later.} as the CodeBERT tokeniser has already learned how to tokenize Java and natural-langauge during pre-training.\\
 
 \noindent
 See Appendix \ref{appendix:tokenizer-example} for an example of how CodeBERT tokenises input.

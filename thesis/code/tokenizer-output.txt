@@ -1,0 +1,5 @@
+// natural language tokens
+['Returns', 'the', 'largest', 'int', 'in', 'a', 'list', 'of', 'integers']
+
+// code tokens
+['public', 'int', 'get', 'L', 'arg', 'est', 'Int', '(', 'List', '<', 'Integer', '>', 'items', ')', '{', 'int', 'largest', 'Element', '=', 'Integer', '.', 'MIN', '_', 'VALUE', ';', 'for', '(', 'int', 'i', '=', '0', ';', 'i', '<', 'items', '.', 'size', '();', 'i', '++)', '{', 'if', '(', 'items', '.', 'get', '(', 'i', ')', '>', 'largest', 'Element', ')', '{', 'largest', 'Element', '=', 'items', '.', 'get', '(', 'i', ');', '}', '}', 'return', 'largest', 'Element', ';', '}']
