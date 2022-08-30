@@ -153,7 +153,17 @@ PyTorch simply provides a framework to do machine learning work, but it does not
 
 \subsubsection{Tokeniser}
 
-Tokenisation is an important step when using a model based on Transformers, and is important to explain before moving on. 
+Tokenisation is an important step when doing natural-language processing. When processing natural-language, or code, we cannot input as text into the model directly. First, we must \emph{tokenise} the text. That is, break the input down into tokens which the model does understand.\\
+
+\noindent
+Earlier, we briefly mentioned that RoBERTa and, by extension, CodeBERT has a 512 token limit. This means we can only input 512 \emph{tokens} at a time. Usually, a token corresponds to more than one character so this 512 token limit allows for input much greater than 512 tokens.\\
+
+\noindent
+The CodeBERT tokeniser has learned what tokens are important for natural-langauge and code, and will therefore tokenise input appropriately for that context. For this project, we do not necessarily have to add additional tokens to the tokeniser\footnote{We will be adding additional tokens, but for an alternative reason. We will come back to this later.} as the CodeBERT tokeniser has already learned how to do this during pre-training.\\
+
+\noindent
+See Appendix \ref{appendix:tokenizer-example} for an example of how CodeBERT tokenises input.
+
 
 \subsubsection{Embeddings}
 

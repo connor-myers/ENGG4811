@@ -10,4 +10,16 @@ Figure \ref{sink-tank-default-source-config}, below, is a real default configura
 \label{sink-tank-default-source-config}
 \end{figure}
 
-\newpage
+\chapter{CodeBERT Tokenisation Example}
+\label{appendix:tokenizer-example}
+Figure \ref{tokenizer-example}, below, shows how an example Java method is tokenised by CodeBERT's tokeniser. The tokeniser also adds special tokens for newlines and spaces, but these have been removed for readability.\\
+
+\begin{figure}[h]
+    \lstinputlisting[style=mystyle, language=Java]{code/tokenizer-input.java}
+    \lstinputlisting[style=mystyle]{code/tokenizer-output.txt}
+    \caption{A simple NL-code pair before and after it is tokenized}
+    \label{tokenizer-example}
+\end{figure}
+
+\noindent
+What is important to notice is that the tokeniser doesn't necessarily split based on words. For the natural-language section, it has, but not for the code. For example, the method call has been split into numerous tokens despite being one word. For our use-case, we probably do not want method calls to be split like this as what methods are being used is a really good hint to determine if a method is a security sensitive methods, so it would best to add method names in their entirety as tokens. 
