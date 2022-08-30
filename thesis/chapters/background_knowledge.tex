@@ -138,16 +138,22 @@ For instance, there are many tasks that require a model to understand the relati
 Using pre-trained models enables us to avoid `doubling-up' on work that has already done and, in our-case, gain access to sophisticated models developed by large tech companies with an efficacy that would simply not be possible if we were to develop a model from scratch.\\
 
 \noindent
-In the case of this thesis project, we simply need to select a pre-trained model that has been trained on both natural-language and Java code, and also understands the relationship between the two. Then, we can perform additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done \\
+In the case of this thesis project, we simply need to select a pre-trained model that has been trained on both natural-language and Java code, and also understands the relationship between the two. Then, we can perform additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive\footnote{The process is not quite this simple. We will need to add an additional classification layer and modify the existing pre-trained model. We will return to this topic later in the thesis.}. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done \\
 
 \noindent
 This dicussion of pre-trained models will continue in the literature review, where we will identify an appropriate pre-trained model for this project.
 
-\subsubsection{PyTorch}
+\subsubsection{PyTorch and Huggingface}
 
-Explain tensors here as well
+\noindent
+PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will be using for this project. PyTorch makes the process of loading pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow} and Keras \cite{keras}. PyTorch has been selected as examples of how to use CodeBERT and its derivatives (the pre-trained models we will be using in project) were done in PyTorch, simplifying the development of our model.\\
+
+\noindent
+PyTorch simply provides a framework to do machine learning work, but it does not provide the implementation of the models, nor the pre-trained weights to load into the models. For that, we will use Huggingface. Huggingface provides not only implementations of models that can be loaded into frameworks like PyTorch, Tensorflow, Keras, and etc..., but also a cloud-platform to host pre-trained models \cite{huggingface}. 
 
 \subsubsection{Tokeniser}
+
+Tokenisation is an important step when using a model based on Transformers, and is important to explain before moving on. 
 
 \subsubsection{Embeddings}
 
