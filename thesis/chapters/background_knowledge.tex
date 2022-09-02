@@ -104,10 +104,10 @@ Long short-term memory networks (LSTMs) are one methodology of having an RNN rem
 \subsubsection{Transformer Architecture}
 
 \noindent
-It is not an exageration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times) and thereby the introduction of the Transformer architecture has completely revolutionalised not just natural-language processing, but all fields within machine-learning.\\
+It is not an exageration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times), and thereby the introduction of the Transformer architecture, has completely revolutionalised not just natural-language processing, but all fields within machine-learning.\\
 
 \noindent
-Given Transformers are currently the cutting-edge technology for most machine-learning tasks, explaining exactly how they function is out-of-scope for this undergraduate thesis. However, for the purposes of this thesis, all that needs to be understood is that they, essentially, do everything RNNs can do, only better.\\
+Given Transformers are currently the cutting-edge technology for most machine-learning tasks, explaining exactly how they function is out-of-scope for this undergraduate thesis. With that being said, we will discuss the most critical aspects of transformers and BERT-like models in order to develop a sound enough understanding to understand this thesis topic moving forward. \\
 
 \noindent
 Perhaps the most useful property of the Transformer architecture is input processing can be parallelised. That is, all tokens of an input sequence can be processed simultaneously. This means these models can more efficiently exploit GPUs, which excel at parallelised workflows. With parallelisation built into the architecture, this translates to extraordinary performance improvements compared to traditional architectures \cite{attention}.\\
@@ -143,7 +143,7 @@ For instance, there are many tasks that require a model to understand the relati
 Using pre-trained models enables us to avoid `doubling-up' on work that has already done and, in our-case, gain access to sophisticated models developed by large tech companies with an efficacy that would simply not be possible if we were to develop a model from scratch.\\
 
 \noindent
-In the case of this thesis project, we simply need to select a pre-trained model that has been trained on both natural-language and Java code, and also understands the relationship between the two. Then, we can perform additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive\footnote{The process is not quite this simple. We will need to add an additional classification layer and modify the existing pre-trained model. We will return to this topic later in the thesis.}. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done \\
+In the case of this thesis project, we simply need to select a pre-trained model that has been trained on both natural-language and Java code, and also understands the relationship between the two. Then, we can perform additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive\footnote{The process is not quite this simple. We will need to add an additional classification layer and modify the existing pre-trained model. We will return to this topic later in the thesis.}. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done.\\
 
 \noindent
 This dicussion of pre-trained models will continue in the literature review, where we will identify an appropriate pre-trained model for this project.
@@ -175,7 +175,25 @@ The CodeBERT tokeniser has learned what tokens are important for natural-langaug
 \noindent
 See Appendix \ref{appendix:tokenizer-example} for an example of how CodeBERT tokenises input.
 
-
 \subsubsection{Embeddings}
+
+\noindent
+For our purposes, token embeddings can be considered as vector representations of words (or word fragments). That is, they map a token to a point in vector-space. This is an important aspect of NLP as this is how NLP models understand \emph{context}, as related words will map more closely together in vector-space than disimilar words. For example, homonyms --- words spelt the same but with different meanings --- will produce embeddings that are \emph{not} close together in vector-space because, despite being the same word, they have different meanings. Naturally, how models based on the transformer architecture do this is out-of-scope for this thesis, however it corresponds to the `Multi-head Attention' block in Figure \ref{transformer}.\\
+
+\noindent
+CodeBERT, for example, has 768 nodes on the last layer of its hidden network. This means that for each token we feed into CodeBERT we receive an embedding of size 768. In the case of codeBERT, there is some additional embedding information included in the embedding in addition to the token embedding. These additional embeddings are the \emph{segment} embeddings and \emph{positional} embeddings. The segment embedding provides information whether the embedding is part of the code or natural-language segment of the input. And, the positional embedding indicates where the token the embedding is for was located in the input sequence. The token embedding, segments embedding, and positional embedding are added elementwise to produce the final embedding for a given input token. \\
+
+\noindent
+Understanding what an embedding is is critical moving forward with thesis. This output embedding, which, in the case of BERT models, will be a vector of size $n \times 768$ --- where $n$ is the number of input tokens into the model. How we interpret this result is very important. For instance, in order to perform a classification (i.e., label an input-sequence according to a set of pre-defined categories), that $n \times 768$ tensor needs to somehow be transformed (the technical term is `pooled') into a tensor of size 768. In other words, we need to pool the individual embeddings for each token into a singular embedding to generate an embedding for the \emph{entire} input sequence. I.e., a sequence embedding. There are numerous ways to perform this pooling; we will briefly outline three of these methods.
+
+\begin{enumerate}
+    \item \textbf{Mean-pooling:} Each of the $n$ embeddings are added together elementwise and divided by $n$. That is, the average embedding for some input.
+    \item \textbf{Max-pooling:} The max value of each embedding elementwise produces the final embedding. I.e., a new embedding is constructed where the value at index $i$ is the max value over all the $n$ embeddings at index $i$.
+    \item \textbf{CLS-pooling:} With BERT models, you can include a special [CLS] as the first token of an input sequence. Due to how BERT works, this token will include contextual information for the \emph{entire} sequence embedding. So, to produce the final 768-size embedding for a sequence, you simply take the embedding for the [CLS] token and treat it as your sequence embedding.
+\end{enumerate}
+
+
+
+
 
 \subsubsection{Loss}
