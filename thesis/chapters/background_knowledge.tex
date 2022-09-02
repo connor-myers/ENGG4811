@@ -160,7 +160,7 @@ PyTorch simply provides a framework to do machine learning work, but it does not
 \textbf{Tensors}\\
 
 \noindent
-Tensors are an important data structure in machine-learning frameworks, and they will come-up frequently later in this thesis. The precise definition of tensors is best left for mathematicians and physicists, but for our purposes we will treat a tensor as multidimensional arrays of numbers that work well on GPUs \cite{deeplearning-mit}.
+Tensors are an important data structure in machine-learning frameworks, and they will come-up many times in this thesis. The precise definition of tensors is best left for mathematicians and physicists, but for our purposes we will treat tensors as n-dimensional arrays of real numbers that run very fast on GPUs \cite{deeplearning-mit}.
 
 \subsubsection{Tokeniser}
 
@@ -184,10 +184,10 @@ For our purposes, token embeddings can be considered as vector representations o
 CodeBERT, for example, has 768 nodes on the last layer of its hidden network. This means that for each token we feed into CodeBERT we receive an embedding of size 768. In the case of codeBERT, there is some additional embedding information included in the embedding in addition to the token embedding. These additional embeddings are the \emph{segment} embeddings and \emph{positional} embeddings. The segment embedding provides information whether the embedding is part of the code or natural-language segment of the input. And, the positional embedding indicates where the token the embedding is for was located in the input sequence. The token embedding, segments embedding, and positional embedding are added elementwise to produce the final embedding for a given input token. \\
 
 \noindent
-Understanding what an embedding is is critical moving forward with thesis. This output embedding, which, in the case of BERT models, will be a vector of size $n \times 768$ --- where $n$ is the number of input tokens into the model. How we interpret this result is very important. For instance, in order to perform a classification (i.e., label an input-sequence according to a set of pre-defined categories), that $n \times 768$ tensor needs to somehow be transformed (the technical term is `pooled') into a tensor of size 768. In other words, we need to pool the individual embeddings for each token into a singular embedding to generate an embedding for the \emph{entire} input sequence. I.e., a sequence embedding. There are numerous ways to perform this pooling; we will briefly outline three of these methods.
+Understanding what an embedding is is critical moving forward with thesis. This output embedding, which, in the case of BERT models, will be a vector of size $n \times 768$, where $n$ is the number of input tokens into the model. How we interpret this result is very important. For instance, in order to perform a classification (i.e., label an input-sequence according to a set of pre-defined categories), that $n \times 768$ tensor needs to somehow be transformed (the technical term is `pooled') into a tensor of size 768. In other words, we need to pool the individual embeddings for each token into a singular embedding to generate an embedding for the \emph{entire} input sequence. I.e., a sequence embedding. There are numerous ways to perform this pooling; we will briefly outline three of these methods.
 
 \begin{enumerate}
-    \item \textbf{Mean-pooling:} Each of the $n$ embeddings are added together elementwise and divided by $n$. That is, the average embedding for some input.
+    \item \textbf{Mean-pooling:} Each of the $n$ embeddings are added together elementwise and divided by $n$. That is, the average embedding for some input sequence.
     \item \textbf{Max-pooling:} The max value of each embedding elementwise produces the final embedding. I.e., a new embedding is constructed where the value at index $i$ is the max value over all the $n$ embeddings at index $i$.
     \item \textbf{CLS-pooling:} With BERT models, you can include a special [CLS] as the first token of an input sequence. Due to how BERT works, this token will include contextual information for the \emph{entire} sequence embedding. So, to produce the final 768-size embedding for a sequence, you simply take the embedding for the [CLS] token and treat it as your sequence embedding.
 \end{enumerate}
