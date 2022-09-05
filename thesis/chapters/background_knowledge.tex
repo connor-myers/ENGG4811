@@ -192,8 +192,16 @@ Understanding what an embedding is is critical moving forward with thesis. This 
     \item \textbf{CLS-pooling:} With BERT models, you can include a special [CLS] as the first token of an input sequence. Due to how BERT works, this token will include contextual information for the \emph{entire} sequence embedding. So, to produce the final 768-size embedding for a sequence, you simply take the embedding for the [CLS] token and treat it as your sequence embedding.
 \end{enumerate}
 
-
-
-
-
 \subsubsection{Loss}
+
+\noindent
+In the simplest term, `loss' is a measure of how incorrect a model's prediction input. Loss is used both in the context of a single input and sequence of input data, i.e., the average loss \cite[p.~11]{python-machine-learning}. Perhaps a more convenient way to think about loss is that it is a measure of how confident the model is in its answer; a high-loss means that model is not confident, whereas a low loss means the model is extremely confident in its answer. It should be noted that when we are optimising a machine-learning model, i.e., systematically adjusting all the weights and biases from a labelled dataset, we are not optimising the accuracy but rather loss. That is, the goal of training a neural network is to minimise the loss. Of course, in-doing so, the accuracy should indirectly improve. While accuracy and loss are not always directly correlated, if they are not it is usually indicitive of more fundamental problems.\\
+
+\noindent
+For instance, we can have a model that is extremely accurate with its answers but not very confident, i.e., a high loss. For example, if we have a classifier model and generate the final probabilities, our final answer is whichever probability is greatest. However if our model responds with probabilities that look like: $[0.25, 0.25, 0.24, 0.26]$, where each of these values is the probability of the input sequence being one of the labels in our dataset. Technically, the model has predicted our input sequence was the 4th class, as it has a probablity of $0.26$. Even if this predicition is correct, however, it is far from ideal as we would expect a perfect model, in the case of the 4th label indeed being correct, to output $[0.0,0.0,0.0,1.0]$. Obviously no model would perform \emph{that} well, but the sentiment stands that our model should be able to \emph{confidently} predict its answers. That way, we can be reassured our model is learning \emph{generalised} representations of the data and will be able to perform effectively on real-world data it has not yet seen before. In summary: not only do we want our model to be accurate, we also want it to be confident in its answer.\\
+
+\noindent
+Loss is calculated using a \emph{loss function}. Just as with activation functions, there are many loss functions, each with their pros and cons. Naturally, choice of loss function is quite an important decision when designing a model. Typically, however, there are common choices of loss functions used for particular tasks. Our task for this thesis is a multi-label classification task. That is, given some input (a code and natural-language pair) assign a label to that input corresponding to categories of security sensitive methods, i.e., source, sink, sanitiser, or none. The usual choice of loss function for multi-label classification tasks such as our task is the cross-entropy loss function\cite[p.~17]{AggarwalCharuC2018Nnad}.\\
+
+\noindent
+Exactly how cross-entropy works is quite complicated and certainly out of scope. However, for the purposes of understanding this thesis, we will treat cross-entropy as a function that takes in two probability distributions (i.e., our model's predictions versus the expected probabilities) and computes a loss comensurate to how `disimilar' the probability distributions are. 
