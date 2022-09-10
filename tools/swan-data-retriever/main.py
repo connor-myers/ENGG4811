@@ -147,17 +147,17 @@ def main():
             if type == "source":
                 for example in examples_data:
                     new_example = ExampleData(example.code, example.javadoc)
-                    new_example.label = "0"
+                    new_example.label = 0
                     sources.append(new_example)
             if type == "sink":
                 for example in examples_data:
                     new_example = ExampleData(example.code, example.javadoc)
-                    new_example.label = "1"
+                    new_example.label = 1
                     sinks.append(new_example)
             if type == "sanitizer":
                 for example in examples_data:
                     new_example = ExampleData(example.code, example.javadoc)
-                    new_example.label = "2"
+                    new_example.label = 2
                     sanitizers.append(new_example)
 
     random.shuffle(sources)

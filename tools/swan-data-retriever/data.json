@@ -1130,39 +1130,6 @@
           "parameters": [],
           "return": false
         },
-        "link": "https:\/\/docs.spring.io\/spring\/docs\/current\/javadoc-api\/org\/springframework\/jdbc\/core\/JdbcTemplate.html",
-        "type": [
-          "sink"
-        ],
-        "cwe": [
-          "CWE089"
-        ],
-        "javadoc": {
-          "method": "Execute a query given static SQL, reading the ResultSet with a ResultSetExtractor. Uses a JDBC Statement, not a PreparedStatement. If you want to execute a static query with a PreparedStatement, use the overloaded {@code query} method with {@code null} as argument array.",
-          "class": "This is the central class in the JDBC core package. It simplifies the use of JDBC and helps to avoid common errors. It executes core JDBC workflow, leaving application code to provide SQL and extract results. This class executes SQL queries or updates, initiating iteration over ResultSets and catching JDBC exceptions and translating them to the generic, more informative exception hierarchy defined in the org.springframework.dao package. Code using this class need only implement callback interfaces, giving them a clearly defined contract. The {@link PreparedStatementCreator} callback interface creates a prepared statement given a Connection, providing SQL and any necessary parameters. The {@link ResultSetExtractor} interface extracts values from a ResultSet. See also {@link PreparedStatementSetter} and {@link RowMapper} for two popular alternative callback interfaces. Can be used within a service implementation via direct instantiation with a DataSource reference, or get prepared in an application context and given to services as bean reference. Note: The DataSource should always be configured as a bean in the application context, in the first case given to the service directly, in the second case to the prepared template. Because this class is parameterizable by the callback interfaces and the {@link org.springframework.jdbc.support.SQLExceptionTranslator} interface, there should be no need to subclass it. All SQL operations performed by this class are logged at debug level, using \"org.springframework.jdbc.core.JdbcTemplate\" as log category."
-        },
-        "framework": "spring",
-        "discovery": "manual",
-        "name": "org.springframework.jdbc.core.JdbcTemplate.query",
-        "jar": "spring-jdbc",
-        "comment": "sql query",
-        "parameters": [
-          "java.lang.String",
-          "org.springframework.jdbc.core.ResultSetExtractor"
-        ],
-        "return": "java.lang.Object",
-        "dataIn": {
-          "parameters": [
-            0
-          ],
-          "return": false
-        }
-      },
-      {
-        "dataOut": {
-          "parameters": [],
-          "return": false
-        },
         "link": "",
         "type": [
           "source"
@@ -3133,32 +3100,6 @@
           "return": false
         },
         "link": "",
-        "type": [],
-        "cwe": [],
-        "javadoc": {
-          "method": "",
-          "class": ""
-        },
-        "framework": "spring",
-        "discovery": "manual",
-        "name": "org.springframework.web.socket.sockjs.transport.TransportHandlingSockJsService.access$200",
-        "jar": "spring-websocket",
-        "comment": "Counter example for sanitizer (implicit method)",
-        "parameters": [
-          "org.springframework.web.socket.sockjs.transport.TransportHandlingSockJsService"
-        ],
-        "return": "org.apache.commons.logging.Log",
-        "dataIn": {
-          "parameters": [],
-          "return": false
-        }
-      },
-      {
-        "dataOut": {
-          "parameters": [],
-          "return": false
-        },
-        "link": "",
         "type": [
           "source"
         ],
@@ -3261,39 +3202,6 @@
         "return": "java.util.List",
         "dataIn": {
           "parameters": [],
-          "return": false
-        }
-      },
-      {
-        "dataOut": {
-          "parameters": [],
-          "return": true
-        },
-        "link": "https:\/\/docs.spring.io\/spring\/docs\/3.2.8.RELEASE_to_3.2.9.RELEASE\/Spring%20Framework%203.2.8.RELEASE\/org\/springframework\/web\/util\/OpaqueUriComponents.html",
-        "type": [
-          "sanitizer"
-        ],
-        "cwe": [
-          "CWE079",
-          "CWE601"
-        ],
-        "javadoc": {
-          "method": "Encode all URI components using their specific encoding rules, and returns the result as a new {@code UriComponents} instance.",
-          "class": "Extension of {@link UriComponents} for opaque URIs."
-        },
-        "framework": "spring",
-        "discovery": "manual",
-        "name": "org.springframework.web.util.OpaqueUriComponents.encode",
-        "jar": "spring-web-4.3.9.RELEASE.jar",
-        "comment": "",
-        "parameters": [
-          "java.lang.String"
-        ],
-        "return": "org.springframework.web.util.UriComponents",
-        "dataIn": {
-          "parameters": [
-            0
-          ],
           "return": false
         }
       },
@@ -5559,38 +5467,6 @@
         "return": "void",
         "dataIn": {
           "parameters": [],
-          "return": false
-        }
-      },
-      {
-        "dataOut": {
-          "parameters": [],
-          "return": false
-        },
-        "link": "https:\/\/docs.spring.io\/spring\/docs\/current\/javadoc-api\/org\/springframework\/jdbc\/core\/JdbcTemplate.html",
-        "type": [
-          "sink"
-        ],
-        "cwe": [
-          "CWE089"
-        ],
-        "javadoc": {
-          "method": "Issue a single SQL execute, typically a DDL statement.",
-          "class": "This is the central class in the JDBC core package. It simplifies the use of JDBC and helps to avoid common errors. It executes core JDBC workflow, leaving application code to provide SQL and extract results. This class executes SQL queries or updates, initiating iteration over ResultSets and catching JDBC exceptions and translating them to the generic, more informative exception hierarchy defined in the org.springframework.dao package. Code using this class need only implement callback interfaces, giving them a clearly defined contract. The {@link PreparedStatementCreator} callback interface creates a prepared statement given a Connection, providing SQL and any necessary parameters. The {@link ResultSetExtractor} interface extracts values from a ResultSet. See also {@link PreparedStatementSetter} and {@link RowMapper} for two popular alternative callback interfaces. Can be used within a service implementation via direct instantiation with a DataSource reference, or get prepared in an application context and given to services as bean reference. Note: The DataSource should always be configured as a bean in the application context, in the first case given to the service directly, in the second case to the prepared template. Because this class is parameterizable by the callback interfaces and the {@link org.springframework.jdbc.support.SQLExceptionTranslator} interface, there should be no need to subclass it. All SQL operations performed by this class are logged at debug level, using \"org.springframework.jdbc.core.JdbcTemplate\" as log category."
-        },
-        "framework": "spring",
-        "discovery": "manual",
-        "name": "org.springframework.jdbc.core.JdbcTemplate.execute",
-        "jar": "spring-jdbc",
-        "comment": "Sink",
-        "parameters": [
-          "java.lang.String"
-        ],
-        "return": "void",
-        "dataIn": {
-          "parameters": [
-            0
-          ],
           "return": false
         }
       },
@@ -7910,36 +7786,6 @@
         "return": "void",
         "dataIn": {
           "parameters": [],
-          "return": false
-        }
-      },
-      {
-        "dataOut": {
-          "parameters": [],
-          "return": false
-        },
-        "link": "https:\/\/docs.spring.io\/spring\/docs\/4.3.9.RELEASE\/javadoc-api\/org\/springframework\/web\/socket\/handler\/ConcurrentWebSocketSessionDecorator.html",
-        "type": [
-          "sink"
-        ],
-        "cwe": [],
-        "javadoc": {
-          "method": "Send a WebSocket message: either {@link TextMessage} or {@link BinaryMessage}.",
-          "class": "Wrap a {@link org.springframework.web.socket.WebSocketSession WebSocketSession} to guarantee only one thread can send messages at a time. If a send is slow, subsequent attempts to send more messages from other threads will not be able to acquire the flush lock and messages will be buffered instead -- at that time, the specified buffer-size limit and send-time limit will be checked and the session closed if the limits are exceeded."
-        },
-        "framework": "spring",
-        "discovery": "manual",
-        "name": "org.springframework.web.socket.handler.ConcurrentWebSocketSessionDecorator.sendMessage",
-        "jar": "spring-websocket",
-        "comment": "Sink",
-        "parameters": [
-          "org.springframework.web.socket.WebSocketMessage"
-        ],
-        "return": "void",
-        "dataIn": {
-          "parameters": [
-            0
-          ],
           "return": false
         }
       },
