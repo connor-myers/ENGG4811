@@ -54,11 +54,37 @@ The SVM model achieved an average (of all classes) recall of 85\% and an average
 \noindent
 Unfortunately, the training dataset is not publicly available and hence we will not be able to include it in our training data for this thesis.
 
+\section{Model Architecture}
+\subsection{CodeBERT}
+\subsection{UnixCode}
+
+\subsection{SVM tf-idf}
+\subsection{SVM-Transformer Hybrid}
+
 \section{Machine Learning Techniques}
 
 Here we will discuss a variety of techniques for machine-learning learned from the literature that we will apply to this project to improve our model's performance. 
 
 \subsection{Pooling Types}
+As mentioned earlier in the background knowledge section of this thesis, the type of pooling used in a model based on the transformer architecture is an important decision to be made. Typically, models based on BERT use a special \emph{CLS} (classification) token at the start of the input and use the final embedding of that single token to represent the embedding of the entire sequence. \\
+
+\noindent
+While CLS-pooling is a common technique, there is evidence in the literature that suggests alternative pooling techniques, such as mean-pooling and max-pooling, may be more suitable for in certain applications. For instance, experiments conducted for \emph{DefSent} \cite{tsukagoshi2021defsent} --- an NLP model which aimed to produce sentence embeddings for definitions of words to be similar to the word itself --- found inconclusive results on which pooling strategy worked best.\\
+
+\noindent
+For instance, when running the experiment on RoBERTa-base (recalling that CodeBERT and UnixCoder use an architecture identical to RoBERTa), they found no significant difference in the performance of the three pooling types, i.e., CLS, mean, and max pooling. SentenceBERT, another fine-tuned model trained on the same task as DefBERT, saw better performance using mean-pooling \cite{reimers2019sentence}. Finally, a paper by Ma et al., also regarding sentence embeddings of natural-language, says that despite CLS-pooling typically being used for fine-tuning for classification tasks, they found that mean-pooling performed best in all the categories they tested for \cite{ma2019universal}. \\
+
+\noindent
+This contradicts the widespread belief that CLS-pooling for transformer models provides the best performance \textbf{CITE HERE!}. Furthermore, it also contradicts the default implementation of the sequence classification task for Roberta in HuggingFace, which uses CLS-pooling.\\
+
+\noindent
+With all this evidence in mind, it suggests we should try these three popular pooling types for our model to determine which is the best-performing for our use-case, as the literature is suggesting there is no `definitively' best pooling strategy. \\
+
+\noindent
+As eluded to earlier, this poses an issue as HuggingFace's default implementation of SequenceClassification for Roberta uses CLS-pooling, which means we will need to reimplement this class ourselves. Thankfully, the downstream tasks done by the CodeBERT authors for clone detection and blank show an example of how to do mean and max pooling respectively. 
+
+\noindent
+
 
 \subsection{Transformer-SVM Hybrid Model}
 
