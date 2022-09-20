@@ -56,10 +56,27 @@ Unfortunately, the training dataset is not publicly available and hence we will 
 
 \section{Model Architecture}
 \subsection{CodeBERT}
-CodeBERT is a large pre-trained model by Microsoft for code and natural-language tasks. It uses an architecture identical to RoBERTa\footnote{More specifically, RoBERTa-base with 125M parameters. See: \url{https://aclanthology.org/2021.ccl-1.108/}}, and has been trained on millions of bimodal examples of code (Go, Java, Javascript, PHP, Python, and Ruby) and natural-language (English) pairs. This makes it suitable for downstream tasks involving the relationship between natural-language and code. \\
+CodeBERT \cite{CodeBERT} is a large pre-trained model by Microsoft for code and natural-language tasks. It uses an architecture identical to RoBERTa\footnote{More specifically, RoBERTa-base with 125M parameters. See: \url{https://aclanthology.org/2021.ccl-1.108/}}, and has been trained on millions of bimodal\footnote{It has also been trained on some unimodal examples, i.e., code or natural-language alone for the Replaced Token Detection pre-training objective.} examples of code (Go, Java, Javascript, PHP, Python, and Ruby) and natural-language (English). For example, a Java method and its corresponding Javadoc. This makes it suitable for downstream tasks involving the relationship between natural-language and code. \\
 
 \noindent
-Since CodeBERT is based on RoBERTa, it uses the transformer architecture, which was briefly outlined in section \ref{transformers}. 
+Since CodeBERT is based on RoBERTa, it uses the transformer architecture, which was briefly outlined in section \ref{transformers}. CodeBERT takes a maximum input of 512 tokens (510-511 usable, depending on what pooling style is used) and generates an embedding (Tensor) of size 768 for each provided token. As mentioned in section \ref{embedding}, we require a \emph{sequence} embedding (i.e., the embedding for the entire sequence), not a token embedding (i.e., the embedding for each token) to perform our classification. Hence, these 512 token embeddings need to be \emph{pooled} into a sequence embedding. We can either: take the mean of all the token embeddings element-wise (mean-pooling), take the maximum value of each of the token embeddings to construct a new size $768$ embedding (max-pooling), or simply take the embedding of the first token (the [CLS] (classification) token) and treat it as a our sequence embedding. \\
+
+\noindent
+Because CodeBERT is trained on learning the relationship between code and natural-langauge, this makes it suitable for tasks involving the intersection of code and natural-language. CodeBERT was benchmarked by the creators on downstream tasks including: documentation generation (generates natural-language description of code from segment of code), and natural-langauge code-search (provides semantically most related code from natural-langauge description). While none of these tasks are a classification task, as our task is, CodeBERT can easily be augmented to be a classification model by adding an additional classification head on top of CodeBERT. \\
+
+\noindent
+In fact, since CodeBERT's architecture is \emph{identical} to RoBERTa-base (the structure of the neural network for the two models is exactly the same; they differ only in the weights and biases to be loaded) we can use existing classification code for RoBERTa-base (a much more popular and well-supported model, compared to CodeBERT) provided in the HuggingFace Transformer's library\footnote{More information on this library can be found here: \url{https://huggingface.co/docs/transformers/index}}, with only slight modifications, to implement our model.\\
+
+\noindent
+Of course, CodeBERT has not been trained on our exact task. The pre-trained model of CodeBERT has been trained two tasks that are far more general than any downstream task. Specifically, CodeBERT has been pre-trained on Masked Language Modelling (MLM), and Replaced Token Detection (RTD).\\
+
+\noindent
+In Masked Language Modelling, for each bimodal training example, 15\% of the tokens are masked (i.e., hidden) from CodeBERT and CodeBERT must `guess' what the hidden tokens were. From this guess, a loss value is generated depending on how good CodeBERT's guess was and the weights and biases are then optimised in the usual fashion (i.e., gradient descent). For Replaced Token Detection, CodeBERT is provided unimodal data (code \emph{or} natural-language) and a certain number of tokens are replaced with other tokens. Then, CodeBERT must classify each token as replaced or not replaced. Of course, a loss is generated depending on how accurate the classification was and the model is optimised accordingly. \\
+
+\noindent
+Because CodeBERT has only been trained on these two general tasks, for it to classify security-sensitive methods accurately, it will need to be fine-tuned, as described in Section \ref{fine-tuning}.
+
+
 
 \subsection{UnixCode}
 
@@ -83,7 +100,7 @@ For instance, when running the experiment on RoBERTa-base (recalling that CodeBE
 With all this evidence in mind, it suggests we should try these three popular pooling types for our model to determine which is the best-performing for our use-case, as the literature is suggesting there is no definitively best pooling strategy. \\
 
 \noindent
-As eluded to earlier, this poses an issue as HuggingFace's default implementation of SequenceClassification for Roberta uses CLS-pooling, which means we will need to reimplement this class ourselves. Thankfully, the downstream tasks done by the CodeBERT authors for clone detection and blank show an example of how to do mean and max pooling respectively. 
+As eluded to earlier, this poses an issue as HuggingFace's default implementation of SequenceClassification for Roberta uses CLS-pooling, which means we will need to reimplement this class ourselves. Thankfully, the downstream tasks done by the CodeBERT authors for clone detection and \textbf{DON'T FORGET TO ADD THIS} show an example of how to do mean and max pooling respectively. 
 
 \noindent
 
