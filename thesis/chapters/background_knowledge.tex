@@ -207,4 +207,32 @@ For instance, we can have a model that is extremely accurate with its answers bu
 Loss is calculated using a \emph{loss function}. Just as with activation functions, there are many loss functions, each with their pros and cons. Naturally, choice of loss function is quite an important decision when designing a model. Typically, however, there are common choices of loss functions used for particular tasks. Our task for this thesis is a multi-label classification task. That is, given some input (a code and natural-language pair) assign a label to that input corresponding to categories of security sensitive methods, i.e., source, sink, sanitiser, or none. The usual choice of loss function for multi-label classification tasks such as our task is the cross-entropy loss function\cite[p.~17]{AggarwalCharuC2018Nnad}.\\
 
 \noindent
-Exactly how cross-entropy works is quite complicated and certainly out of scope. However, for the purposes of understanding this thesis, we will treat cross-entropy as a function that takes in two probability distributions (i.e., our model's predictions versus the expected probabilities) and computes a loss comensurate to how `disimilar' the probability distributions are \cite[p.~208]{brownlee2019probability}. 
+Exactly how cross-entropy works is quite complicated and certainly out of scope. However, for the purposes of understanding this thesis, we will treat cross-entropy as a function that takes in two probability distributions (i.e., our model's predictions versus the expected probabilities) and computes a loss comensurate to how `disimilar' the probability distributions are \cite[p.~208]{brownlee2019probability}.
+
+\section{Support Vector Machines}
+
+\noindent
+We have spent some time discussing complex and state-of-the-art technologies for machine-learning; deep-learning and, more specifically, the transformer architecture. However, in order to see how effective this architecture is for our task, it would be appropriate to compare the performance to a `base-line' set by a older and more standard architecturefor this task. \\
+
+\noindent
+One such architecture that fits this description is the Support-vector machine architecture. Support-vector machines (SVMs) were created in the 90s and have been a standard tool for machine-learning classifications tasks ever since. For this thesis to be considered succesful, our use of advanced pre-trained models using the transformer architecture should, at the very least, be able to outperform the much simpler and older SVM architecture. \\
+
+\noindent
+SVMs are arguably the most simple learning-model for classification \cite{}. They take data, with one of two labels, and with $n$ number of features, where each feature corresponds to a dimension in an n-dimensional feature-plane, and calculate a `hyperplane' such that the datapoints from the two labels are partitioned on either side of that hyperplane in the $n$-dimensional feature-plane \cite[p.~5]{AbeShigeo2005SVMf}. Furthermore, this hyperplane is optimised in such a way that the distance between the hyperplane and the `support' data (i.e., the two datapoints, one from each label, that is closet to the hyperplane) is maximised \cite{berwick2003idiot}. Figure \ref{hyperplane-image} shows a visual representation of a hyperplane partitioning two sets of labelled data. \\
+
+\noindent
+As we will come to see later in this thesis, we will be using feature-planes with dimensions much larger than 2 or 3, such as $768$. Clearly, a $767$ dimension hyperplane partitioning a $768$ dimensional feature-plane is impossible to conceive, so this lower-dimensional analogy will have to suffice.\\
+
+\begin{figure}
+    \includegraphics[scale=0.65]{images/hyperplane.png}
+    \caption{An example of a hyperplane dividing two sets of labeled data in $n=2$ and $n=3$ dimensions \cite{hyperplane}.}
+    \label{hyperplane-image}
+\end{figure}
+
+\noindent
+Inherently, SVMs produce a \emph{binary} classification. This is an issue for us as, for this project, we intend to perform a multilabel classification. However, even though SVMs are strictly a binary classification tool, they can be used for multilabel classification. This can be achieved through a number of techniques, but we will be using the \emph{one-versus-the-rest} technique to produce our multilabel classification\footnote{We will be using the \emph{SGDclassifier} class in the python library `Scikit' which implicitly uses the one-versus-the-rest multilabel classification methodology.}. In one-versus-the-rest classification, we create $K - 1$ binary classifiers, where $K$ is the number of labels. Each classifier classifies the datapoints as being part of the $K_{ith}$ label, or as one of the other $K-1$ remaining labels \cite[p.~182]{BishopChristopherM2006Pram}.
+
+
+\subsection{Term Frequency-Inverse Document Frequency}
+
+Term frequency-inverse document frequency (tf-idf), for the purposes of this thesis, is a methodology to extract features from data.
