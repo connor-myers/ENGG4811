@@ -76,9 +76,12 @@ In Masked Language Modelling, for each bimodal training example, 15\% of the tok
 \noindent
 Because CodeBERT has only been trained on these two general tasks, for it to classify security-sensitive methods accurately, it will need to be fine-tuned, as described in Section \ref{fine-tuning}.
 
+\subsection{UniXcoder}
+\noindent
+UniXcoder is another large pre-trained model created by Microsoft for code and natural-langauge understanding \cite{unixcoder}. UniXcoder is similar to codeBERT in that it was trained on both code and natural-language, and both have 12 layers with 768-dimensional hidden states (i.e., they are the same size)\footnote{This information is not conveyed in the CodeBERT paper directly, but CodeBERT is mentioned to be the same size as roberta-base \cite{CodeBERT}, and roberta-base is described as having 12 layers with 768-dimensional hidden states \cite{roberta}.}. However, these two models differ in key areas. Firstly, unlike codeBERT, UniXcoder is not trained on code directly, but rather on a special abstract syntax tree (AST) generated from the code\footnote{The pseudo-code for the algorithm used to generate the AST can be found on pg. 3 of \cite{unixcoder}}. Secondly, UniXcoder is an encoder-decoder model, unlike codeBERT which is solely an encoder-model \cite{CodeBERT}. Although, this distinction is less importantant for us as, for our task, we will be running UniXcoder in encoder-only mode.\\
 
-
-\subsection{UnixCode}
+\noindent
+For the encoder-only mode, UniXcoder, like CodeBERT, was also trained on the Masked Language Modelling (MLM) objective. For our purposes, since we are not using the decoder mode of UniXcoder, the only fundamental difference between the two models is that UniXcoder was pre-trained using the AST of code instead of the code directly. In the CodeBERT paper, the authors hypothesised that their model was performing worse than another model, Code2Seq \cite{code2seq}, for certain tasks because Code2Seq leverages the syntactic structure of programs (i.e. a program's AST) during pre-training \cite{CodeBERT}. As such, the development of UniXcoder can be thought of as an extension to CodeBERT in which the syntactic structure of the program is incorporated into pre-training.
 
 \subsection{SVM tf-idf}
 \subsection{SVM-Transformer Hybrid}
@@ -102,11 +105,11 @@ With all this evidence in mind, it suggests we should try these three popular po
 \noindent
 As eluded to earlier, this poses an issue as HuggingFace's default implementation of SequenceClassification for Roberta uses CLS-pooling, which means we will need to reimplement this class ourselves. Thankfully, the downstream tasks done by the CodeBERT authors for clone detection and \textbf{DON'T FORGET TO ADD THIS} show an example of how to do mean and max pooling respectively. 
 
-\noindent
+% \noindent
 
-\subsection{Lower-layer Freezing During Fine-tuning}
+% \subsection{Lower-layer Freezing During Fine-tuning}
 
-\emph{This may improve efficiency (i.e., training-times), but there is no evidence in the literature to suggest it improves model performance for small datasets.} \textbf{Finish this later.}
+% \emph{This may improve efficiency (i.e., training-times), but there is no evidence in the literature to suggest it improves model performance for small datasets.} \textbf{Finish this later.}
 
 
 
