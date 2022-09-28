@@ -83,23 +83,23 @@ As demonstrated above, it is easy to see why models that do not have memory are 
 \noindent
 Long short-term memory networks (LSTMs) are one methodology of having an RNN remember context for longer inputs. LSTMs accomplish this by adding `gating-units' to each node, which act to reduce the gradient vanishing and exploding problems, respectively. The exact function of how these gating units work is out of scope, however all one needs to know about them is that this longer-term memory comes at a significant performance cost. These gating-units and, by extension LSTMs, are notoriously slow to train and, in general, are extremely computationally expensive \cite{sundermeyer2012lstm}.
 
-\subsubsection{Summary of RNNs}
-\noindent
-\textbf{Pros}
-\begin{enumerate}
-    \item Understand context
-    \item ...
-\end{enumerate}
+% \subsubsection{Summary of RNNs}
+% \noindent
+% \textbf{Pros}
+% \begin{enumerate}
+%     \item Understand context
+%     \item ...
+% \end{enumerate}
 
-\noindent
-\textbf{Cons}
-\begin{enumerate}
-    \item Extremely slow to train
-    \item Computationally expensive
-    \item Most RNNs cannot understand future context
-    \item Difficulty processing long inputs
-    \item Suffer particularly from vanishing and exploding gradient problems
-\end{enumerate}
+% \noindent
+% \textbf{Cons}
+% \begin{enumerate}
+%     \item Extremely slow to train
+%     \item Computationally expensive
+%     \item Most RNNs cannot understand future context
+%     \item Difficulty processing long inputs
+%     \item Suffer particularly from vanishing and exploding gradient problems
+% \end{enumerate}
 
 \subsubsection{Transformer Architecture}
 \label{transformers}
@@ -111,7 +111,7 @@ It is not an exageration to say that Google's publishing of \emph{Attention Is A
 Given Transformers are currently the cutting-edge technology for most machine-learning tasks, explaining exactly how they function is out-of-scope for this undergraduate thesis. With that being said, we will discuss the most critical aspects of transformers and BERT-like models in order to develop a sound enough understanding to understand this thesis topic moving forward. \\
 
 \noindent
-Perhaps the most useful property of the Transformer architecture is input processing can be parallelised. That is, all tokens of an input sequence can be processed simultaneously. This means these models can more efficiently exploit GPUs, which excel at parallelised workflows. With parallelisation built into the architecture, this translates to extraordinary performance improvements compared to traditional architectures \cite{attention}.\\
+Perhaps the most useful property of the Transformer architecture is input processing can be parallelised. That is, all tokens of an input sequence can be processed simultaneously. This means these models can more efficiently exploit GPU hardware \cite{gpu-parallel}, which excel at parallelised workflows. With parallelisation built into the architecture, this translates to extraordinary performance improvements compared to traditional architectures \cite{attention}.\\
 
 \noindent
 Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand the context of tokens (notably, future context as well) much better than RNNs, including LSTMs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold, however, is for small amounts of data. With tasks that have very small amounts of training data, LSTMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training-time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
@@ -239,6 +239,7 @@ This can be achieved through a number of techniques, but we will be using the \e
 When it comes time to classify datapoints as one of these $K$ labels, we classify using each of the $K$ binary classifiers and select, as the datapoint's label, whichever provides the most confident answer for a particular label \cite[p.~338]{BishopChristopherM2006Pram}. 
 
 \subsection{Term Frequency-Inverse Document Frequency}
+\label{tf-idf}
 
 Term frequency-inverse document frequency (tf-idf), for the purposes of this thesis, is a methodology to extract features from data. More generally, tf-idf is used to determine how import each word in a document is. By extracting out the important keywords in a document --- that is the keywords that are only found in certain labels of a classification task --- we can sometimes train a successful SVM on those important keywords. \\
 
@@ -246,11 +247,5 @@ Term frequency-inverse document frequency (tf-idf), for the purposes of this the
 There are two aspects to td-idf --- term-frequency and inverse document frequency. Term-frequency is a measure of how often a term (i.e. word, keyword, token, etc...) occurs in a text. More specifically, it is \emph{proportional} to the number of times the term appears. This is because the term-frequency is typically normalised by dividing the number of occurences of a term, by the frequency of the most used term in a text is. So, the most frequent term in a document will have a term-frequency of $1.0$ and all other terms will have a term-frequency inside $\left[0.0, 1.0\right]$ \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
 
 \noindent
-Inverse document frequency (idf) is an additional metric which has the goal of reducing the final tf-idf value for terms that are common in all texts for all labels. For instance, the term `the' is likely going to have the highest term-frequency in all documents simply because it is the most commonword in English. However, it is equally true that the term `the' is not important in terms of distinguishing the labels of two documents together. That is, for our case, `the' does not tell us anything about whether or not a method is a source, sink, or a sanitiser. Idf is calculated with the following equation: $ IDF_{i} = \log_{2}\left(\frac{N}{n_{i}}\right)$, where $IDF_{i}$ is the idf of the $i_{ith}$ term, $N$ is the number of documents in total, and $n_{i}$ is the number of documents the $i_{ith}$ term appears in . Then, the final tf-idf value for a particular is the product of these two values \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
-
-\noindent
-Tf-idf is particularly useful for SVMs as it extracts the terms that are important for a particular label, but are not as important in other labels. Then, the features that our SVM will be trained on are simply the binary result of whether or not the provided example contains any of these important keywords or not.\\
-
-\noindent
-SVM with tf-idf to generate features is a common technique for natural-language classification with extensive examples of this techniques use in the literature, e.g: \cite{sentiment-analysis-cb} \cite{sentiment-analysis-fin}.
+Inverse document frequency (idf) is an additional metric which has the goal of reducing the final tf-idf value for terms that are common in all texts for all labels. For instance, the term `the' is likely going to have the highest term-frequency in all documents simply because it is the most common word in English. However, it is equally true that `the' is not important in terms of classifying a text. In terms of this thesis, `the' does not tell us anything about whether or not a method is a source, sink, or a sanitiser, despite being a frequent term in Javadoc. Idf is calculated with the following equation: $ IDF_{i} = \log_{2}\left(\frac{N}{n_{i}}\right)$, where $IDF_{i}$ is the idf of the $i_{ith}$ term, $N$ is the number of documents in total, and $n_{i}$ is the number of documents the $i_{ith}$ term appears in . Then, the final tf-idf value for a particular is the product of these two values \cite[p.~8]{leskovec_rajaraman_ullman_2014}.
 
