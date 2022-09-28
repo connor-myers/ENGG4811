@@ -230,9 +230,27 @@ As we will come to see later in this thesis, we will be using feature-planes wit
 \end{figure}
 
 \noindent
-Inherently, SVMs produce a \emph{binary} classification. This is an issue for us as, for this project, we intend to perform a multilabel classification. However, even though SVMs are strictly a binary classification tool, they can be used for multilabel classification. This can be achieved through a number of techniques, but we will be using the \emph{one-versus-the-rest} technique to produce our multilabel classification\footnote{We will be using the \emph{SGDclassifier} class in the python library `Scikit' which implicitly uses the one-versus-the-rest multilabel classification methodology.}. In one-versus-the-rest classification, we create $K - 1$ binary classifiers, where $K$ is the number of labels. Each classifier classifies the datapoints as being part of the $K_{ith}$ label, or as one of the other $K-1$ remaining labels \cite[p.~182]{BishopChristopherM2006Pram}.
+Inherently, SVMs produce a \emph{binary} classification. This is an issue for us as, for this project, we intend to perform a multilabel classification. However, even though SVMs are strictly a binary classification tool, they can be used for multilabel classification.\\
 
+\noindent
+This can be achieved through a number of techniques, but we will be using the \emph{one-versus-the-rest} technique to produce our multilabel classification\footnote{We will be using the \emph{SGDclassifier} class in the python library `Scikit' which implicitly uses the one-versus-the-rest multilabel classification methodology.}. In one-versus-the-rest classification, we create $K$ binary classifiers, where $K$ is the number of labels. Each classifier classifies the datapoints as being part of the $K_{ith}$ label, or as one of the other $K-1$ remaining labels \cite[p.~182]{BishopChristopherM2006Pram}.\\
+
+\noindent
+When it comes time to classify datapoints as one of these $K$ labels, we classify using each of the $K$ binary classifiers and select, as the datapoint's label, whichever provides the most confident answer for a particular label \cite[p.~338]{BishopChristopherM2006Pram}. 
 
 \subsection{Term Frequency-Inverse Document Frequency}
 
-Term frequency-inverse document frequency (tf-idf), for the purposes of this thesis, is a methodology to extract features from data.
+Term frequency-inverse document frequency (tf-idf), for the purposes of this thesis, is a methodology to extract features from data. More generally, tf-idf is used to determine how import each word in a document is. By extracting out the important keywords in a document --- that is the keywords that are only found in certain labels of a classification task --- we can sometimes train a successful SVM on those important keywords. \\
+
+\noindent
+There are two aspects to td-idf --- term-frequency and inverse document frequency. Term-frequency is a measure of how often a term (i.e. word, keyword, token, etc...) occurs in a text. More specifically, it is \emph{proportional} to the number of times the term appears. This is because the term-frequency is typically normalised by dividing the number of occurences of a term, by the frequency of the most used term in a text is. So, the most frequent term in a document will have a term-frequency of $1.0$ and all other terms will have a term-frequency inside $\left[0.0, 1.0\right]$ \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
+
+\noindent
+Inverse document frequency (idf) is an additional metric which has the goal of reducing the final tf-idf value for terms that are common in all texts for all labels. For instance, the term `the' is likely going to have the highest term-frequency in all documents simply because it is the most commonword in English. However, it is equally true that the term `the' is not important in terms of distinguishing the labels of two documents together. That is, for our case, `the' does not tell us anything about whether or not a method is a source, sink, or a sanitiser. Idf is calculated with the following equation: $ IDF_{i} = \log_{2}\left(\frac{N}{n_{i}}\right)$, where $IDF_{i}$ is the idf of the $i_{ith}$ term, $N$ is the number of documents in total, and $n_{i}$ is the number of documents the $i_{ith}$ term appears in . Then, the final tf-idf value for a particular is the product of these two values \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
+
+\noindent
+Tf-idf is particularly useful for SVMs as it extracts the terms that are important for a particular label, but are not as important in other labels. Then, the features that our SVM will be trained on are simply the binary result of whether or not the provided example contains any of these important keywords or not.\\
+
+\noindent
+SVM with tf-idf to generate features is a common technique for natural-language classification with extensive examples of this techniques use in the literature, e.g: \cite{sentiment-analysis-cb} \cite{sentiment-analysis-fin}.
+
