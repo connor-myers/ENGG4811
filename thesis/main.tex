@@ -83,7 +83,7 @@
 
 \usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber,sorting=none]{biblatex}
 \addbibresource{references.bib}
 
 \title{
@@ -103,6 +103,7 @@
 % \maketitle
 \input{titlepage.tex}
 
+\pagenumbering{Roman}
 \chapter*{Abstract}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, semper id dui finibus, suscipit pretium purus. Duis vehicula eleifend justo, at cursus turpis vulputate eget. Nullam vestibulum id neque a convallis. Sed molestie vehicula turpis, vel aliquet felis efficitur a. Fusce accumsan metus augue, id sagittis eros elementum vitae. Cras vel ultrices odio. Sed ac augue ex. Etiam tristique dignissim nibh, sit amet tincidunt libero tempor sit amet. Suspendisse tincidunt vitae ligula a posuere. Morbi euismod felis quis risus malesuada cursus. Curabitur imperdiet pretium odio, ac posuere turpis vehicula in. Praesent venenatis urna in augue congue elementum. Nam ligula nibh, rhoncus vitae luctus vel, feugiat sed neque. Curabitur ut arcu sed magna vulputate sollicitudin id a libero. Praesent tempus leo vel eros ornare mollis. Sed suscipit at mi ut viverra.
 
@@ -124,6 +125,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, s
 
 \tableofcontents
 
+\cleardoublepage\pagenumbering{arabic}
 \chapter{Introduction}
 \input{chapters/introduction.tex}
 
@@ -156,6 +158,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, s
 \chapter{Conclusion}
 \input{chapters/conclusion.tex}
 
+\cleardoublepage\pagenumbering{Roman}
 \appendix
 %\chapter{Appendix}
 \input{chapters/appendix.tex}
