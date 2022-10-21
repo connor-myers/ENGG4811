@@ -1,3 +1,5 @@
+\section{Dataset Sources}
+
 \noindent
 For our machine-learning model to accurately label security-sensitive methods, it will need to be trained on many labelled examples. Arguably the dataset is the most important aspect of this project. It is imperative to this project's success that we create a sufficiently-large high-quality dataset of labelled security-sensitive methods. \\
 
@@ -29,7 +31,7 @@ For the first issue, that these existing databases do not include the code and t
 \noindent
 For the second issue, of having an inadequate number of sanitiser examples and have \emph{no} security-insensitive examples, again, there is no easy solution for this. All security-insensitive labels were done by me. Popular open-source Java projects were obtained (Google Guava, ElasticSearch, Apache Commons, etc...) and a random sample of methods were extracted. I then manually labelled these examples. Naturally, as they were random samples from real-world Java projects, the majority of the examples were security-insensitve. Of course, manually labelling these examples is not ideal. I am not a security-expert and undoubtedly this lowered the quality of the dataset. We will return to this point in the limitations section of this thesis. \\
 
-\subsection{Intermediary Dataset Format}
+\section{Intermediary Dataset Format}
 
 \noindent
 For our approach, it would be unwise and na\"ive to have our dataset simply be a large json file with a number of code, documentation, label tuples. At this stage of the project, we only require code and documentation --- but what about the future? With these machine-learning models, we can provide all sorts of information as training-data. Given that the dataset is arguably the most important deliverable of this thesis project, it would make more sense for the dataset provided to be applicable to other projects. Furthermore, the dataset should be made in a such a way that it is easily extensible. \\
@@ -38,9 +40,9 @@ For our approach, it would be unwise and na\"ive to have our dataset simply be a
 For example, if for this thesis we simply provided a list of examples (code, documentation, label) we would not be able to easily extend our dataset. One extension task we may want to perform in future is to include AST information of a method into the training data. In that case, we would need to manually locate these files all over again, download them, pre-process them, etc., and create our training set from that. For these reasons, it would be much more appropriate to create an intermediary dataset that includes information needed to dynamically build the dataset (i.e., a link to the source-code) and create a tool to automatically download the source-code for these examples, parse the code, extract the relevant data, etc., and dynamically create our training dataset. \\
 
 \noindent
-Figure \ref{intermediary_dataset} below shows the format of our intermediary dataset for one file. 
+Figure \ref{intermediary_dataset} shows the format of our intermediary dataset for one file. It uses the yaml file format and includes all the information we need to build the dataset using an additional tool. Namely, it includes a link to the file on GitHub that the method is located in, as well as the name of the method and its label. We do not differentiate between overloaded methods (i.e., same name, different arguments) as we assume they all the same security-label. Furthermore, we only create one entry for each file (rather than each method) so we do not fill the dataset with redundant information. We organise the dataset around files instead of projects because we download each file of a project individually, rather than the entire project. License information for the file is also included as some licenses are incompatible with each other. License information for each file was extracted automatically using a It is worth nothing that two different files in the same project can have different licenses. Furthermore, we also include the root class type for each file (i.e. class, abstract class, interface). It is worth nothing that although it is within the Java specification to have multiple root-classes for a single file, it is never done so we ignore that case.
 
-\begin{figure}[h]
+\begin{figure}[t!]
     \begin{center}
             \includegraphics[scale=0.55]{images/intermediary_dataset.png}
     \end{center}
@@ -48,4 +50,12 @@ Figure \ref{intermediary_dataset} below shows the format of our intermediary dat
     \label{intermediary_dataset}
 \end{figure}
 
+\subsection{CodeCrawler}
 
+\noindent
+To dynamically extract code and documentation (as well as pre-process the extracted data), I wrote a Python tool called \emph{CodeCrawler}. CodeCrawler is publicly available on GitHub\footnote{\url{https://github.com/connor-myers/CodeCrawler}}.\\ 
+
+\noindent
+CodeCrawler provides the pre-processed code and Javadoc for a particular method, given the method's name and a GitHub link to the file it is contained in. The dataset-manager tool (the tool that creates the training and validation datasets from the intermediary dataset format) uses CodeCrawler to retrieve the pre-processed code and Javadoc. 
+
+\section{Dataset Manager Tool}
