@@ -1,1 +1,51 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, semper id dui finibus, suscipit pretium purus. Duis vehicula eleifend justo, at cursus turpis vulputate eget. Nullam vestibulum id neque a convallis. Sed molestie vehicula turpis, vel aliquet felis efficitur a. Fusce accumsan metus augue, id sagittis eros elementum vitae. Cras vel ultrices odio. Sed ac augue ex. Etiam tristique dignissim nibh, sit amet tincidunt libero tempor sit amet. Suspendisse tincidunt vitae ligula a posuere. Morbi euismod felis quis risus malesuada cursus. Curabitur imperdiet pretium odio, ac posuere turpis vehicula in. Praesent venenatis urna in augue congue elementum. Nam ligula nibh, rhoncus vitae luctus vel, feugiat sed neque. Curabitur ut arcu sed magna vulputate sollicitudin id a libero. Praesent tempus leo vel eros ornare mollis. Sed suscipit at mi ut viverra.
+\noindent
+For our machine-learning model to accurately label security-sensitive methods, it will need to be trained on many labelled examples. Arguably the dataset is the most important aspect of this project. It is imperative to this project's success that we create a sufficiently-large high-quality dataset of labelled security-sensitive methods. \\
+
+\noindent
+Recall that for our model, our labelled examples need to be in the following form: A Java method's code and documentation, and a label (one of: source, sink, sanitiser or security-irrelevant). Unfortunately, no such database exists in that form. However, this is not surprising as tasks of a similar nature typically extract features from byte-code (i.e., no natural-langauge processing directly on the source-code), and choose to neglect documentation as well. However, these similar datasets are not completely useless. In-fact, they provide a good starting point for us to create our dataset. While they do not have the code and the documentation included, they do provide high-quality labels. It is cumbersome and time-consuming, but manually locating the source-code for these numerous examples is worth-while given the quality of these examples. \\
+
+\noindent
+These similar datasets include:
+\begin{itemize}
+    \item SWAN's training dataset \cite{swan_github}
+    \item Default taint-analysis configurations
+    \begin{itemize}
+        \item SinkTank \cite{sinktank}
+        \item Facebook's Infer \cite{infer}
+        \item SonarQube \cite{sonarqube}
+        \item SpotBugs \cite{spotbugs}
+    \end{itemize}
+
+    \item OWASP's security-sensitive method-list \cite{owasp_srm}
+
+\end{itemize}
+
+\noindent
+All the above datasets provide high-quality labelled examples of security-sensitive methods. Unfortunately, they are unsuitable for a variety of reasons and will require some augmentation to be of any use to this project. Namely, as has already been mentioned, they only provide a fully-qualified-name of the method and a security-sensitive label. They do not provide the code and the Javadoc which is essential to our approach. Furthermore, their security-sensitive labels are typically a subset of the labels we will be using. For instance, SinkTank only has labels for sources and sinks. This means there will be substantially fewer \emph{sanitiser} examples in the dataset; ideally we would like all our security-sensitive methods to occupy a similar proportion of the dataset. More concerningly, however, is that none of these existing datasets have labelled security-\emph{insensitive} methods. This is a signficant problem as it is likely the vast majority of methods our model will see in a real-world context are benign security-irrelevant methods. Accurately labelling security-irrelevant methods is imperative for this project as configuring taint-analysis tools with false-positive security-sensitive methods will in-turn lead to additional benign dataflows being considered malicious by the taint-analysis tool. \\
+
+\noindent
+For the first issue, that these existing databases do not include the code and the documentation, there is unfortunately no simple solution. For each example, the source-code needs to be manually located, with the code and the documentation for the relevant method's extracted accordingly. This can be semi-automated as there is a finite number of projects and the fully-qualified-name provides information on where to locate the method \emph{within} a project. That is, we download all the projects that all the examples come from and write a script to locate the method's source-code within that project, using the fully-qualified-name to locate it. Our approach we took was similar to this, but complicated by the fact we wanted the dataset to be generated dynamically. That is, for each example, it will download the code from Github and extract the code and documentation automatically. We will return to this topic later. \\
+
+\noindent
+For the second issue, of having an inadequate number of sanitiser examples and have \emph{no} security-insensitive examples, again, there is no easy solution for this. All security-insensitive labels were done by me. Popular open-source Java projects were obtained (Google Guava, ElasticSearch, Apache Commons, etc...) and a random sample of methods were extracted. I then manually labelled these examples. Naturally, as they were random samples from real-world Java projects, the majority of the examples were security-insensitve. Of course, manually labelling these examples is not ideal. I am not a security-expert and undoubtedly this lowered the quality of the dataset. We will return to this point in the limitations section of this thesis. \\
+
+\subsection{Intermediary Dataset Format}
+
+\noindent
+For our approach, it would be unwise and na\"ive to have our dataset simply be a large json file with a number of code, documentation, label tuples. At this stage of the project, we only require code and documentation --- but what about the future? With these machine-learning models, we can provide all sorts of information as training-data. Given that the dataset is arguably the most important deliverable of this thesis project, it would make more sense for the dataset provided to be applicable to other projects. Furthermore, the dataset should be made in a such a way that it is easily extensible. \\
+
+\noindent
+For example, if for this thesis we simply provided a list of examples (code, documentation, label) we would not be able to easily extend our dataset. One extension task we may want to perform in future is to include AST information of a method into the training data. In that case, we would need to manually locate these files all over again, download them, pre-process them, etc., and create our training set from that. For these reasons, it would be much more appropriate to create an intermediary dataset that includes information needed to dynamically build the dataset (i.e., a link to the source-code) and create a tool to automatically download the source-code for these examples, parse the code, extract the relevant data, etc., and dynamically create our training dataset. \\
+
+\noindent
+Figure \ref{intermediary_dataset} below shows the format of our intermediary dataset for one file. 
+
+\begin{figure}[h]
+    \begin{center}
+            \includegraphics[scale=0.55]{images/intermediary_dataset.png}
+    \end{center}
+    \caption{Structure of intermediary dataset for one file}
+    \label{intermediary_dataset}
+\end{figure}
+
+
