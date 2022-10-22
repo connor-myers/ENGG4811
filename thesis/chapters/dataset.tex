@@ -40,7 +40,7 @@ For our approach, it would be unwise and na\"ive to have our dataset simply be a
 For example, if for this thesis we simply provided a list of examples (code, documentation, label) we would not be able to easily extend our dataset. One extension task we may want to perform in future is to include AST information of a method into the training data. In that case, we would need to manually locate these files all over again, download them, pre-process them, etc., and create our training set from that. For these reasons, it would be much more appropriate to create an intermediary dataset that includes information needed to dynamically build the dataset (i.e., a link to the source-code) and create a tool to automatically download the source-code for these examples, parse the code, extract the relevant data, etc., and dynamically create our training dataset. \\
 
 \noindent
-Figure \ref{intermediary_dataset} shows the format of our intermediary dataset for one file. It uses the yaml file format and includes all the information we need to build the dataset using an additional tool. Namely, it includes a link to the file on GitHub that the method is located in, as well as the name of the method and its label. We do not differentiate between overloaded methods (i.e., same name, different arguments) as we assume they all the same security-label. Furthermore, we only create one entry for each file (rather than each method) so we do not fill the dataset with redundant information. We organise the dataset around files instead of projects because we download each file of a project individually, rather than the entire project. License information for the file is also included as some licenses are incompatible with each other. License information for each file was extracted automatically using an OSS tool called \emph{ScanCode}\footnote{\url{https://github.com/nexB/scancode-toolkit}}. It is worth nothing that two different files in the same project can have different licenses. Furthermore, we also include the root class type for each file (i.e. class, abstract class, interface). Additionally,  although it is within the Java specification to have multiple root-classes for a single file, this is never done so we ignore that case.
+Figure \ref{intermediary_dataset} shows the format of our intermediary dataset for one file. It uses the yaml file format and includes all the information we need to build the dataset using an additional tool. Namely, it includes a link to the file on GitHub that the method is located in, as well as the name of the method and its label. We do not differentiate between overloaded methods (i.e., same name, different arguments) as we assume they all the same security-label. Furthermore, we only create one entry for each file (rather than each method) so we do not fill the dataset with redundant information. We organise the dataset around files instead of projects because we download each file of a project individually, rather than the entire project. License information for the file is also included as some licenses are incompatible with each other. License information for each file was extracted automatically using an OSS tool called \emph{ScanCode}\footnote{\url{https://github.com/nexB/scancode-toolkit}}. It is worth noting that it is possible for two different files in the same project to have different licenses. Furthermore, we also include the root class type for each file (i.e. class, abstract class, interface). Additionally,  although it is within the Java specification to have multiple root-classes for a single file, this is never done so we ignore that case.
 
 \begin{figure}[t!]
     \begin{center}
@@ -109,6 +109,7 @@ Table \ref{tab:training_dataset} and Table \ref{tab:validation_dataset} shows th
 \end{table}
 
 \subsection{Limitations of the Dataset}
+\label{dataset_limitations}
 
 \noindent
 There are some key limitations to the training and validation datasets that are worth discussing. The most significant limitation is how the datasets are split. Because there is a small number of projects used in the dataset, it was not practical to isolate the examples from a particular project to just one of training or validation. That is, because there are too few projects with examples highly concentrated in some projects, it is not possible to allocate 15\% of the sources, sink, sanitisers, and security-insensitive methods (even approximately) while isolating examples from one particular project to either the training or validation dataset. \\
@@ -133,3 +134,16 @@ The Dataset Manager tool will take all examples from the intermediary-dataset an
 
 
 \section{Test Dataset}
+Due to the limitations discussed in \ref{dataset_limitations}, to get an accurate figure for the performance of the trained model, a test dataset should be created. \\
+
+\noindent
+This test dataset should reflect the proposed real-world use-case of our model. Recall that the purpose of our model is to accurately label security-sensitive methods to configure taint-analysis tools for \emph{particular} software projects written in Java. As such, our test dataset should reflect this use-case. \\
+
+\noindent
+For our test dataset, we randomly sample 165 methods (same size as the validation dataset) from Apache's Log4J\footnote{\url{https://logging.apache.org/log4j/2.x/}}, manually label the methods. Comparing the model's predictions to our manually-generated labels will provide a measure of our model's performance in a real-world setting. 
+
+\noindent
+Log4J was chosen as it is a popular, open-source Java library that has had security-issues in the past \cite{log4shell}. \\
+
+\noindent
+The test dataset is available at \url{www.google.com}. %finish later
