@@ -40,7 +40,7 @@ For our approach, it would be unwise and na\"ive to have our dataset simply be a
 For example, if for this thesis we simply provided a list of examples (code, documentation, label) we would not be able to easily extend our dataset. One extension task we may want to perform in future is to include AST information of a method into the training data. In that case, we would need to manually locate these files all over again, download them, pre-process them, etc., and create our training set from that. For these reasons, it would be much more appropriate to create an intermediary dataset that includes information needed to dynamically build the dataset (i.e., a link to the source-code) and create a tool to automatically download the source-code for these examples, parse the code, extract the relevant data, etc., and dynamically create our training dataset. \\
 
 \noindent
-Figure \ref{intermediary_dataset} shows the format of our intermediary dataset for one file. It uses the yaml file format and includes all the information we need to build the dataset using an additional tool. Namely, it includes a link to the file on GitHub that the method is located in, as well as the name of the method and its label. We do not differentiate between overloaded methods (i.e., same name, different arguments) as we assume they all the same security-label. Furthermore, we only create one entry for each file (rather than each method) so we do not fill the dataset with redundant information. We organise the dataset around files instead of projects because we download each file of a project individually, rather than the entire project. License information for the file is also included as some licenses are incompatible with each other. License information for each file was extracted automatically using a It is worth nothing that two different files in the same project can have different licenses. Furthermore, we also include the root class type for each file (i.e. class, abstract class, interface). It is worth nothing that although it is within the Java specification to have multiple root-classes for a single file, it is never done so we ignore that case.
+Figure \ref{intermediary_dataset} shows the format of our intermediary dataset for one file. It uses the yaml file format and includes all the information we need to build the dataset using an additional tool. Namely, it includes a link to the file on GitHub that the method is located in, as well as the name of the method and its label. We do not differentiate between overloaded methods (i.e., same name, different arguments) as we assume they all the same security-label. Furthermore, we only create one entry for each file (rather than each method) so we do not fill the dataset with redundant information. We organise the dataset around files instead of projects because we download each file of a project individually, rather than the entire project. License information for the file is also included as some licenses are incompatible with each other. License information for each file was extracted automatically using an OSS tool called \emph{ScanCode}\footnote{\url{https://github.com/nexB/scancode-toolkit}}. It is worth nothing that two different files in the same project can have different licenses. Furthermore, we also include the root class type for each file (i.e. class, abstract class, interface). Additionally,  although it is within the Java specification to have multiple root-classes for a single file, this is never done so we ignore that case.
 
 \begin{figure}[t!]
     \begin{center}
@@ -56,6 +56,58 @@ Figure \ref{intermediary_dataset} shows the format of our intermediary dataset f
 To dynamically extract code and documentation (as well as pre-process the extracted data), I wrote a Python tool called \emph{CodeCrawler}. CodeCrawler is publicly available on GitHub\footnote{\url{https://github.com/connor-myers/CodeCrawler}}.\\ 
 
 \noindent
-CodeCrawler provides the pre-processed code and Javadoc for a particular method, given the method's name and a GitHub link to the file it is contained in. The dataset-manager tool (the tool that creates the training and validation datasets from the intermediary dataset format) uses CodeCrawler to retrieve the pre-processed code and Javadoc. 
+CodeCrawler scrapes the code and Javadoc for a particular method, given the method's name and the location of the file on GitHub. Furthermore, CodeCrawler does some basic pre-processing on the data. For the code, in-line comments and new-line characters are removed. For the Javadoc, HTML code is removed, as well as links, and new-line characters. 
 
 \section{Dataset Manager Tool}
+
+\noindent
+The Dataset Manager Tool\footnote{\url{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}}, as its name suggests, manages the intermediary dataset format. This tool provides a variety of useful functions for manipulating the dataset. Below is a brief summary of this program's functionality.
+
+\begin{itemize}
+    \item \textbf{Remove Duplicate:} Removes duplicate entries in the dataset. Duplicate here meaning methods mentioned multiple times, as well as files. If a file is listed multiple times, the methods for all the files (that duplicated) are combined to be under one file entry.
+    \item \textbf{Merge:} Merges two datasets together. Implicitly removes duplicates.
+    \item \textbf{Licensing:} For all files with unknown licenses in the dataset, uses \emph{ScanCode} to automatically detect the license and update the dataset.
+    \item \textbf{Statistics:} Provides statistics for the dataset.
+    \item \textbf{Generate:} Uses CodeCrawler to parse code and Javadoc for each method; constructs training and validation datasets from this.
+\end{itemize}
+
+\section{Training and Validation Dataset}
+
+A 85\% to 15\% training-validation dataset split was used. The test set was not generated from this dataset, we will use an alternative methodology to derive a test dataset. \\
+
+\noindent
+Table \ref{tab:training_dataset} and Table \ref{tab:validation_dataset} shows the final statisitics for the training and validation dataset respectively.
+
+\begin{table}[!htbp]
+    \begin{center}
+    \begin{tabular}{ll}
+            \textbf{\underline{Type of Method}} & \textbf{\underline{Number Of}} \\
+            \emph{Source}         & 125       \\
+            \emph{Sink}           & 230       \\
+            \emph{Sanitiser}      & 156       \\
+            \emph{None}           & 420       \\
+            \emph{Total}          & 931      
+    \end{tabular}
+    \end{center}
+    \caption{Statistics for training dataset}
+    \label{tab:training_dataset}
+\end{table}
+
+\begin{table}[!htbp]
+    \begin{center}
+    \begin{tabular}{ll}
+            \textbf{\underline{Type of Method}} & \textbf{\underline{Number Of}} \\
+            \emph{Source}         & 33       \\
+            \emph{Sink}           & 38       \\
+            \emph{Sanitiser}      & 19       \\
+            \emph{None}           & 75       \\
+            \emph{Total}          & 165      
+    \end{tabular}
+    \end{center}
+    \caption{Statistics for validation dataset}
+    \label{tab:validation_dataset}
+\end{table}
+
+\subsection{Limitations of the Dataset}
+
+\section{Test Dataset}
