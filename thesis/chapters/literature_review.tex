@@ -55,6 +55,7 @@ The SVM model achieved an average (of all classes) recall of 85\% and an average
 Unfortunately, the training dataset is not publicly available and hence we will not be able to include it in our training data for this thesis.
 
 \section{Model Architecture}
+\label{model_architecture}
 \subsection{CodeBERT}
 CodeBERT \cite{CodeBERT} is a large pre-trained model by Microsoft for code and natural-language tasks. It uses an architecture identical to RoBERTa\footnote{More specifically, RoBERTa-base with 125M parameters. See: \url{https://aclanthology.org/2021.ccl-1.108/}}, and has been trained on millions of bimodal\footnote{It has also been trained on some unimodal examples, i.e., code or natural-language alone for the Replaced Token Detection pre-training objective.} examples of code (Go, Java, Javascript, PHP, Python, and Ruby) and natural-language (English). For example, a Java method and its corresponding Javadoc. This makes it suitable for downstream tasks involving the relationship between natural-language and code. \\
 
