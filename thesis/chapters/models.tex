@@ -45,3 +45,99 @@ PyTorch will be used to implement this model.\\
 
 \noindent
 This approach will be tested as it is the most sophisticated of all 4 models that will be tested. It is believed this model will perform the best. 
+
+\subsection{Training Settings}
+
+This section details the important hyperparameters used for the machine-learning models.
+
+\subsubsection{SVM Classifier}
+
+\begin{itemize}
+    \item \textbf{Loss function}: hinge loss
+    \item \textbf{Penalty:} L2 Regularisation
+    \item \textbf{Lagrangian Multiplier:} $e^{-3}$
+    \item \textbf{No. Epochs:} $5$
+\end{itemize}
+
+\subsubsection{CodeBERT and UniXcoder}
+
+\begin{itemize}
+    \item \footnote{This low training batch-size is due to VRAM limitations of the testing machine.}\textbf{Training batch size:} $4$
+    \item \textbf{Validation batch size:} $32$
+    \item \textbf{Learning Rate: } $5e^{-5}$
+    \item \textbf{Max gradient norm: } $1.0$
+    \item \footnote{It was experimentally determined that no extra accuracy or decrease in loss was obtained for any additional iterations}\textbf{No. Epochs:} $3$
+\end{itemize}
+
+\section{Performance on Validation Dataset}
+
+In this section, the performance of the \emph{trained} models will be evaluated on the validation dataset. As established in Section \ref{dataset_limitations}, these results will be inflated compared to a real-world use-case. \\
+
+\noindent
+The various tables below show the performance of each model (and their multiple cofigurations, if applicable) on the validation dataset.
+
+% \subsection{SVM with tf-idf}
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            \textbf{Feature Generator} & \textbf{Classifier} & \textbf{Accuracy} \\
+            \hline
+            TF-IDF            & SVM        & 0.66    
+        \end{tabular}
+    \end{center}
+    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \label{tab:validation_perfomance_svm_tfidf}
+\end{table}
+
+% \subsection{Pre-trained SVM-Transformer Hybrid}
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy }\\
+            \hline
+            CodeBERT & CLS & 0.27 \\
+            CodeBERT & Mean & 0.39 \\
+            UniXcoder & CLS & 0.78 \\
+            UniXcoder & Mean & 0.76 \\
+        \end{tabular}
+    \end{center}
+    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \label{tab:validation_perfomance_pre_svm}
+\end{table}
+
+% \subsection{Fine-tuned SVM-Transformer Hybrid}
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy }\\
+            \hline
+            CodeBERT & CLS & 0.79 \\
+            CodeBERT & Mean & 0.79 \\
+            UniXcoder & CLS & 0.79 \\
+            UniXcoder & Mean & 0.78 \\
+        \end{tabular}
+    \end{center}
+    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \label{tab:validation_perfomance_fine_svm}
+\end{table}
+
+% \subsection{Fine-tuned Transformer with neural-network classifier}
+
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c|c|c}
+            \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Loss} \\
+            \hline
+            CodeBERT & CLS & 0.79 & 1.08\\
+            CodeBERT & Mean & 0.77 & 1.49\\
+            UniXcoder & CLS & 0.80 & 1.08\\
+            UniXcoder & Mean & 0.79 & 1.26\\
+        \end{tabular}
+    \end{center}
+    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \label{tab:validation_perfomance_fine_nn}
+\end{table}
+
