@@ -59,10 +59,34 @@ This section details the important hyperparameters used for the machine-learning
     \item \textbf{No. Epochs:} $5$
 \end{itemize}
 
+
+\subsection{Training Environment}
+
+Table \ref{tab:hw_sw_config} are the specifications of the machine and environment training was conducted in \\
+    	
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{l|r}
+        	\hline
+            \textbf{GPU} & Nvidia RTX 2080 \\
+            \textbf{CPU} & Intel i7 8700k \\
+            \textbf{RAM} & 32gb DDR4 3000MHz \\
+            \textbf{OS} & Ubuntu LTS 20.04 \\
+            \textbf{Language} & Python 3.10 \\
+            \textbf{GPU API} & Cuda 10.2 \\
+        \end{tabular}
+    \end{center}
+    \caption{Hardware and software configuration for training}
+    \label{tab:hw_sw_config}
+\end{table}
+
+
+
+
 \subsubsection{CodeBERT and UniXcoder}
 
 \begin{itemize}
-    \item \footnote{This low training batch-size is due to VRAM limitations of the testing machine.}\textbf{Training batch size:} $4$
+    \item \footnote{Ideally, this would be much higher. A low batch-size for training experiments was a limitation of the VRAM of the testing machine.}\textbf{Training batch size:} $4$
     \item \textbf{Validation batch size:} $32$
     \item \textbf{Learning Rate: } $5e^{-5}$
     \item \textbf{Max gradient norm: } $1.0$
@@ -86,7 +110,7 @@ The various tables below show the performance of each model (and their multiple 
             TF-IDF            & SVM        & 0.66    
         \end{tabular}
     \end{center}
-    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \caption{Performance of SVM-classifier with tf-idf features model on validation dataset}
     \label{tab:validation_perfomance_svm_tfidf}
 \end{table}
 
@@ -103,7 +127,7 @@ The various tables below show the performance of each model (and their multiple 
             UniXcoder & Mean & 0.76 \\
         \end{tabular}
     \end{center}
-    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \caption{Performance of SVM-classifier on pre-trained encoders for feature-generation on validation dataset}
     \label{tab:validation_perfomance_pre_svm}
 \end{table}
 
@@ -120,7 +144,7 @@ The various tables below show the performance of each model (and their multiple 
             UniXcoder & Mean & 0.78 \\
         \end{tabular}
     \end{center}
-    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \caption{Performance of SVM-classifier on fine-trained encoders for feature generation on validation dataset}
     \label{tab:validation_perfomance_fine_svm}
 \end{table}
 
@@ -137,9 +161,29 @@ The various tables below show the performance of each model (and their multiple 
             UniXcoder & Mean & 0.79 & 1.26\\
         \end{tabular}
     \end{center}
-    \caption{Validation performance of SVM-classifier with tf-idf features model}
+    \caption{Performance of neural-network classifier with fine-tuned encoders for feature generation on validation dataset}
     \label{tab:validation_perfomance_fine_nn}
 \end{table}
 
 \section{Validation Performance Discussion}
+
+\noindent
+Despite these results likely being inflated compared to a more realistic test dataset, the results generated on the validation dataset are indeed interesting. \\
+
+\noindent
+The most surprising result was the performance of UniXcoder without fine-tuning. In Table \ref{tab:validation_perfomance_pre_svm} we can see that UniXcoder has an accuracy in the 70s for both mean and CLS pooling with only the svm-classifier being trained and the encoder remaining untouched. While this result is a pleasant surprise --- that UniXcoder can generate good embeddings for this task without being fine-tuned --- it is concerning that the accuracy for UniXcoder (with an svm-classifier) does not change to any considerable degree when fine-tuned. \\
+
+\noindent
+This is contrasted with CodeBERT which evidently improves dramatically after fine-tuning. Namely, pre-trained CodeBERT with CLS pooling has an accuracy of $27\%$, only marginally better than randomly guessing, which increases to $79\%$ after fine-tuning. \\
+
+\noindent
+The best performing model, only marginally, was UniXcoder with CLS pooling with an accuracy of 80\% and a loss of $1.08$. Generally, all the results for classifiers using fine-tuned encoders were similar. There are two alternative explanations for why the linear SVM classifiers performed similarly to neural-network classification heads.\\
+
+\noindent
+Firstly, it is possible that given the dataset is so small, we should expect to see similar performance between the two. Because SVM classifiers are far more simple than neural-network classifiers, it is possible they will perform better in this use-case where we do not have a substantial dataset. Secondly, it is possible that SVM classifier's results are more inflated by the bias in the validation dataset than the neural-network classifiers due to how SVM classifiers work. This is the more likely explanation as in Section \ref{} we will see that the neural-network classifier significantly outperforms the SVM classifier on a realistic test dataset without the bias the validation dataset has.\\ 
+
+\noindent
+Finally, for our validation set we can confidently conclude that CLS pooling has performed better. While the accuracies have a statistically insignificant difference, the values of loss are drastically different. In Table \ref{tab:validation_perfomance_fine_nn} we can see that CLS pooling produces a lower loss compared to mean pooling for both UniXcoder and CodeBERT (recall from Section \ref{loss} that a \emph{lower} loss result is better).
+
+
 
