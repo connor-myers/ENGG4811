@@ -1,1 +1,89 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nulla libero, semper id dui finibus, suscipit pretium purus. Duis vehicula eleifend justo, at cursus turpis vulputate eget. Nullam vestibulum id neque a convallis. Sed molestie vehicula turpis, vel aliquet felis efficitur a. Fusce accumsan metus augue, id sagittis eros elementum vitae. Cras vel ultrices odio. Sed ac augue ex. Etiam tristique dignissim nibh, sit amet tincidunt libero tempor sit amet. Suspendisse tincidunt vitae ligula a posuere. Morbi euismod felis quis risus malesuada cursus. Curabitur imperdiet pretium odio, ac posuere turpis vehicula in. Praesent venenatis urna in augue congue elementum. Nam ligula nibh, rhoncus vitae luctus vel, feugiat sed neque. Curabitur ut arcu sed magna vulputate sollicitudin id a libero. Praesent tempus leo vel eros ornare mollis. Sed suscipit at mi ut viverra.
+\section{Performance on Realistic Dataset}
+
+\subsection{Description}
+
+As mentioned in Section \ref{dataset_limitations}, the performance of the models on the validation dataset is not exactly reflective of the performance of the models on a realistic use-case.\\
+
+\noindent
+To alleviate this concern, we conduct a test experiment on a realistic use-case. Since the ultimate use of these machine-learning models is to generate a list of security-sensitive methods for a Java project (to in-turn automatically produce taint-analysis tool configurations), our test dataset will be a random sample of methods from a real Java project. \\
+
+\noindent
+Log4J\footnote{\url{https://logging.apache.org/log4j/2.x/}} was selected as it is a large and popular Java library that has had security issues in the past \cite{log4shell}. \\
+
+\noindent
+$165$ methods (that contain both code and Javadoc) will be randomly sampled from Log4J's source code. This sample will be manually labelled and these labels will be compared to the model's predictions. The test dataset can be found at \url{www.google.com}.\\
+
+\noindent
+Since we are evaluating the model in a realistic use-case, we will use the models f1-score as the primary measure of its success. Recall from Section \ref{} that f1-score provides the harmonic mean of precision and recall; this is a much more appropriate metric than accuracy as it takes into account false positives and false negatives. \\
+
+\subsection{Results}
+
+\noindent
+\crefrange{tab:test_perfomance_tfidf_svm}{tab:test_perfomance_fine_nn} show the performance of the various model configurations on the Log4J test dataset. \\
+
+\begin{table}[H]
+\caption{Performance of SVM-classifier with tf-idf feature generation on test dataset}
+\label{tab:test_perfomance_tfidf_svm}
+    \begin{center}
+        \begin{tabular}{c|c|c|c}
+            \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+            \hline
+            0.50 & 0.53 & 0.50 & 0.51\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\begin{table}[H]
+	\caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset}
+    \label{tab:test_perfomance_pre_svm}
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+            \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+            \hline
+            CodeBERT & CLS & 0.09 & 0.05 & 0.09 & 0.03\\
+            CodeBERT & Mean & 0.31 & 0.65 & 0.31 & 0.28\\
+            UniXcoder & CLS & 0.52 & 0.58 & 0.52 & 0.54\\
+            UniXcoder & Mean & 0.52 & 0.58 & 0.52 & 0.54\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+
+\begin{table}[H]
+	\caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset}
+    \label{tab:test_perfomance_fine_svm}
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+            \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+            \hline
+            CodeBERT & CLS & 0.63 & 0.72 & 0.63 & 0.66\\
+            CodeBERT & Mean & 0.64 & 0.70 & 0.64 & 0.66\\
+            UniXcoder & CLS & 0.64 & 0.67 & 0.64 & 0.65\\
+            UniXcoder & Mean & 0.62 & 0.68 & 0.62 & 0.64\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\begin{table}[H]
+    \caption{Performance of neural-network classifier on fine-trained encoders for feature generation on test dataset}
+    \label{tab:test_perfomance_fine_nn}
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+            \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+            \hline
+            CodeBERT & CLS & 0.64 & 0.71 & 0.64 & 0.66\\
+            CodeBERT & Mean & 0.66 & 0.72 & 0.66 & 0.68\\
+            UniXcoder & CLS & 0.65 & 0.67 & 0.65 & 0.66\\
+            UniXcoder & Mean & 0.62 & 0.68 & 0.62 & 0.64\\
+        \end{tabular}
+    \end{center}
+\end{table}
+
+\subsection{Discussion}
+
+\section{Performance Javadoc in Isolation}
+\subsection{Description}
+\subsection{Results}
+\subsection{Discussion}
+
+
