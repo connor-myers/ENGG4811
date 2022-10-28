@@ -116,6 +116,7 @@ Piskorski et al. carried out this experiment. That is, as part of their evaluati
 To clarify how this will work: when we fine-tune codeBERT (and UnixCoder, for that matter), we will add an additional classification-head to the standard pre-trained model to perform the classification. Then, we will fine-tune the model on the labelled data we provide it. However, since we are not freezing any of the lower-layers, the original base model (the pre-trained model) that we added the classification head to \emph{also} has its weights and biases adjusted during fine-tuning. As such, it is thought, that the fine-tuned model should be able to provide better embeddings as features into the SVM as it was fine-tuned for the same classification task. 
 
 \subsection{Optimum Embedding Pooling Methodology}
+\label{optimum_pooling}
 As mentioned in \ref{embedding}, the type of pooling used in a model based on the transformer architecture is an important decision to be made. Typically, models based on BERT use a special \emph{CLS} (classification) token at the start of the input and use the final embedding of that single token to represent the embedding of the entire sequence. \\
 
 \noindent
