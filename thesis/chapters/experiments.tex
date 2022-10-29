@@ -1,4 +1,4 @@
-\section{Performance on Realistic Dataset}
+\section{Performance on Realistic Use-case}
 
 \subsection{Experiment Description}
 
@@ -82,22 +82,30 @@ Since we are evaluating the model in a realistic use-case, we will use the model
 \subsection{Experiment Discussion}
 
 \noindent
-In \crefrange{tab:test_perfomance_tfidf_svm}{tab:test_perfomance_fine_nn} we can see that our performance has dropped compared to the validation dataset, which was to be expected due to the element of bias in the validation dataset. The SVM classifier with tf-idf features achieved an F1-score of 0.51, which represents the baseline performance we expect our models to reach. Only one model falls short of this, but for good reason. SVM classifier with features generated from pre-trained CodeBERT, for both pooling methodologies, was the only model to have sub-baseline performance. \\
+In \crefrange{tab:test_perfomance_tfidf_svm}{tab:test_perfomance_fine_nn} we can see that our performance has dropped compared to the validation dataset, which was to be expected due to the element of bias in the validation dataset. The SVM classifier with tf-idf features achieved an F1-score of 0.51, which represents the baseline performance we expect our models to reach. All SVM classifier models using pre-trained encoders fail to reach this baseline performance, however this is expected given the encoders have not been fine-tuned for this task. \\
 
 \noindent
-It is worth mentioning how poor pre-trained CodeBERT with CLS pooling's performance was. An f1-score of 0.03 for a classification problem with just four labels indicates the model is performing \emph{significantly} worse than randomly guessing. Upon inspection of the model's predictions, it was found the model was not able to converge on a good solution and simply predicted every label as a source. Since there are few sources in the test dataset, because the majority of methods in a real-world project are security-insensitive, the model in turn incorrectly labelled the vast majority of the examples. With mean pooling, the model performed slightly better than randomly guessing. This result indicates that while without fine-tuning CodeBERT cannot generate sufficient embeddings for this task, mean pooling generates better sentence embeddings than CLS pooling where no fine-tuning is done. \\
+Pre-trained CodeBERT with CLS pooling performed extremely poorly. The model has an accuacy of $24\%$, which is just worse than randomly guessing. This result indicates that without fine-tuning CodeBERT using CLS pooling produces useless embeddings for this task. The other configurations, however, are able to achieve an accuarcy of $0.41$, far exceeding the performance of randomly guessing. This indicates that, while not performant enough for a real-world use-case and worse than tf-idf features, these encoders are able to generate somewhat useful embeddings for this task without fine-tuning.\\
+
+% \noindent
+% Even more surprisingly is pre-trained UniXcoder's performance. In Section \ref{validation_discussion} it was predicted that pre-trained UnixCoder's high performance was a quirk of how SVM classifiers make predictions and would only be possible with a biased dataset. While this is likely true to some degree as pre-trained UniXcoder does not perform as well as the fine-tuned models on the test dataset (whereas in the validation dataset pre-trained UniXcoder and fine-tuned UniXcoder performed similarly), the model performs significantly better than randomly guessing and slightly better than an SVM classifier with tf-idf features. This is an interesting reseult. It would be worth investigating in future whether this is an isolated case; are there other classification tasks that UniXcoder (with a trained SVM classifier) can perform well in without fine-tuning? \\
+
+% \noindent
+% As with the validation dataset results, there is not a significant difference between the performance of the fine-tuned encoders with either an SVM or neural-network classification head. The neural-network classifier marginally outperforms the svm classifier models for all encoder and pooling configurations, except for CodeBERT with mean pooling. The best performing model was fine-tuned CodeBERT with mean pooling with a neural-network classification head with an F1-score of $0.68$. It is interesting that CodeBERT performs worse than UniXcoder without fine-tuning, but after fine-tuning is conducted CodeBERT slightly outperforms UniXcoder. \\
 
 \noindent
-Even more surprisingly is pre-trained UniXcoder's performance. In Section \ref{validation_discussion} it was predicted that pre-trained UnixCoder's high performance was a quirk of how SVM classifiers make predictions and would only be possible with a biased dataset. While this is likely true to some degree as pre-trained UniXcoder does not perform as well as the fine-tuned models on the test dataset (whereas in the validation dataset pre-trained UniXcoder and fine-tuned UniXcoder performed similarly), the model performs significantly better than randomly guessing and slightly better than an SVM classifier with tf-idf features. This is an interesting reseult. It would be worth investigating in future whether this is an isolated case; are there other classification tasks that UniXcoder (with a trained SVM classifier) can perform well in without fine-tuning? \\
+As with the validation dataset results, there is not a significant difference between the performance of the fine-tuned encoders with either an SVM or neural-network classifier. All neural-network classifier models marginally outperform all SVM classifier models, except for CodeBERT with mean pooling. The best performing model was a mean-pooling CodeBERT encoder using a neural-network classifier, with an F1-score of $0.68$. This is interesting as CodeBERT produced poorer embeddings than UniXcoder before fine-tuning, but performs better after fine-tuning. \\
+
 
 \noindent
-As with the validation dataset results, there is not a significant difference between the performance of the fine-tuned encoders with either a SVM or neural-network classification head. With that being said, it is evident that the neural-network classifier slightly outperforms the SVM classifier. The best performing model was fine-tuned CodeBERT with mean pooling with a neural-network classification head with an F1-score of $0.68$. It is interesting that CodeBERT performs worse than UniXcoder without fine-tuning, but after fine-tuning is conducted CodeBERT slightly outperforms UniXcoder. \\
+This experiment provides no strong evidence for a significant difference in performance between CLS and mean pooling (when using fine-tuned encoders). However, while the difference was minimal, it was found that mean pooling performed better with CodeBERT, whereas CLS pooling performed better with UniXcoder. Recall from Section \ref{optimum_pooling} that this inconclusive result as to which pooling strategy is better was expected.
 
-\noindent
-This experiment provides no evidence for a difference of performance between CLS and mean pooling when using fine-tuned encoders. In general, it was found that mean pooling produced marginally better embeddings for CodeBERT, whereas CLS pooling performed better for UniXcoder. Recall from Section \ref{optimum_pooling} that this inconclusive result was expected.
-\section{Performance Javadoc in Isolation}
+\section{Performance On Unimodal Javadoc Models}
 \subsection{Experiment Description}
 \subsection{Experiment Results}
 \subsection{Experiment Discussion}
 
-
+\section{Performance On Unimodal Code Models}
+\subsection{Experiment Description}
+\subsection{Experiment Results}
+\subsection{Experiment Discussion}
