@@ -100,66 +100,66 @@ The various tables below show the performance of each model (and their multiple 
 % \subsection{SVM with tf-idf}
 
 \begin{table}[H]
+    \caption{Performance of SVM-classifier with tf-idf features model on validation dataset}
+    \label{tab:validation_perfomance_svm_tfidf}
     \begin{center}
         \begin{tabular}{c|c|c}
             \textbf{Feature Generator} & \textbf{Classifier} & \textbf{Accuracy} \\
             \hline
-            TF-IDF            & SVM        & 0.66    
+            TF-IDF            & SVM        &   0.66  
         \end{tabular}
     \end{center}
-    \caption{Performance of SVM-classifier with tf-idf features model on validation dataset}
-    \label{tab:validation_perfomance_svm_tfidf}
 \end{table}
 
 % \subsection{Pre-trained SVM-Transformer Hybrid}
 
 \begin{table}[H]
+    \caption{Performance of SVM-classifier on pre-trained encoders for feature-generation on validation dataset}
+    \label{tab:validation_perfomance_pre_svm}
     \begin{center}
         \begin{tabular}{c|c|c}
             \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy }\\
             \hline
-            CodeBERT & CLS & 0.27 \\
-            CodeBERT & Mean & 0.39 \\
-            UniXcoder & CLS & 0.78 \\
-            UniXcoder & Mean & 0.76 \\
+            CodeBERT & CLS &  0.47 \\
+            CodeBERT & Mean &  0.62 \\
+            UniXcoder & CLS &  0.66 \\
+            UniXcoder & Mean & 0.64 \\
         \end{tabular}
     \end{center}
-    \caption{Performance of SVM-classifier on pre-trained encoders for feature-generation on validation dataset}
-    \label{tab:validation_perfomance_pre_svm}
 \end{table}
 
 % \subsection{Fine-tuned SVM-Transformer Hybrid}
 
 \begin{table}[H]
+    \caption{Performance of SVM-classifier on fine-trained encoders for feature generation on validation dataset}
+    \label{tab:validation_perfomance_fine_svm}
     \begin{center}
         \begin{tabular}{c|c|c}
             \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy }\\
             \hline
-            CodeBERT & CLS & 0.79 \\
-            CodeBERT & Mean & 0.79 \\
-            UniXcoder & CLS & 0.79 \\
-            UniXcoder & Mean & 0.78 \\
+            CodeBERT & CLS &  0.72 \\
+            CodeBERT & Mean & 0.70 \\
+            UniXcoder & CLS &  0.75 \\
+            UniXcoder & Mean &  0.72 \\
         \end{tabular}
     \end{center}
-    \caption{Performance of SVM-classifier on fine-trained encoders for feature generation on validation dataset}
-    \label{tab:validation_perfomance_fine_svm}
 \end{table}
 
 % \subsection{Fine-tuned Transformer with neural-network classifier}
 
 \begin{table}[H]
+    \caption{Performance of neural-network classifier with fine-tuned encoders for feature generation on validation dataset}
+    \label{tab:validation_perfomance_fine_nn}
     \begin{center}
         \begin{tabular}{c|c|c|c}
             \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Loss} \\
             \hline
-            CodeBERT & CLS & 0.79 & 1.08\\
-            CodeBERT & Mean & 0.77 & 1.49\\
-            UniXcoder & CLS & 0.80 & 1.08\\
-            UniXcoder & Mean & 0.79 & 1.26\\
+            CodeBERT & CLS & 0.79 & 1.08 \\
+            CodeBERT & Mean &  0.77 & 1.49\\
+            UniXcoder & CLS & 0.8 & 1.08 \\
+            UniXcoder & Mean & 0.79 & 1.24 \\
         \end{tabular}
     \end{center}
-    \caption{Performance of neural-network classifier with fine-tuned encoders for feature generation on validation dataset}
-    \label{tab:validation_perfomance_fine_nn}
 \end{table}
 
 \section{Validation Performance Discussion}
