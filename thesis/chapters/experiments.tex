@@ -103,6 +103,66 @@ This experiment provides no strong evidence for a significant difference in perf
 \section{Performance On Unimodal Javadoc Models}
 \subsection{Experiment Description}
 \subsection{Experiment Results}
+
+\begin{table}[H]
+    \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset}
+    \label{tab:test_perfomance_tfidf_svm}
+        \begin{center}
+            \begin{tabular}{c|c|c|c}
+                \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                0.59 & 0.52 & 0.59 & 0.55 \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+        \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset}
+        \label{tab:test_perfomance_pre_svm}
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                CodeBERT & CLS & 0.18 & 0.03 & 0.18 & 0.05 \\
+                CodeBERT & Mean & 0.25 & 0.48 & 0.25  & 0.21 \\
+                UniXcoder & CLS & 0.34 & 0.51 & 0.34 & 0.39 \\
+                UniXcoder & Mean & 0.39 & 0.50 & 0.39 & 0.43 \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+    
+    \begin{table}[H]
+        \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset}
+        \label{tab:test_perfomance_fine_svm}
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                CodeBERT & CLS & 0.43 & 0.55 & 0.43 & 0.47 \\
+                CodeBERT & Mean & 0.43 & 0.52 & 0.43 & 0.47 \\
+                UniXcoder & CLS & 0.28 & 0.50 & 0.28 & 0.33 \\
+                UniXcoder & Mean & 0.44 & 0.53 & 0.44 & 0.48 \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+        \caption{Performance of neural-network classifier on fine-trained encoders for feature generation on test dataset}
+        \label{tab:test_perfomance_fine_nn}
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                CodeBERT & CLS & 0.56 & 0.75 & 0.56 & 0.60 \\
+                CodeBERT & Mean & 0.54 & 0.71 & 0.54 & 0.56 \\
+                UniXcoder & CLS & 0.55 & 0.67 & 0.55 & 0.58 \\
+                UniXcoder & Mean & 0.62 & 0.74 & 0.62 & 0.65 \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+
 \subsection{Experiment Discussion}
 
 \section{Performance On Unimodal Code Models}
