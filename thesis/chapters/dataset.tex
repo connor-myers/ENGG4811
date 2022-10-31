@@ -76,12 +76,15 @@ The Dataset Manager Tool\footnote{\url{https://github.com/uqcyber/SecurityMethod
 A 85\% to 15\% training-validation dataset split was used. The test set was not generated from this dataset, we will use an alternative methodology to derive a test dataset. \\
 
 \noindent
-Table \ref{tab:training_dataset} and Table \ref{tab:validation_dataset} shows the final statisitics for the training and validation dataset respectively.
+\crefrange{tab:training_dataset}{tab:validation_dataset} shows the final statisitics for the training and validation dataset, respectively.
 
 \begin{table}[!htbp]
+    \caption{Statistics for training dataset}
+    \label{tab:training_dataset}
     \begin{center}
-    \begin{tabular}{ll}
-            \textbf{\underline{Type of Method}} & \textbf{\underline{Number Of}} \\
+    \begin{tabular}{l|l}
+            \textbf{Type of Method} & \textbf{Number Of} \\
+            \hline
             \emph{Source}         & 125       \\
             \emph{Sink}           & 230       \\
             \emph{Sanitiser}      & 156       \\
@@ -89,14 +92,15 @@ Table \ref{tab:training_dataset} and Table \ref{tab:validation_dataset} shows th
             \emph{Total}          & 931      
     \end{tabular}
     \end{center}
-    \caption{Statistics for training dataset}
-    \label{tab:training_dataset}
 \end{table}
 
 \begin{table}[!htbp]
+    \caption{Statistics for validation dataset}
+    \label{tab:validation_dataset}
     \begin{center}
-    \begin{tabular}{ll}
-            \textbf{\underline{Type of Method}} & \textbf{\underline{Number Of}} \\
+    \begin{tabular}{l|l}
+            \textbf{Type of Method} & \textbf{Number Of} \\
+            \hline
             \emph{Source}         & 33       \\
             \emph{Sink}           & 38       \\
             \emph{Sanitiser}      & 19       \\
@@ -104,8 +108,6 @@ Table \ref{tab:training_dataset} and Table \ref{tab:validation_dataset} shows th
             \emph{Total}          & 165      
     \end{tabular}
     \end{center}
-    \caption{Statistics for validation dataset}
-    \label{tab:validation_dataset}
 \end{table}
 
 \subsection{Limitations of the Dataset}
