@@ -101,12 +101,23 @@ As with the validation dataset results, there is not a significant difference be
 This experiment provides no strong evidence for a significant difference in performance between CLS and mean pooling (when using fine-tuned encoders). However, while the difference was minimal, it was found that mean pooling performed better with CodeBERT, whereas CLS pooling performed better with UniXcoder. Recall from Section \ref{optimum_pooling} that the literature was inconclusive as to whether one pooling strategy performed better in general. 
 
 \section{Performance On Unimodal Javadoc Models}
+\label{javadoc_experiment}
 \subsection{Experiment Description}
+
+\noindent
+So far, all model validation tests and experiments have been done on bimodal data; both a Java method's Javadoc and code. Given this thesis' primary objective was to extract security-information from Javadoc, it is worth investigating how much the models can learn from Javadoc alone. \\
+
+\noindent
+For this experiment, the models will be evaluated on the log4j sample once again, except only the Javadoc will be used. The models will be retrained (in identical configurations) with only the Javadoc. \\
+
+\noindent
+In previous experiments, due to using bimodal data, if an input was longer than the maximum number of tokens into either codeBERT or uniXcoder ($512$ tokens), then both the code and natural language tokens would be truncated equally. For this experiment, we will not restrict the natural-language token length to $256$ but instead allow $512$ tokens as input. This means, for some inputs, the models will be trained on more Javadoc inputs than the previous bimodal experiments.
+
 \subsection{Experiment Results}
 
 \begin{table}[H]
-    \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset}
-    \label{tab:test_perfomance_tfidf_svm}
+    \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset (Javadoc Only)}
+    \label{tab:test_perfomance_tfidf_svm_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c}
                 \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -117,8 +128,8 @@ This experiment provides no strong evidence for a significant difference in perf
     \end{table}
     
     \begin{table}[H]
-        \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset}
-        \label{tab:test_perfomance_pre_svm}
+        \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset (Javadoc Only)}
+        \label{tab:test_perfomance_pre_svm_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
                 \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -133,8 +144,8 @@ This experiment provides no strong evidence for a significant difference in perf
     
     
     \begin{table}[H]
-        \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset}
-        \label{tab:test_perfomance_fine_svm}
+        \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset (Javadoc Only)}
+        \label{tab:test_perfomance_fine_svm_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
                 \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -148,8 +159,8 @@ This experiment provides no strong evidence for a significant difference in perf
     \end{table}
     
     \begin{table}[H]
-        \caption{Performance of neural-network classifier on fine-trained encoders for feature generation on test dataset}
-        \label{tab:test_perfomance_fine_nn}
+        \caption{Performance of neural-network classifier on fine-trained encoders for feature generation on test dataset (Javadoc Only)}
+        \label{tab:test_perfomance_fine_nn_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
                 \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -161,17 +172,41 @@ This experiment provides no strong evidence for a significant difference in perf
             \end{tabular}
         \end{center}
 \end{table}
-    
 
 \subsection{Experiment Discussion}
 
+\noindent
+It is clear from \crefrange{tab:test_perfomance_tfidf_svm_javadoc}{tab:test_perfomance_fine_nn_javadoc} that the performance of the unimodal models was worse than their bimodal equivalent. \\
+
+\noindent
+SVM-Transformer hybrid models performed poorly. In particular, Pre-trained CodeBERT with CLS pooling using an SVM classifier performed dramatically worse than randomly guessing with an accuracy of $0.18$ and an F1-score of $0.05$. Upon inspection of the predictions, it was found this model predicted all examples as \emph{sources}. Since this is a realistic dataset, with few security-sensitive methods, this in turn lead to a wildly inaccurate model. It is not clear exactly why the SVM classifier was unable to converge on a solution, however it is clear that pre-trained CodeBERT cannot produce sufficient embeddings for this task. \\
+
+\noindent
+Another outlier was fine-tuned UniXcoder with CLS pooling using an SVM classifier. It performed significantly worse than other models in its category. The cause of this anomaly is unknown. \\
+
+\noindent
+The neural network classifier models (Table \ref{tab:test_perfomance_fine_nn_javadoc}) performed reasonably. They did not perform better than their bimodal equivalents (Table \ref{tab:test_perfomance_fine_nn}), however this was to be expected given that these encoders were trained primarily on bimodal data. Furthermore, while these encoders have been trained on unimodal data, that was code only --- they were never trained on natural language in isolation \cite{CodeBERT}\cite{unixcoder}. This is one potential explanation for the discrepancy in performance. \\
+
+\noindent
+Overall, since the results in Table \ref{tab:test_perfomance_fine_nn_javadoc} show performance far exceeding random guessing, it can be concluded that CodeBERT and UniXcoder \emph{are} learning and extracting security-relevant features from Javadoc. This is quite an important result as it validates the assumption that was made in the beginning of this thesis that Javadoc contains security-relevant information.  
+
 \section{Performance On Unimodal Code Models}
+
 \subsection{Experiment Description}
+
+\noindent
+As was evident in Section \ref{javadoc_experiment}, security-relevant information is able to extracted from Javadoc to generate useful results, i.e., classifying security-relevant methods. It was found that when only the Javadoc was included, the models achieved a performance slightly worse than bimodal data. \\
+
+\noindent
+To further investigate how much the code is contributing to learning in the bimodal models, the log4j sample experiment will be conducted with only the code of the Java methods used. \\
+
 \subsection{Experiment Results}
+
+%\cref{tab:test_perfomance_tfidf_svm_code}{tab:test_perfomance_fine_nn_code} shows the performance of the model configurations on the task of labelling a sample of methods from log4j, using only the code to generate features for both training and classifying.
 
 \begin{table}[H]
     \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset}
-    \label{tab:test_perfomance_tfidf_svm}
+    \label{tab:test_perfomance_tfidf_svm_code}
         \begin{center}
             \begin{tabular}{c|c|c|c}
                 \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -183,7 +218,7 @@ This experiment provides no strong evidence for a significant difference in perf
     
     \begin{table}[H]
         \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset}
-        \label{tab:test_perfomance_pre_svm}
+        \label{tab:test_perfomance_pre_svm_code}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
                 \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -199,7 +234,7 @@ This experiment provides no strong evidence for a significant difference in perf
     
     \begin{table}[H]
         \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset}
-        \label{tab:test_perfomance_fine_svm}
+        \label{tab:test_perfomance_fine_svm_code}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
                 \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
@@ -214,7 +249,7 @@ This experiment provides no strong evidence for a significant difference in perf
     
     \begin{table}[H]
         \caption{Performance of neural-network classifier on fine-trained encoders for feature generation on test dataset}
-        \label{tab:test_perfomance_fine_nn}
+        \label{tab:test_perfomance_fine_nn_code}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
                 \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
