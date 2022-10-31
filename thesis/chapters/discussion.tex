@@ -1,1 +1,17 @@
-Discuss.
+\subsection{Results}
+
+\noindent
+It was found that natural language processing on Javadoc is useful for the task of classifying security-sensitive methods. One model configuration (UniXcoder with mean pooling using a neural-network classifier) was able to classify security-sensitive methods in a real-world Java project with an F1-Score of $0.65$ when classifying exclusively on Javadoc as input. This result is significantly better than randomly guessing and hence indicates that the assumption made at the beginning of this thesis, that Javadoc contains security-relevant information, was sound. \\
+
+\noindent
+However, it was also found that models trained on Javadocs exclusively did not represent the optimally performing configuration. It was found that bimodal models, models that were trained and classified on both a method's code and its Javadoc, performed marginally better in most cases. This is likely a result of the specific pre-trained encoders being used. Since CodeBERT and UniXcoder were primarily trained on bimodal inputs, it is expected that the encoders perform best on the input that most closely resembled the pre-training data as a result. \\
+
+\noindent
+In almost all cases, the more sophisticated models (i.e., fine-tuned Transformer encoders with neural network classifiers) performed better than the more naive approaches (i.e., SVM classifier, and tf-idf feature generation or pre-trained encoders for feature generation). In the case of the bimodal input data models, the most naive model (an SVM classifier with tf-idf for feature extraction) had an F1-score of $0.51$ on the test dataset, whereas CodeBERT with mean pooling using a neural network classifier had an F1-score of $0.68$. In other words, the more sophisticated model was over $30\%$ more accurate than the naive approach. This result was reassuring as it indicates the time spent developing and fine-tuning these sophisticated neural networks was not put to waste.\\
+
+\noindent
+f
+
+\subsection{Limitations}
+
+\subsection{Further Work}
