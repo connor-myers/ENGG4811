@@ -160,7 +160,7 @@ This experiment provides no strong evidence for a significant difference in perf
                 UniXcoder & Mean & 0.62 & 0.74 & 0.62 & 0.65 \\
             \end{tabular}
         \end{center}
-    \end{table}
+\end{table}
     
 
 \subsection{Experiment Discussion}
@@ -168,4 +168,63 @@ This experiment provides no strong evidence for a significant difference in perf
 \section{Performance On Unimodal Code Models}
 \subsection{Experiment Description}
 \subsection{Experiment Results}
+
+\begin{table}[H]
+    \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset}
+    \label{tab:test_perfomance_tfidf_svm}
+        \begin{center}
+            \begin{tabular}{c|c|c|c}
+                \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                 &  &  &  \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+        \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset}
+        \label{tab:test_perfomance_pre_svm}
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                CodeBERT & CLS &  &  &  &  \\
+                CodeBERT & Mean &  &  &   &  \\
+                UniXcoder & CLS &  &  &  &  \\
+                UniXcoder & Mean &  &  &  &  \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+    
+    \begin{table}[H]
+        \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset}
+        \label{tab:test_perfomance_fine_svm}
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                CodeBERT & CLS &  &  &  &  \\
+                CodeBERT & Mean &  &  &  &  \\
+                UniXcoder & CLS &  &  &  &  \\
+                UniXcoder & Mean &  &  &  &  \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    
+    \begin{table}[H]
+        \caption{Performance of neural-network classifier on fine-trained encoders for feature generation on test dataset}
+        \label{tab:test_perfomance_fine_nn}
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                \textbf{Feature Generator} & \textbf{Pooling Type} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score}  \\
+                \hline
+                CodeBERT & CLS &  & &  &  \\
+                CodeBERT & Mean &  &  &  &  \\
+                UniXcoder & CLS &  &  &  &  \\
+                UniXcoder & Mean &  &  &  &  \\
+            \end{tabular}
+        \end{center}
+\end{table}
+
 \subsection{Experiment Discussion}
