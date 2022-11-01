@@ -192,6 +192,8 @@ For some input sequence of $n$ tokens, a BERT model will therefore produce $n$ e
 \subsubsection{Loss}
 \label{loss}
 
+% left off editing here
+
 \noindent
 Loss is a measure of how incorrect a model's prediction input. Loss is used both in the context of a single input and sequence of input data, i.e., the average loss \cite[p.~11]{python-machine-learning}. Perhaps a more convenient way to think about loss is that it is a measure of how confident the model is in its answer; a high-loss means that model is not confident, whereas a low loss means the model is extremely confident in its answer. It should be noted that when we are optimising a machine-learning model, i.e., systematically adjusting all the weights and biases from a labelled dataset, we are not optimising the accuracy but rather loss. That is, the goal of training a neural network is to minimise the loss. Of course, in-doing so, the accuracy should indirectly improve. While accuracy and loss are not always directly correlated, if they are not it is usually indicitive of more fundamental problems.\\
 
