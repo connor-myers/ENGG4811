@@ -127,31 +127,32 @@ Given this thesis project is about the classification of security sensitive meth
 Pre-trained models are machine-learning models that have already been trained for some task. Typically, this task is very general and non-specific so that the model can later be \emph{fine-tuned} for a more specific, but related, task. Pre-trained models are useful because a significant number of machine-learning tasks are actually quite similar. That is, even though two downstream tasks may be different, the majority of the `knowledge' the model is required to learn for each task is shared between the two.\\
 
 \noindent
-For instance, there are many tasks that require a model to understand the relationship between natural language and code. Downstream tasks requiring this knowledge include: code search (searching for the most related code from natural language), code generation (creating code from natural-language), and code completion (taking a fragment of code and completing it). It is easy to see that all these aforementioned tasks share many aspects in common. Instead of training a new model from scratch for each of these tasks, it would be far easier to `pre-train' a model such that it learns the general task in common with all the downstream tasks (i.e., understand the relationship between natural-language and code), and then, for each downstream task, performing extra training to make that general machine-learning model applicable for that specific downstream task. This additional training done on a pre-trained model is known as \emph{fine-tuning}.\\
+For instance, there are many tasks that require a model to understand the relationship between natural language and code. Downstream tasks requiring this knowledge include: code search (searching for the most related code from natural language), code generation (creating code from natural-language), and code completion (taking a fragment of code and completing it). It is easy to see that all these aforementioned tasks share many aspects in common. Instead of training a new model from scratch for each of these tasks, it would be better to `pre-train' a model such that it learns what is common between all the downstream tasks. This model can then be extended for each downstream task individually by performing a small amount of additional training specific for that downstream task. This process is known as fine-tuning.\\
 
 \noindent
-Using pre-trained models enables us to avoid `doubling-up' on work that has already done and, in our case, gain access to sophisticated models developed by large tech companies with an efficacy that would simply not be possible if we were to develop a model from scratch.\\
+Using pre-trained models enables us to avoid `doubling-up' on work that has already done and, in our case, gain access to sophisticated models with a level of performance that would typically be out of reach for an undergraduate thesis project. \\
 
-\label{fine-tuning}
-\noindent
-In the case of this thesis project, we simply need to select a pre-trained model that has been trained on both natural-language and Java code, and also understands the relationship between the two. Then, we can perform additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive\footnote{The process is not quite this simple. We will need to add an additional classification layer and modify the existing pre-trained model. We will return to this topic later in the thesis.}. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done.\\
+%\label{fine-tuning}
+%\noindent
+%In the case of this thesis project, a pre-trained model that has been trained on understanding both natural language and code, and also how they are related should be selected. Additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive\footnote{The process is not quite this simple. We will need to add an additional classification layer and modify the existing pre-trained model. We will return to this topic later in the thesis.}. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done.\\
 
 \noindent
-This dicussion of pre-trained models will continue in the literature review, where we will identify an appropriate pre-trained model for this project.
+This discussion of pre-trained models will continue in the literature review, where an appropriate pre-trained model for this project will be identified. 
 
 \subsubsection{PyTorch and Huggingface}
 
 \noindent
-PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will be using for this project. PyTorch makes the process of loading pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow} and Keras \cite{keras}. PyTorch has been selected as examples of how to use CodeBERT and its derivatives (the pre-trained models we will be using in project) were done in PyTorch, simplifying the development of our model.\\
+PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will be using for this project. PyTorch makes the process of loading pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow} and Keras \cite{keras}, however PyTorch was selected as the examples provided by the CodeBERT authors use PyTorch. \\
 
 \noindent
-PyTorch simply provides a framework to do machine learning work, but it does not provide the implementation of the models, nor the pre-trained weights to load into the models. For that, we will use Huggingface. Huggingface provides not only implementations of models that can be loaded into frameworks like PyTorch, Tensorflow, Keras, and etc..., but also a cloud-platform to host pre-trained models \cite{huggingface}.\\
+PyTorch provides a framework to do machine learning work, but it does not provide the model implementations. For that, the HuggingFace library will be used. HuggingFace provides not only implementations of models that can be used in conjunction with machine learning frameworks such as PyTorch, but also a cloud-platform to load pre-trained models from \cite{huggingface}.\\
 
 \noindent
 \textbf{Tensors}\\
 
 \noindent
-Tensors are an important data structure in machine-learning frameworks, and they will come-up many times in this thesis. The precise definition of tensors is best left for mathematicians and physicists, but for our purposes we will treat tensors as n-dimensional arrays of real numbers that run very fast on GPUs \cite{deeplearning-mit}.
+Tensors are an important data structure in machine-learning, and it is important to have a general idea of what they are for this project. The precise definition of tensors is best left for mathematicians and physicists, but for the purposes of this thesis, they can simply be thought of n-dimensional arrays of real numbers that run very fast on GPUs \cite{deeplearning_mit}.
+
 
 \subsubsection{Tokeniser}
 
