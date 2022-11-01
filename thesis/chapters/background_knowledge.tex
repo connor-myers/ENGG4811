@@ -106,6 +106,7 @@ Perhaps the most useful property of the Transformer architecture is input proces
 Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand the context of tokens (notably, future context as well) much better than RRNs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold, however, is for small amounts of data. With tasks that have very small amounts of training data, LSTMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training-time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
 
 \noindent
+\label{token_limit}
 There is one major caveat to this improved performance, however. Unlike RNNs, which can have an input sequence of any length, Transformers require a fixed-length input. All input sequences must have the same length, and there is a maximum length an input sequence can be. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. For most use-cases, this is not an issue as 512 tokens are more than enough. \\
 
 \begin{figure}[t]
@@ -156,40 +157,43 @@ Tensors are an important data structure in machine-learning, and it is important
 
 \subsubsection{Tokeniser}
 
-Tokenisation is an important step when doing natural-language processing. When processing natural-language, or code, we cannot input as text into the model directly. First, we must \emph{tokenise} the text. That is, break the input down into tokens which the model does understand.\\
+Tokenisation is an important step in natural-language processing. When processing natural-language, or source code, text cannot be inputted into the model directly. First, the text must be broken into individual components that model is familiar with. I.e., tokens. For natural-language, tokens typically correspond to whole words however this is not always the case. In Section \ref{token_limit} it was mentioned that all BERT models have a maximum input length of 512. Typically, a token represents more than one character so this 512 limit is not as small as it may initially seem. 
+
+%\noindent
+%The CodeBERT tokeniser has learned what tokens are important for natural-langauge and code, and will therefore tokenise input appropriately for that context. For this project, we do not necessarily have to add additional tokens to the tokeniser\footnote{We will be adding additional tokens, but for an alternative reason. We will come back to this later.} as the CodeBERT tokeniser has already learned how to tokenize Java and natural-langauge during pre-training.\\
+%
 
 \noindent
-Earlier, we briefly mentioned that RoBERTa and, by extension, CodeBERT has a 512 token limit. This means we can only input 512 \emph{tokens} at a time. Usually, a token corresponds to more than one character so this 512 token limit allows for input much greater than 512 characters.\\
-
-\noindent
-The CodeBERT tokeniser has learned what tokens are important for natural-langauge and code, and will therefore tokenise input appropriately for that context. For this project, we do not necessarily have to add additional tokens to the tokeniser\footnote{We will be adding additional tokens, but for an alternative reason. We will come back to this later.} as the CodeBERT tokeniser has already learned how to tokenize Java and natural-langauge during pre-training.\\
-
-\noindent
-See Appendix \ref{appendix:tokenizer-example} for an example of how CodeBERT tokenises input.
+See Appendix \ref{appendix:tokenizer-example} for an example of the pre-trained model `CodeBERT' tokenises input.
 
 \subsubsection{Embeddings}
 
 \noindent
-For our purposes, token embeddings can be considered as vector representations of words (or word fragments). That is, they map a token to a point in vector-space. This is an important aspect of NLP as this is how NLP models understand \emph{context}, as related words will map more closely together in vector-space than disimilar words. For example, homonyms --- words spelt the same but with different meanings --- will produce embeddings that are \emph{not} close together in vector-space because, despite being the same word, they have different meanings. Naturally, how models based on the transformer architecture do this is out-of-scope for this thesis, however it corresponds to the `Multi-head Attention' block in Figure \ref{transformer}.\\
+For the purposes of this thesis, embeddings can be thought of as vector representations of tokens. That is, they map a token to a point in vector-space. This is an important aspect of NLP as this is related to how NLP models understand context. Related tokens or tokens that have similar meanings will map more closely together in vector-space compared to unrelated words. For example, homonyms --- words spelt the same but with different meanings --- will produce embeddings that are not close together in vector-space because despite being the same have vastly different meanings.\\
+
+%\noindent
+%Naturally, how models based on the transformer architecture do this is out-of-scope for this thesis, however it corresponds to the `Multi-head Attention' block in Figure \ref{transformer}.\\
 
 \noindent
-CodeBERT, for example, has 768 nodes on the last layer of its hidden network. This means that for each token we feed into CodeBERT we receive an embedding of size 768. In the case of codeBERT, there is some additional embedding information included in the embedding in addition to the token embedding. These additional embeddings are the \emph{segment} embeddings and \emph{positional} embeddings. The segment embedding provides information whether the embedding is part of the code or natural-language segment of the input. And, the positional embedding indicates where the token the embedding is for was located in the input sequence. The token embedding, segments embedding, and positional embedding are added elementwise to produce the final embedding for a given input token. \\
+The pre-trained model CodeBERT, for example, has 768 nodes in its output layer (i.e. the last layer of its hidden network) \cite{CodeBERT}. The sequence of numbers created by these 768 nodes are the embedding for some input token. This means each token fed into CodeBERT (or any other BERT model) has an embedding of size $768$.\\
+
+%In the case of codeBERT, there is some additional embedding information included in the embedding in addition to the token embedding. These additional embeddings are the \emph{segment} embeddings and \emph{positional} embeddings. The segment embedding provides information whether the embedding is part of the code or natural-language segment of the input. And, the positional embedding indicates where the token the embedding is for was located in the input sequence. The token embedding, segments embedding, and positional embedding are added elementwise to produce the final embedding for a given input token. \\
 
 \label{embedding}
 \noindent
-Understanding what an embedding is is critical moving forward with thesis. This output embedding, which, in the case of BERT models, will be a vector of size $n \times 768$, where $n$ is the number of input tokens into the model. How we interpret this result is very important. For instance, in order to perform a classification (i.e., label an input-sequence according to a set of pre-defined categories), that $n \times 768$ tensor needs to somehow be transformed (the technical term is `pooled') into a tensor of size 768. In other words, we need to pool the individual embeddings for each token into a singular embedding to generate an embedding for the \emph{entire} input sequence. I.e., a sequence embedding. There are numerous ways to perform this pooling; we will briefly outline three of these methods.
+For some input sequence of $n$ tokens, a BERT model will therefore produce $n$ embeddings, each of size $768$. Most downstream tasks are performed on an input sequence, not an individual token. As such, the embeddings of each token should be combined in such a way to generate a new embedding that contains information pertaining to all the tokens. This is known as a sequence embedding and there are a variety of methodologies to create them. This is known as \emph{pooling} and there are two main pooling strategies for Transformer models.
 
 \begin{enumerate}
-    \item \textbf{Mean-pooling:} Each of the $n$ embeddings are added together elementwise and divided by $n$. That is, the average embedding for some input sequence.
-    \item \textbf{Max-pooling:} The max value of each embedding elementwise produces the final embedding. I.e., a new embedding is constructed where the value at index $i$ is the max value over all the $n$ embeddings at index $i$.
-    \item \textbf{CLS-pooling:} With BERT models, you can include a special [CLS] as the first token of an input sequence. Due to how BERT works, this token will include contextual information for the \emph{entire} sequence embedding. So, to produce the final 768-size embedding for a sequence, you simply take the embedding for the [CLS] token and treat it as your sequence embedding.
+    \item \textbf{Mean-pooling:} Each of the $n$ token embeddings are added together and divided by $n$ (element-wise). That is, the average embedding is calculated. 
+  
+    \item \textbf{CLS-pooling:} A special token (typically denoted as [CLS]) is included as the first token of an input sequence. As a result of how Transformers work, this token will include information for the entire input sequence. The token embedding for this special token is in turn treated as the sequence embedding. 
 \end{enumerate}
 
 \subsubsection{Loss}
 \label{loss}
 
 \noindent
-In the simplest term, `loss' is a measure of how incorrect a model's prediction input. Loss is used both in the context of a single input and sequence of input data, i.e., the average loss \cite[p.~11]{python-machine-learning}. Perhaps a more convenient way to think about loss is that it is a measure of how confident the model is in its answer; a high-loss means that model is not confident, whereas a low loss means the model is extremely confident in its answer. It should be noted that when we are optimising a machine-learning model, i.e., systematically adjusting all the weights and biases from a labelled dataset, we are not optimising the accuracy but rather loss. That is, the goal of training a neural network is to minimise the loss. Of course, in-doing so, the accuracy should indirectly improve. While accuracy and loss are not always directly correlated, if they are not it is usually indicitive of more fundamental problems.\\
+Loss is a measure of how incorrect a model's prediction input. Loss is used both in the context of a single input and sequence of input data, i.e., the average loss \cite[p.~11]{python-machine-learning}. Perhaps a more convenient way to think about loss is that it is a measure of how confident the model is in its answer; a high-loss means that model is not confident, whereas a low loss means the model is extremely confident in its answer. It should be noted that when we are optimising a machine-learning model, i.e., systematically adjusting all the weights and biases from a labelled dataset, we are not optimising the accuracy but rather loss. That is, the goal of training a neural network is to minimise the loss. Of course, in-doing so, the accuracy should indirectly improve. While accuracy and loss are not always directly correlated, if they are not it is usually indicitive of more fundamental problems.\\
 
 \noindent
 For instance, we can have a model that is extremely accurate with its answers but not very confident, i.e., a high loss. For example, if we have a classifier model and generate the final probabilities, our final answer is whichever probability is greatest. However if our model responds with probabilities that look like: $[0.25, 0.25, 0.24, 0.26]$, where each of these values is the probability of the input sequence being one of the labels in our dataset. Technically, the model has predicted our input sequence was the 4th class, as it has a probablity of $0.26$. Even if this predicition is correct, however, it is far from ideal as we would expect a perfect model, in the case of the 4th label indeed being correct, to output $[0.0,0.0,0.0,1.0]$. Obviously no model would perform \emph{that} well, but the sentiment stands that our model should be able to \emph{confidently} predict its answers. That way, we can be reassured our model is learning \emph{generalised} representations of the data and will be able to perform effectively on real-world data it has not yet seen before. In summary: not only do we want our model to be accurate, we also want it to be confident in its answer.\\
