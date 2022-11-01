@@ -5,7 +5,7 @@ In this section, the key background knowledge for this thesis will be discussed.
 Taint analysis is a type of information-flow analysis that considers all user inputted data (sources) as malicious, and follows the flow of this `tainted' data to determine if it reaches a security sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
 
 \noindent
-Most taint analyis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is some process (usually a method or function call) that make untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source is able to reach a sink (a security sensitive operation) without first going through a sanitiser. \\
+Most taint analyis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is some process (usually a method or function call) that make untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source is able to reach a sink without first going through a sanitiser. \\
 
 \noindent
 Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer\footnote{\url{https://fbinfer.com}}, and SonarQube\footnote{\url{https://www.sonarqube.org}}. \\
@@ -15,25 +15,31 @@ Consider the motivating example in Figure \ref{figure-taint-example} which shows
 
 \begin{figure}[H]
     \lstinputlisting[style=mystyle, language=Java]{code/path-traversal-bad.java}
-    \caption{A contrived example of a SQL injection vulnerability that would be detected by a taint-analysis tool.}
+    \caption{A contrived example of a SQL injection vulnerability that would be detected by a taint analysis tool.}
     \label{figure-taint-example}
 \end{figure}
 
 \noindent
-From Figure \ref{figure-taint-example}, we can see getParameter() is a source. This is because getParameter() retrieves the value of a parameter in a HTTP request, which can be arbitrarily set by the user. Because it can be set by the user, from a security perspective, the variable `name' in this code is considered tainted. Taint analysis tools cannot implicitly `know' that a particular method call is a source, however. Most taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{sink-tank-default-source-config} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}. That is, a taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered tainted in the first place. For larger projects, however, where there is a lot of custom written code, or niche libraries are being used, the provided dataset of sensitive methods often proves insufficient. Therefore, developers must inspect the code manually and create a list of sensitive methods particular to that project/library. Naturally, creating a custom taint analysis configuration for a particular software project is a time-consuming and laborious process that, if automated, would provide significant utility to large software projects.\\
+From Figure \ref{figure-taint-example}, we can see getParameter() is a source. This is because getParameter() retrieves the value of a parameter in a HTTP request, which can be arbitrarily set by the user. Because it can be set by the user, from a security perspective, the variable `name' in this code is considered tainted. However, taint analysis tools cannot implicitly know that a particular method is a source. Taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{sink-tank-default-source-config} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}.\\
 
 \noindent
-Furthermore, in the code example we can see this variable `name' being used to generate an SQL query which is then executed (executing an SQL query is obviously considered a security sensitive operation, i.e., a sink.) without any sort of validation that the name variable contains a legitimate or valid value. In this code, a malicious actor could decide their name is now `;DROP ALL TABLES;' and the code will happily delete the entire database. \\
+That is, a taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered security sensitive. For large projects and projects using niche libraries, the provided dataset of security sensitive methods often proves insufficient. Therefore, developers must inspect the project's code manually and create a list of security sensitive methods specific to a project. Naturally, creating this custom taint analysis configuration is time-consuming and error prone.\\
 
 \noindent
-In order for this user input to be safely included in the SQL query, it first needs to be sanitised by a \emph{sanitiser}. An example of a sanitiser for input into an SQL query is org.apache.commons.lang.StringEscapeUtils.escapeSql() which will remove any SQL control characters from a string, such as `;'.\\
+In Figure \ref{figure-taint-example} the variable `name' is included in an SQL query without any validation of its input. That is, it is not \emph{sanitised}. Any good taint analysis tool will have getParameter() as a source and executeQuery() as a sink, so this example would likely be flagged as an insecure data flow. \\
 
 \noindent
-While Figure \ref{figure-taint-example} is simplistic and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, that is only possible because the methods being used, i.e. getParameter(), executeQuery(), and escapeSql(), are all common methods that will inevitably be listed as sources, sinks, and sanitisers respectively in any good taint analysis tool. Issues with the performance of taint-analysis tools can occur when the list of sensitive methods for a project is not complete. I.e., the taint-analysis configuration is missing real sources, sinks, and sanitisers and can therefore not generate an optimum analysis.
+To rewrite this code so it is safe, the variable `name' should be passed through a sanitiser for SQL queries. An example of a sanitiser for SQL input is org.apache.commons.lang.StringEscapeUtils.escapeSql(), which will remove any SQL control characters from a string, such as `;'.\\
+
+\noindent
+While Figure \ref{figure-taint-example} is a simple and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, this insecure dataflow being detected is predicated by the those featured security-sensitive methods (i.e. getParameter(), executeQuery(), and escapeSql()), being included in the taint analysis tool's configuration.\\
+
+\noindent
+A taint analysis tool is only as effective as its security-sensitive method configuration is complete. If a taint analysis tool's configuration misses real security-sensitive methods in a project, the analysis generated by the tool will not be optimum and will likely miss insecure data flows in the program. \\
 
 \section{Deep Learning}
 
-Deep-learning is a subtopic within the broader category of machine learning whereby many layers of artificial neurons (hence `deep' learning) learn representations of data for applications such as: image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
+Deep-learning is a subtopic within the broader category of machine learning whereby many layers of interconnected artificial neurons learn generalised representations of data for applications such as: image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
 
 \begin{figure}[h]
     \begin{center}
@@ -44,83 +50,63 @@ Deep-learning is a subtopic within the broader category of machine learning wher
 \end{figure}
 
 \noindent
-Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden-layer, or, if this neuron is within the first layer of the hidden-network, directly from the input layer. Each edge (that is, each connection between an input and the neuron in-question) is a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. Naturally, a weight, in simplistic terms, refers to how much the input signal should be amplified or reduced (i.e., the input signal --- which is just a number --- is multiplied by the weight on each edge).\\
+Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden-layer, or, if this neuron is within the first layer of the hidden-network, directly from the input data. Each edge (that is, each connection between an input and the neuron in-question) has a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. A weight is simply a real number associated with each neuron connection that scales the signal from the input signal. \\
 
 \noindent
-After all these input values are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is simply a default value for the node that will be added to the node (positive or negative) that will be added to the final sum of a node, irrespective of the input values.\\
+After all the input values from each connecting neuron are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron also has an associated bias. Bias is a value that is added to a neuron's output by default. \\
 
 \noindent
-In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are all linear), and thereby enable the network to learn more sophisticated representations, this summed value is passed through an \emph{activation function} before producing the final value of the neuron. A common choice of activation function is a sigmoid function, although there are many others commonly in use each having their own positives and negatives. Depending on where this node is located in the network, this output value $y_{j}$ will feed into yet another node or the final output layer.\\
+In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are linear), and thereby enable the network to learn more sophisticated representations of data, the sum of the bias and the weighted inputs is passed through an \emph{activation function}. A common choice of activation function is a sigmoid function, although there are many activations to choose from, each with their own positives and negatives. After the activation function is applied, the final output value of neuron has been calculated. \\
 
 \noindent
-The key idea is that, initially, the weights and biases are initialised \emph{randomly}. A neural network must be \emph{trained}, it is said, so that these weights and biases are set appropriately and the model can `learn' generalised representations of data and therefore do something useful, such as classify data (e.g., image recognition) or generate new data (e.g.,machine translation). How exactly this training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (that is input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the output generated from the input more closely resembles the expected output.\\
+Initially, the weights and biases of all the neurons and connections in the network are initialised randomly. A neural network must be `trained' so that all the weights and biases are set in such a way that the network produces useful outputs for whatever task it is performing. How exactly training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (i.e., input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the actual output generated by the network for some input more closely resembles the expected output. If conducted on a sufficient number of examples on a diverse training dataset, the neural network will hopefully learn to effectively perform the task (whatever that may be) on data it has not seen before. \\
+
+%
+%\noindent
+%It is important to note that we do not want our weights and biases adjusting \emph{too} much for particular inputs. That is, the network is not learning general patterns but rather representations specific to the input data. This is known as \emph{overfitting}, and it will become a key problem further along in thesis topic. \\
+%
+%\noindent
+%After training a network over a diverse (to avoid overfitting) and appropriate dataset for a sufficient number of examples, a neural network can have the weights and biases of its corresponding neurons adjusted in such a way that it can make predictions on data it has not yet seen before --- that is, it has learned \emph{general} representations of the data.\\
 
 \noindent
-It is important to note that we do not want our weights and biases adjusting \emph{too} much for particular inputs. That is, the network is not learning general patterns but rather representations specific to the input data. This is known as \emph{overfitting}, and it will become a key problem further along in thesis topic. \\
-
-\noindent
-After training a network over a diverse (to avoid overfitting) and appropriate dataset for a sufficient number of examples, a neural network can have the weights and biases of its corresponding neurons adjusted in such a way that it can make predictions on data it has not yet seen before --- that is, it has learned \emph{general} representations of the data.\\
-
-\noindent
-So far, we have only discussed the function of one neuron in isolation. While this is critcal for a basic understanding of deep-learning as it relates to this thesis topic, it undermines the sheer scale of the models that will be employed this thesis project. One such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters (that is, 125M weights and biases that need to be calibrated) and was pre-trained on a corpus of almost 10 million examples. Despite using 16 interconnected NVIDIA Tesla V100 GPUs, pre-training still took more than 6 hours. 
+So far, we have only discussed the function of one neuron in isolation. While this is critcal for a basic understanding of deep-learning as it relates to this thesis topic, it undermines the sheer scale of the models that will be employed this thesis project. One such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters (that is, 125M weights and biases that need to be calibrated) and was trained on a corpus of almost 10 million examples.
 
 \subsection{Neural Network Architectures}
-There are a variety of architectures of neural networks. Choice of architecture is critical and it fundamentally effects all aspects of a model.
+There are a variety of architectures of neural networks. Choice of architecture is critical and fundamentally affects the performance of the model.
 
 \subsubsection{Recurrent Neural Networks}
 
 \noindent
-Natural language processing, just one application of deep-learning, for which this thesis topic is concerned about in particular, had for many years typically been done with Recurrent Neural Networks (RNNs). More specifically, it was done with long short-term memory networks (LSTM) which are a subclass of RNNs.\\
+Natural language processing had for many years been done with Recurrent Neural Networks (RNNs)\footnote{More specifically, it was done with long short-term memory networks (LSTMs) which are a subclass of RNNs.}. \\
 
 \noindent
-RNNs were vital for natural-language processing as this architecture of neural-network is capable of `memory'. That is, the output generated from previous inputs affects future inputs. For natural-language processing, what this means is that these models can understand \emph{context}. Having a model understand context is vital because, depending on where a word is used in a sentence (or where an identifier or code keyword is used in a program) it can have an entirely different meaning. \\
+RNNs were vital for natural-language processing as this architecture of neural-network is capable of `memory'. In the scope of natural language processing, this means RNNs were capable of understanding the \emph{context} of words. Having a model understand context is vital because where a word is placed in a sentence, or what words surround it, can dramatically alter the meaning of a word. The same idea applies in the context of source-code. \\
 
 \noindent
-Take the following example...\\
+RNNs understand context by sequentially processing an input sentence one word at a time, and incorporate the output of one word into the processing of word after it. This means that RNNs must process data sequentially and options for parallelisation are limited. As a result of this, RNNs are notoriously slow \cite{patiexploring}.\\
 
 \noindent
-As demonstrated above, it is easy to see why models that do not have memory are simply not powerful enough for applications requiring context, such as natural-language processing. This understanding of context comes with many issues, however. RNNs understand context by feeding the output of a previous input into the next input. This means that input into an RNN must be processed linearly and options for parallelisation are limited. Due to this lack of parallelisation, RNNs cannot optimally exploit the parallel workflows that modern GPUs excel at and are therefore extremely slow and computationally expensive compared to other model architectures \cite{patiexploring}. Furthermore, this context (i.e., memory of previous inputs) that travels the network sequentially slowly vanishes. That is, for very long inputs the `context' created at the start of an input (sentence, code, etc...) may have, for all intents and purposes, disappeared by the end of the input. In other words, RNNs have a hard-time remembering context for large inputs. Furthermore, most RNNs cannot understand \emph{future} contexts. For example, it may be the case in some code that a keyword further ahead in an input affects the meaning of an input before it. Typical RNNs (excluding bidirectional RNNs\footnote{Bidirectional RNNs can understand future context, but they are extremely slow \cite{ZhangAston2021DiDL}.}) are simply not capable of learning such behaviour.
+Furthermore, this context (i.e., memory of previous inputs) that is maintained as the network processes an input slowly vanishes. That is, for very long inputs the `context' created at the start of an input sequence is likely to have disappeared when processing words towards the end of the sequence. As such, RNNs are not as effective on very large inputs. \\
 
 \subsubsection{Long Short Term Memory (LSTM)}
 
 \noindent
-Long short-term memory networks (LSTMs) are one methodology of having an RNN remember context for longer inputs. LSTMs accomplish this by adding `gating-units' to each node, which act to reduce the gradient vanishing and exploding problems, respectively. The exact function of how these gating units work is out of scope, however all one needs to know about them is that this longer-term memory comes at a significant performance cost. These gating-units and, by extension LSTMs, are notoriously slow to train and, in general, are extremely computationally expensive \cite{sundermeyer2012lstm}.
-
-% \subsubsection{Summary of RNNs}
-% \noindent
-% \textbf{Pros}
-% \begin{enumerate}
-%     \item Understand context
-%     \item ...
-% \end{enumerate}
-
-% \noindent
-% \textbf{Cons}
-% \begin{enumerate}
-%     \item Extremely slow to train
-%     \item Computationally expensive
-%     \item Most RNNs cannot understand future context
-%     \item Difficulty processing long inputs
-%     \item Suffer particularly from vanishing and exploding gradient problems
-% \end{enumerate}
+Long short-term memory networks (LSTMs) are a subclass of RNNs that aim to reduce the problems of traditional RNNs, particularly with regards to handling longer inputs. LSTMs employ `gating-units' to each node in a network which act to ensure the contextual information generated by previous words in a sentence is better maintained for longer input sequences. Including these gating units, while allowing for networks that can process longer inputs more effectively, comes at a significant performance cost. As a result, LSTMs are notoriously slow to train and, in general, are extremely computationally expensive \cite{sundermeyer2012lstm}.
 
 \subsubsection{Transformer Architecture}
 \label{transformers}
 
 \noindent
-It is not an exageration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times), and thereby the introduction of the Transformer architecture, has completely revolutionalised not just natural-language processing, but all fields within machine-learning.\\
+It is not an exaggeration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times), and thereby the introduction of the Transformer architecture, has completely revolutionalised natural-language processing. \\
 
 \noindent
-Given Transformers are currently the cutting-edge technology for most machine-learning tasks, explaining exactly how they function is out-of-scope for this undergraduate thesis. With that being said, we will discuss the most critical aspects of transformers and BERT-like models in order to develop a sound enough understanding to understand this thesis topic moving forward. \\
+Perhaps the most useful property of the Transformer architecture is input processing is done parallelised. That is, all tokens of an input sequence are processed simultaneously. This means these Transformers can more efficiently exploit GPU hardware \cite{gpu-parallel}, which excel at parallelised workflows. This in turn leads to extraordinary performance improvements compared to other neural network architectures \cite{attention}.\\
 
 \noindent
-Perhaps the most useful property of the Transformer architecture is input processing can be parallelised. That is, all tokens of an input sequence can be processed simultaneously. This means these models can more efficiently exploit GPU hardware \cite{gpu-parallel}, which excel at parallelised workflows. With parallelisation built into the architecture, this translates to extraordinary performance improvements compared to traditional architectures \cite{attention}.\\
+Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand the context of tokens (notably, future context as well) much better than RRNs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold, however, is for small amounts of data. With tasks that have very small amounts of training data, LSTMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training-time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
 
 \noindent
-Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand the context of tokens (notably, future context as well) much better than RNNs, including LSTMs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold, however, is for small amounts of data. With tasks that have very small amounts of training data, LSTMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training-time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
-
-\noindent
-There is one caveat to this improved performance; a limitation built into the Transformer architecture. Unlike RNNs, which can have an input sequence of any length, Transformers must have a fixed-length input. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. For most use-cases, this is not an issue and 512 tokens are more than enough. However for our use-case --- a classification task on Java methods --- the sequence of input tokens can quite often be longer than 512 tokens for some inputs. How our model handles input larger than 512 tokens is an important question and is surprisingly not so trivial, especially for our bimodal use-case. We will return to this question later in this thesis.\\
+There is one major caveat to this improved performance, however. Unlike RNNs, which can have an input sequence of any length, Transformers require a fixed-length input. All input sequences must have the same length, and there is a maximum length an input sequence can be. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. For most use-cases, this is not an issue as 512 tokens are more than enough. \\
 
 \begin{figure}[t]
     \begin{center}
@@ -135,13 +121,13 @@ There is one caveat to this improved performance; a limitation built into the Tr
 \subsubsection{Pre-trained Models and Fine-tuning}
 
 \noindent
-Given this thesis project is about the classification of security sensitive methods in Java, using both the code \emph{and} natural-language description (i.e., Javadoc), we require a machine learning model that can understand code and natural-language, in context. Creating and training a model that can understand code and natural-language is no easy task, and certainly not within scope of an undergraduate thesis. This is where pre-trained models come in.\\
+Given this thesis project is about the classification of security sensitive methods in Java, using both the code and natural-language descriptions of code (i.e., Javadoc), a machine learning model that can understand code and natural-language, and how they relate to each other, is required.\\
 
 \noindent
-Pre-trained models, as the name suggests, are machine-learning models that have already been trained for some task. Typically, this task is very general and non-specific so that the model can later be \emph{fine-tuned} for a more specific, but related, task. Pre-trained models are useful because a significant number of machine-learning tasks are actually quite similar. That is, even though two downstream tasks may be different, the majority of the `knowledge' the model needs to learn for each task is shared between the two.\\
+Pre-trained models are machine-learning models that have already been trained for some task. Typically, this task is very general and non-specific so that the model can later be \emph{fine-tuned} for a more specific, but related, task. Pre-trained models are useful because a significant number of machine-learning tasks are actually quite similar. That is, even though two downstream tasks may be different, the majority of the `knowledge' the model is required to learn for each task is shared between the two.\\
 
 \noindent
-For instance, there are many tasks that require a model to understand the relationship between natural-langauge and code. Downstream tasks requiring this knowledge include: code-search (searching for the most related code from natural-languae), code-generation (creating code from natural-language), and code-completion (taking a fragment of code and completing it). It is easy to see that all these aforementioned tasks share many aspects in common. Instead of training a new model from scratch for each of these tasks, it would be far easier to `pre-train' a model such that it learns the general task in common with all the downstream tasks (i.e., understand the relationship between natural-language and code), and then, for each downstream task, performing extra training to make that general machine-learning model applicable for a specific downstream task, such as code-generation for example. This additional training is known as \emph{fine-tuning}.\\
+For instance, there are many tasks that require a model to understand the relationship between natural language and code. Downstream tasks requiring this knowledge include: code search (searching for the most related code from natural language), code generation (creating code from natural-language), and code completion (taking a fragment of code and completing it). It is easy to see that all these aforementioned tasks share many aspects in common. Instead of training a new model from scratch for each of these tasks, it would be far easier to `pre-train' a model such that it learns the general task in common with all the downstream tasks (i.e., understand the relationship between natural-language and code), and then, for each downstream task, performing extra training to make that general machine-learning model applicable for that specific downstream task. This additional training done on a pre-trained model is known as \emph{fine-tuning}.\\
 
 \noindent
 Using pre-trained models enables us to avoid `doubling-up' on work that has already done and, in our case, gain access to sophisticated models developed by large tech companies with an efficacy that would simply not be possible if we were to develop a model from scratch.\\
