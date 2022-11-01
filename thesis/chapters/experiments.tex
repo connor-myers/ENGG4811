@@ -8,10 +8,9 @@ As mentioned in Section \ref{dataset_limitations}, the performance of the models
 To alleviate this concern, we conduct a test experiment on a realistic use-case. Since the ultimate use of these machine-learning models is to generate a list of security-sensitive methods for a Java project (to in-turn automatically produce taint-analysis tool configurations), our test dataset will be a random sample of methods from a real Java project. \\
 
 \noindent
-Log4J\footnote{\url{https://logging.apache.org/log4j/2.x/}} was selected as it is a large and popular Java library that has had security issues in the past \cite{log4shell}. \\
+Log4J\footnote{\url{https://logging.apache.org/log4j/2.x/}} was selected as it is a large and popular Java library that has had security issues in the past \cite{log4shell}. $165$ methods (that contain both code and Javadoc) will be randomly sampled from Log4J's source code. This sample will be manually labelled and these labels will be compared to the model's predictions. \\
 
-\noindent
-$165$ methods (that contain both code and Javadoc) will be randomly sampled from Log4J's source code. This sample will be manually labelled and these labels will be compared to the model's predictions. The test dataset can be found at \url{www.google.com}.\\
+%The test dataset can be found at \url{www.google.com}.\\
 
 \noindent
 Since we are evaluating the model in a realistic use-case, we will use the models f1-score as the primary measure of its success. Recall from Section \ref{} that f1-score provides the harmonic mean of precision and recall; this is a much more appropriate metric than accuracy as it takes into account false positives and false negatives. \\

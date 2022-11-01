@@ -1,14 +1,17 @@
-There are several key ideas that should be explained before the thesis topic can be appreciated fully.
+In this section, the key background knowledge for this thesis will be discussed. 
 
 \section{Taint Analysis}
 
-Taint analysis is a type of information-flow analysis that considers all user inputted data (sources) as malicious, and follows the flow of this `tainted' data to determine if it is used as input into a security sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
+Taint analysis is a type of information-flow analysis that considers all user inputted data (sources) as malicious, and follows the flow of this `tainted' data to determine if it reaches a security sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
 
 \noindent
 Most taint analyis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is some process (usually a method or function call) that make untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source is able to reach a sink (a security sensitive operation) without first going through a sanitiser. \\
 
 \noindent
-Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer\footnote{\url{https://fbinfer.com}}, and SonarQube\footnote{\url{https://www.sonarqube.org}}. Consider the motivating example in Figure \ref{figure-taint-example} which shows a simplistic SQL injection attack in Java.\\
+Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer\footnote{\url{https://fbinfer.com}}, and SonarQube\footnote{\url{https://www.sonarqube.org}}. \\
+
+\noindent
+Consider the motivating example in Figure \ref{figure-taint-example} which shows a simple SQL injection attack in Java.\\
 
 \begin{figure}[H]
     \lstinputlisting[style=mystyle, language=Java]{code/path-traversal-bad.java}
@@ -17,7 +20,7 @@ Taint analysis can be performed statically or dynamically (i.e., on some represe
 \end{figure}
 
 \noindent
-From Figure \ref{figure-taint-example}, we can see getParameter() is a source. This is because getParameter() retrieves the value of a parameter in a HTTP request, which can be arbitrarily set by the user. Because it can be set by the user, from a security perspective, the variable `name' in this code is considered tainted. Taint analysis tools cannot just `know' that a particular method call is a source, however. Most taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{sink-tank-default-source-config} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}. That is, a taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered tainted in the first place. For larger projects, however, where there is a lot of custom written code, or niche libraries are being used, the provided dataset of sensitive methods often proves insufficient. Therefore, developers must inspect the code manually and create a list of sensitive methods particular to that project/library. Naturally, creating a custom taint analysis configuration for a particular software project is a time-consuming and laborious process that, if automated, would provide significant utility to large software projects.\\
+From Figure \ref{figure-taint-example}, we can see getParameter() is a source. This is because getParameter() retrieves the value of a parameter in a HTTP request, which can be arbitrarily set by the user. Because it can be set by the user, from a security perspective, the variable `name' in this code is considered tainted. Taint analysis tools cannot implicitly `know' that a particular method call is a source, however. Most taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{sink-tank-default-source-config} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}. That is, a taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered tainted in the first place. For larger projects, however, where there is a lot of custom written code, or niche libraries are being used, the provided dataset of sensitive methods often proves insufficient. Therefore, developers must inspect the code manually and create a list of sensitive methods particular to that project/library. Naturally, creating a custom taint analysis configuration for a particular software project is a time-consuming and laborious process that, if automated, would provide significant utility to large software projects.\\
 
 \noindent
 Furthermore, in the code example we can see this variable `name' being used to generate an SQL query which is then executed (executing an SQL query is obviously considered a security sensitive operation, i.e., a sink.) without any sort of validation that the name variable contains a legitimate or valid value. In this code, a malicious actor could decide their name is now `;DROP ALL TABLES;' and the code will happily delete the entire database. \\
