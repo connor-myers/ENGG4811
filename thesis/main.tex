@@ -110,7 +110,23 @@
 \pagenumbering{Roman}
 \chapter*{Abstract}
 \setcounter{page}{1}
-To finish.
+
+\noindent
+Javadoc, while being an informal natural language description of Java code, may contain information relevant for code security tasks. In this thesis natural language processing techniques are applied on Javadoc to automatically classify security-sensitive Java methods for the purpose of configuring taint analysis tools. \\
+
+\noindent
+A variety of natural-language processing techniques and machine learning models were explored. In particular, pre-trained bimodal machine learning models for understanding code and natural language (CodeBERT and UniXcoder) were fine-tuned on a dataset of labelled security-sensitive methods. The performances of these machine learning models were evaluated on a realistic test dataset. \\
+
+\noindent
+The training dataset produced for this thesis was comprised of 931 labelled security-relevant methods. The security-relevant labels used for this dataset  were: sources (125), sinks (230), sanitisers (156), and security-irrelevant methods (420). The dataset is publicly available \href{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}{here}. \\
+
+\noindent
+In addition to the training dataset, a test dataset was produced to more accurately reflect a realistic use-case for these models. The dataset was produced by manually classifying a random sample of Java methods from Apache's Log4J. \\
+
+
+\noindent 
+The highest performing model configuration achieved an F1-score of $0.68$ on the test dataset. This exceeded the baseline performance of the naive approach to this task which had an F1-score of $0.51$.
+
 %\newpage
 %
 %\vspace*{0.5\textheight}
