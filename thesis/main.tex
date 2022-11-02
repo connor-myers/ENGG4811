@@ -111,21 +111,34 @@
 \chapter*{Abstract}
 \setcounter{page}{1}
 
-\noindent
-Javadoc, while being an informal natural language description of Java code, may contain information relevant for code security tasks. In this thesis natural language processing techniques are applied on Javadoc to automatically classify security-sensitive Java methods for the purpose of configuring taint analysis tools. \\
+%\noindent
+%Javadoc, while being an informal natural language description of Java code, may contain security relevant information. In this thesis we aim to extract these security-relevant properties from Javadoc and apply it to the task of automatically configuring taint analysis tools. In taint analysis, programs are analysed for vulnerable data-flows. A vulnerable data-flow is where user-inputted data is able to reach a security-sensitive method without first being sanitised. Unfortunately, taint analysis tools  \\
+
+%In this thesis, natural language processing techniques are applied on Javadoc and code to automatically classify security-sensitive Java methods for the purpose of configuring taint analysis tools. Four classes of methods were considered for this classification task, namely: sources, sinks, sanitisers, and security-irrelevant methods. \\
 
 \noindent
-A variety of natural-language processing techniques and machine learning models were explored. In particular, pre-trained bimodal machine learning models for understanding code and natural language (CodeBERT and UniXcoder) were fine-tuned on a dataset of labelled security-sensitive methods. The performances of these machine learning models were evaluated on a realistic test dataset. \\
+Taint analysis tools scan code for vulnerable dataflows. A vulnerable dataflow is any dataflow in a program where user-inputted data (i.e., tainted data) is able to reach a security-sensitive operation without first being sanitised. To perform this analysis, taint analysis tools require a list of security-sensitive methods (SSMs) relevant to the code being analysed. Taint analysis tools typically provide a default configuration with commonly used SSMs, although these often prove insufficient in many use-cases. As a result, taint analysis tools are often produced manually, which is an error-prone and time-consuming task. Automating this task would not only save developers time, but may enable taint analysis tools to operate more effectively. \\
+ 
+\noindent
+Javadoc, while being an informal and natural language description of code, may contain information relevant to SSM classification. In this thesis we aim to extract security-relevant information from Javadoc using machine-learning techniques and apply this to the task of automatically configuring taint analysis tools. \\
 
 \noindent
-The training dataset produced for this thesis was comprised of 931 labelled security-relevant methods. The security-relevant labels used for this dataset  were: sources (125), sinks (230), sanitisers (156), and security-irrelevant methods (420). The dataset is publicly available \href{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}{here}. \\
+Our machine learning approach utilised Microsoft's pre-trained model \emph{CodeBERT}, which has been trained on natural language and code, and  was fine-tuned on a dataset of Java SSMs. After fine-tuning, this model achieved an F1-score of $0.68$.
 
-\noindent
-In addition to the training dataset, a test dataset was produced to more accurately reflect a realistic use-case for these models. The dataset was produced by manually classifying a random sample of Java methods from Apache's Log4J. \\
+%Automatic classification of security-sensitive Java methods was implemented using a machine-learning approach. A variety of different machine learning implementations and configurations were evaluated, however the foremost architecture explored was extending existing relevant pre-trained models (CodeBERT and UniXcoder) by fine-tuning the models on a dataset of security-sensitive Java methods. The best performing model achieved achieved an F1-score of $0.68$.\\
 
+%\noindent
+%The final training dataset was comprised of 931 labelled security-relevant methods. The security-relevant labels used for this dataset  were: sources (125), sinks (230), sanitisers (156), and security-irrelevant methods (420). The dataset is publicly available \href{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}{here}. \\
 
-\noindent 
-The highest performing model configuration achieved an F1-score of $0.68$ on the test dataset. This exceeded the baseline performance of the naive approach to this task which had an F1-score of $0.51$.
+%\noindent
+%In addition to the training dataset, a test dataset was produced to more accurately reflect a realistic use-case for these models. The dataset was produced by manually classifying a random sample of Java methods from Apache's Log4J. \\
+%
+%
+%\noindent 
+%The highest performing model configuration achieved an F1-score of $0.68$ on the test dataset. This exceeded the baseline performance of the naive approach to this task which had an F1-score of $0.51$. \\
+%
+%\noindent
+%This level of performance falls short of what would be required to have the task of configuring taint analysis tools for particular projects to be completely automated. However this thesis has shown that code documentations likely do contain information useful security information and it is worth further exploring how applying machine learning techniques can enhance existing security analyses. 
 
 %\newpage
 %
