@@ -30,6 +30,10 @@
     pdfpagemode=FullScreen,
     }
 
+\usepackage{datetime}
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
+
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -149,7 +153,7 @@ Our machine learning approach utilised Microsoft's pre-trained model \emph{CodeB
 %\end{center}
 
 \chapter*{Acknowledgements}
-I would like to thank my three supervisors Mark Utting, Behnaz Hassanshahi, and Dai Nguyen for going above and beyond with helping me with thesis. I would also like to thank Paddy Krishnan from Oracle for organising this collaboration between UQ and Oracle.
+I would like to thank my three supervisors Mark Utting, Behnaz Hassanshahi, and Dai Nguyen for going above and beyond with helping me with this thesis. I would also like to thank Paddy Krishnan for organising this collaboration between UQ and Oracle.
 
 \noindent
 

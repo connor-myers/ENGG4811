@@ -1,43 +1,48 @@
-\subsection{Results}
+\section{Performance}
 
 \noindent
-It was found that natural language processing on Javadoc is useful for the task of classifying security-sensitive methods. One model configuration (UniXcoder with mean pooling using a neural-network classifier) was able to classify security-sensitive methods in a real-world Java project with an F1-Score of $0.65$ when classifying exclusively on Javadoc as input. This result is significantly better than randomly guessing and hence indicates that the assumption made at the beginning of this thesis, that Javadoc contains security-relevant information, was sound. \\
+It was found that natural language processing on Javadoc is useful for classifying security-sensitive methods. A fine-tuned UniXcoder model was able to classify security-sensitive methods (SSMs) based on their Javadoc alone with an F1-score of $0.65$. \\
 
 \noindent
-However, it was also found that models trained on Javadocs exclusively did not perform as well as bimodal data with both code and Javadoc. This is likely a result of the specific pre-trained encoders being used. Since CodeBERT and UniXcoder were primarily trained on bimodal inputs, it is expected that the encoders perform best on the input that most closely resembles the pre-training data as a result. \\
+However, it was also found that models trained on Javadocs exclusively did not perform as well as models operating on bimodal data (i.e., Javadoc \emph{and} code). This is likely a result of the specific pre-trained encoders being used. Since CodeBERT and UniXcoder were trained primarily on bimodal inputs, it is expected that the encoders perform best on the input that most closely resembles the pre-training data as a result. \\
 
 \noindent
-In almost all cases, the more sophisticated models (i.e., fine-tuned Transformer encoders with neural network classifiers) performed better than the more naive approaches (i.e., SVM classifier, and tf-idf feature generation or pre-trained encoders for feature generation). In the case of the bimodal input data models, the most naive model (an SVM classifier with tf-idf for feature extraction) had an F1-score of $0.51$ on the test dataset, whereas CodeBERT with mean pooling using a neural network classifier had an F1-score of $0.68$. In other words, the more sophisticated model was over $30\%$ more accurate than the naive approach. This result was reassuring as it indicates the time spent developing and fine-tuning these sophisticated neural networks was not put to waste. \\
+In almost all cases, the more sophisticated models (fine-tuned Transformer encoders with neural network classifiers) performed better than the more naive approaches (SVM classifiers, tf-idf feature generation, and pre-trained encoders without fine-tuning). In the case of models with bimodal input, the most simplistic model (an SVM classifier with tf-idf for feature extraction) had an F1-score of $0.51$ on the test dataset, whereas the best performing model (CodeBERT with mean pooling using a neural network classifier) achieved an F1-score of $0.68$. \\
 
 \noindent
-Another interesting result comes from the performance of the pre-trained Transformer encoders. Pre-trained UniXcoder, without fine-tuning for this task, was able to generate embeddings that, when fed into an SVM classifier, classified methods with an accuracy significantly greater than randomly guessing ($0.46$ F1-score using CLS pooling on bimodal data). This is opposed to CodeBERT which, when not fine-tuned, generated results worse than randomly guessing in most cases. This indicates that in situations with few labelled examples, UniXcoder performs better than CodeBERT. \\
+The performance of the Transformer encoders without fine-tuning was surprising. UniXcoder without fine-tuning, when paired with an SVM classifier, had an accuracy of $41\%$, which is considerably better than randomly guessing (i.e., $25\%$). In fact, the only model of this category that performed worse than randomly guessing was CodeBERT using CLS pooling which had an accuracy of $24\%$.\\
 
 \noindent
-In general, it was found that UniXcoder performed best with mean pooling, and CodeBERT performed better with CLS pooling. The cause of this discrepancy is unknown. \\
+Surprisingly, there were many cases of a significant difference in performance when using mean pooling versus CLS pooling. In general, it was found that UniXcoder performed better with mean pooling and CodeBERT performed better with CLS pooling. At this stage the cause of this discrepancy is unclear. \\
 
 \noindent
-Unfortunately all tasks similar in the literature do not use the same labels, or employ a semi-automated approach, so it would not be appropriate to compare the performance of our models to these existing experiments in the literature. For example, Sas et al. achieved an F1-Score of $81\%$ on a test dataset. This test dataset was sampled from real Java projects, however it was not randomly sampled and the proportion of labels was seemingly arbitrarily chosen \cite{autodetection}. The performance of SuSi was quite variable with a precision of $83\%$ for some datasets, and $44\%$ for others \cite{susi}.  
-\noindent
+Our models' performances fall short of Sas et al, SuSi and SWAN which achieved F1-scores of $86.4\%$, $91.9\%$, and $83\%$ respectively, however this does not take away from the success of this thesis project. This thesis has shown that Javadoc contains information useful for security-related tasks, namely SSM classification. The approach presented in this thesis is not mutually exclusive to existing implementations and, rather than replace, could enhance existing approaches to SSM classification.
 
-\subsection{Limitations and Improvements}
+\section{Limitations and Improvements}
 \label{limitations_and_improvements}
 
 \noindent
-There are numerous limitations with our approach. As is common with most machine learning projects, there was a lack of quality labelled data available to train and validate the models. Due to this lack of data, a number of examples were required to be labelled manually by me. This is not ideal as I am not a security expert, and undoubtedly this lowered the quality of the dataset to some degree. For the performance of the models to be improved a number of measures should be taken. Firstly, the dataset should be larger and come from a greater diversity of projects in different domains. This would hopefully allow the machine learning models to generalise more effectively. Furthermore, existing labelled examples should be verified by experts in the field to ensure the dataset is of a high quality \\
+There are numerous limitations with our approach. As is common with most machine learning projects, there was a lack of high-quality labelled data available to train and validate the models. Ideally, the dataset should be larger and come from a greater diversity of projects. This would hopefully allow the machine learning models to generalise more effectively.\\
 
 \noindent
-Another limitation is with regards to how overloaded methods were handled. For the purposes of this thesis, if a method was considered security-sensitive then all related overloaded methods were also considered security-sensitive. That is, the dataset manager cannot distinguish between methods with the same name but different parameters --- i.e., overloaded methods. It is not clear whether this assumption was valid, and could be a source of inaccuracy. \\
-
-\subsection{Future Work}
+Due to this lack of data, a number of examples needed to be manually labelled for this project. This is not ideal and undoubtedly lowered the quality of the dataset to some degree. To improve the quality of the dataset it should be reviewed by a third party to ensure there are no mislabelled examples.\\
 
 \noindent
-As discussion in Section \ref{limitations_and_improvements} there are number of improvements that can be made to the existing approach. However, in addition to these improvements, there are a number of extensions that can be made to improve the accuracy of the model and further evaluate its effectiveness. \\
+Another limitation is in regards to how overloaded methods were handled. For the purposes of this thesis, if a method was considered security-sensitive then all overloaded methods sharing its name were also considered security-sensitive. It is not clear if this assumption is always valid and is therefore a potential source of inaccuracy. \\
+
+\section{Future Work}
 
 \noindent
-One possible extension would be to include the \emph{context} of a method call as training input. For example, since many examples in the training dataset are interfaces (that is, they provide no code, just a method definition and Javadoc) it may be useful to include additional contextual information. Since this thesis is investigating the security information of Javadoc, it may be useful to also include the Javadoc of the method that calls the method to be classified. This would be quite a difficult extension to implement, as it would require the projects in question to be compiled and a call-graph analysis to be conducted in order to determine which methods call the methods to be classified. This is not a trivial extension to make and would complicate the implementation severely. \\ 
+In addition to these the improvements suggested in Section \ref{limitations_and_improvements}, there are a number of extensions that can be undertaken to improve the accuracy of the models. \\
 
 \noindent
-For this approach, the in-line comments in code were not included into the model. It is possible that, like the Javadoc, in-line comments may include additional security-relevant information that can increase the accuracy of the models. Unlike the previous extension, this would be a relatively simple extension with the dataset manager as it builds the dataset dynamically from the source code. \\
+One possible extension would be to include the \emph{context} of a method call as input. For instance, it may be useful to include the Javadoc for the method that calls the method to be classified as input into the model. This would likely be a difficult extension to implement as it would likely require a call-graph analysis to be conducted to determine where methods are called in a program. \\ 
 
 \noindent
-Another simple extension that can be made is to highlight certain keywords in the input and ensure these are not split by the tokeniser. A list of security-relevant keywords could be generated, and the tokeniser could be modified to ensure these keywords are not split into smaller sub-tokens. Furthermore, learning could be conducted on an additional classification task where the model learns to classify each token in the input as 1 (a security-sensitive keyword) or 0 (a security-sensitive keyword). This approach was inspired by Wang et. al's identifier-tagging approach \cite{identifier_tagging}. 
+Another potential extension would be to include in-line comments into the analysis. In this implementation, in-line comments were removed but perhaps they could be extracted and appended to the natural-language portion of codeBERT and UniXcoder's bimodal input. Recall that the dataset provided for this thesis is not static, it is produced dynamically by the dataset manager. As such, implementing this extension would likely only require small tweaks to the dataset manager, rather than having to build the dataset again completely from scratch.    \\
+
+\noindent
+Another simple extension is to `highlight' certain keywords in the input and ensure they are not split by the tokeniser. Furthermore, these tokens could have their embeddings fixed so that they are not altered by contextual information. It is not clear at this stage what the keywords would be, but it is worth exploring this idea in future.\\
+
+\noindent
+Finally, learning could be conducted on an additional classification task where the model learns to classify each token in the input as either security-sensitive or security-insensitive. This approach was inspired by Wang et. al's identifier-tagging approach \cite{identifier_tagging} and may allow for more sophisticated learning to occur. 

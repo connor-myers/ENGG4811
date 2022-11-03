@@ -5,7 +5,7 @@ The goal of this thesis was to determine if it is possible to extract security-r
 A dataset of security-relevant Java methods was produced. To our knowledge, this is the only dataset of its kind; one that includes the code and Javadoc for a security-sensitive method, as well as security-insensitive methods. The final dataset (training and validation combined) is comprised of 1096 methods (158 sources, 268 sinks, 175 sanitisers, and 495 security-insensitive methods). Furthermore, the dataset contains licensing information for each method used. \\
 
 \noindent
-This dataset was used to train and validate a variety of machine-learning models and configurations. In particular, the pre-trained models CodeBERT and UniXcoder were used in conjunction with a neural-network classifier. It was not clear whether mean or CLS pooling was most appropriate for this task, so all experiments were conducted using both pooling methodologies.
+This dataset was used to train and validate a variety of machine-learning models and configurations. In particular, the pre-trained models CodeBERT and UniXcoder were used in conjunction with a neural-network classifier. It was not clear whether mean or CLS pooling was most appropriate for this task, so all experiments were conducted using both pooling methodologies.\\
 
 \noindent
 In addition to the training and validation datasets, a test dataset was created on a more realistic use-case. This test dataset contained a random sample of methods from Apache's Log4j ($n = 165$) which were manually classified. This test dataset was used to evaluate the models' performance. \\
