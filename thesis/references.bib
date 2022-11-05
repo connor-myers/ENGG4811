@@ -45,12 +45,16 @@ keywords = {Cost benefit analysis ; Data collection ; Data processing ; Defects 
 }
 
 @inproceedings{ZampettiFiorella2017HOSP,
-author = {Zampetti, Fiorella and Scalabrino, Simone and Oliveto, Rocco and Canfora, Gerardo and Di Penta, Massimiliano},
+abstract = {Static analysis tools are often used by software developers to entail early detection of potential faults, vulnerabilities, code smells, or to assess the source code adherence to coding standards and guidelines. Also, their adoption within Continuous Integration (CI) pipelines has been advocated by researchers and practitioners. This paper studies the usage of static analysis tools in 20 Java open source projects hosted on GitHub and using Travis CI as continuous integration infrastructure. Specifically, we investigate (i) which tools are being used and how they are configured for the CI, (ii) what types of issues make the build fail or raise warnings, and (iii) whether, how, and after how long are broken builds and warnings resolved. Results indicate that in the analyzed projects build breakages due to static analysis tools are mainly related to adherence to coding standards, and there is also some attention to missing licenses. Build failures related to tools identifying potential bugs or vulnerabilities occur less frequently, and in some cases such tools are activated in a "softer" mode, without making the build fail. Also, the study reveals that build breakages due to static analysis tools are quickly fixed by actually solving the problem, rather than by disabling the warning, and are often properly documented.},
+pages = {334--344},
+publisher = {IEEE},
+booktitle = {2017 IEEE/ACM 14th International Conference on Mining Software Repositories (MSR)},
+isbn = {1538615444},
 year = {2017},
-month = {05},
-pages = {334-344},
 title = {How Open Source Projects Use Static Code Analysis Tools in Continuous Integration Pipelines},
-doi = {10.1109/MSR.2017.2}
+language = {eng},
+author = {Zampetti, Fiorella and Scalabrino, Simone and Oliveto, Rocco and Canfora, Gerardo and Di Penta, Massimiliano},
+keywords = {Continuous Integration ; Data mining ; Empirical Study ; Encoding ; History ; Java ; Open Source Projects ; Pipelines ; Software ; Static Analysis Tools},
 }
 
 @unknown{RAHIMZADEH2021102588,
@@ -79,25 +83,20 @@ title = {CodeBERT: A Pre-Trained Model for Programming and Natural Languages},
 doi = {10.18653/v1/2020.findings-emnlp.139}
 }
 
-@misc{unixcoder,
-  doi = {10.48550/ARXIV.2203.03850},
-  url = {https://arxiv.org/abs/2203.03850},
-  author = {Guo, Daya and Lu, Shuai and Duan, Nan and Wang, Yanlin and Zhou, Ming and Yin, Jian},
-  title = {UniXcoder: Unified Cross-Modal Pre-training for Code Representation},
-  publisher = {arXiv},
-  year = {2022},
-  copyright = {arXiv.org perpetual, non-exclusive license}
+@article{unixcoder,
+  title={UniXcoder: Unified Cross-Modal Pre-training for Code Representation},
+  author={Guo, Daya and Lu, Shuai and Duan, Nan and Wang, Yanlin and Zhou, Ming and Yin, Jian},
+  journal={arXiv preprint arXiv:2203.03850},
+  year={2022}
 }
 
-@misc{code2seq,
-  doi = {10.48550/ARXIV.1808.01400},
-  url = {https://arxiv.org/abs/1808.01400},
-  author = {Alon, Uri and Brody, Shaked and Levy, Omer and Yahav, Eran},
-  keywords = {Machine Learning (cs.LG), Programming Languages (cs.PL), Machine Learning (stat.ML), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  title = {code2seq: Generating Sequences from Structured Representations of Code},
-  publisher = {arXiv},
-  year = {2018},
-  copyright = {arXiv.org perpetual, non-exclusive license}
+@inproceedings{code2seq,
+title={code2seq: Generating Sequences from Structured Representations of Code},
+author={Uri Alon and Omer Levy and Eran Yahav},
+booktitle={International Conference on Learning Representations},
+year={2019},
+url={https://openreview.net/forum?id=H1gKYo09tX},
+urldate = {2022-11-05},
 }
 
 @inproceedings{effective-taint-analysis,
@@ -211,10 +210,17 @@ author = {Zhang, Aston and Lipton, Zachary C and Li, Mu and Smola, Alexander J},
 }
 
 @inproceedings{attention,
-title	= {Attention is All You Need},
-author	= {Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin},
-year	= {2017},
-URL	= {https://arxiv.org/pdf/1706.03762.pdf}
+issn = {2379-190X},
+abstract = {Recurrent Neural Networks (RNNs) have long been the dominant architecture in sequence-to-sequence learning. RNNs, however, are inherently sequential models that do not allow parallelization of their computations. Transformers are emerging as a natural alternative to standard RNNs, replacing recurrent computations with a multi-head attention mechanism.In this paper, we propose the SepFormer, a novel RNN-free Transformer-based neural network for speech separation. The Sep-Former learns short and long-term dependencies with a multi-scale approach that employs transformers. The proposed model achieves state-of-the-art (SOTA) performance on the standard WSJ0-2/3mix datasets. It reaches an SI-SNRi of 22.3 dB on WSJ0-2mix and an SI-SNRi of 19.5 dB on WSJ0-3mix. The SepFormer inherits the parallelization advantages of Transformers and achieves a competitive performance even when downsampling the encoded representation by a factor of 8. It is thus significantly faster and it is less memory-demanding than the latest speech separation systems with comparable performance.},
+pages = {21--25},
+publisher = {IEEE},
+booktitle = {ICASSP 2021 - 2021 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+isbn = {9781728176055},
+year = {2021},
+title = {Attention Is All You Need In Speech Separation},
+language = {eng},
+author = {Subakan, Cem and Ravanelli, Mirco and Cornell, Samuele and Bronzi, Mirko and Zhong, Jianyuan},
+keywords = {Acoustics ; attention ; Computational modeling ; Computer architecture ; Conferences ; deep learning ; Recurrent neural networks ; Source separation ; Speech processing ; speech separation ; transformer},
 }
 
 @INPROCEEDINGS{asr-rnn-transformer,
@@ -228,29 +234,43 @@ URL	= {https://arxiv.org/pdf/1706.03762.pdf}
   doi={10.1109/ASRU46091.2019.9004025}}
 
 @article{transformer-bad,
-year = {2020},
-title = {A Comparison of LSTM and BERT for Small Corpus},
-copyright = {http://arxiv.org/licenses/nonexclusive-distrib/1.0},
-language = {eng},
-author = {Ezen-Can, Aysu},
+  title={A Comparison of LSTM and BERT for Small Corpus},
+  author={Aysu Ezen-Can},
+  journal={ArXiv},
+  year={2020},
+  volume={abs/2009.05451}
 }
 
-@article{bert,
-year = {2018},
-title = {BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
-copyright = {http://arxiv.org/licenses/nonexclusive-distrib/1.0},
-language = {eng},
-author = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
-keywords = {Computer Science - Computation and Language},
+@inproceedings{bert,
+  title = "{BERT}: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+  author = "Devlin, Jacob  and
+    Chang, Ming-Wei  and
+    Lee, Kenton  and
+    Toutanova, Kristina",
+  booktitle = "Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+  month = jun,
+  year = "2019",
+  address = "Minneapolis, Minnesota",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/N19-1423",
+  urldate = {2022-11-05},
+  doi = "10.18653/v1/N19-1423",
+  pages = "4171--4186",
+  abstract = "We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models (Peters et al., 2018a; Radford et al., 2018), BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial task-specific architecture modifications. BERT is conceptually simple and empirically powerful. It obtains new state-of-the-art results on eleven natural language processing tasks, including pushing the GLUE score to 80.5 (7.7 point absolute improvement), MultiNLI accuracy to 86.7{\%} (4.6{\%} absolute improvement), SQuAD v1.1 question answering Test F1 to 93.2 (1.5 point absolute improvement) and SQuAD v2.0 Test F1 to 83.1 (5.1 point absolute improvement).",
 }
 
 @article{roberta,
+issn = {2331-8422},
+abstract = {Language model pretraining has led to significant performance gains but careful comparison between different approaches is challenging. Training is computationally expensive, often done on private datasets of different sizes, and, as we will show, hyperparameter choices have significant impact on the final results. We present a replication study of BERT pretraining (Devlin et al., 2019) that carefully measures the impact of many key hyperparameters and training data size. We find that BERT was significantly undertrained, and can match or exceed the performance of every model published after it. Our best model achieves state-of-the-art results on GLUE, RACE and SQuAD. These results highlight the importance of previously overlooked design choices, and raise questions about the source of recently reported improvements. We release our models and code.},
+journal = {arXiv.org},
+publisher = {Cornell University Library, arXiv.org},
 year = {2019},
 title = {RoBERTa: A Robustly Optimized BERT Pretraining Approach},
-copyright = {http://arxiv.org/licenses/nonexclusive-distrib/1.0},
+copyright = {2019. This work is published under http://arxiv.org/licenses/nonexclusive-distrib/1.0/ (the “License”). Notwithstanding the ProQuest Terms and Conditions, you may use this content in accordance with the terms of the License.},
 language = {eng},
+address = {Ithaca},
 author = {Liu, Yinhan and Ott, Myle and Goyal, Naman and Du, Jingfei and Joshi, Mandar and Chen, Danqi and Levy, Omer and Lewis, Mike and Zettlemoyer, Luke and Stoyanov, Veselin},
-keywords = {Computer Science - Computation and Language},
+keywords = {Training},
 }
 
 @incollection{pytorch,
@@ -261,7 +281,8 @@ editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesing
 pages = {8024--8035},
 year = {2019},
 publisher = {Curran Associates, Inc.},
-url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}
+url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf},
+urldate = {2022-11-05}
 }
 
 @online{keras,
@@ -270,11 +291,13 @@ url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-perf
   year={2015},
   publisher={GitHub},
   url={https://github.com/fchollet/keras},
+  urldate = {2022-11-05}
 } 
 
 @misc{tensorflow,
 title={ {TensorFlow}: Large-Scale Machine Learning on Heterogeneous Systems},
 url={https://www.tensorflow.org/},
+urldate = {2022-11-05},
 note={Software available from tensorflow.org},
 author={
     Mart\'{i}n~Abadi and
@@ -321,24 +344,17 @@ author={
 }
 
 @article{huggingface,
-abstract = {Recent progress in natural language processing has been driven by advances in
-both model architecture and model pretraining. Transformer architectures have
-facilitated building higher-capacity models and pretraining has made it
-possible to effectively utilize this capacity for a wide variety of tasks.
-\textit{Transformers} is an open-source library with the goal of opening up
-these advances to the wider machine learning community. The library consists of
-carefully engineered state-of-the art Transformer architectures under a unified
-API. Backing this library is a curated collection of pretrained models made by
-and available for the community. \textit{Transformers} is designed to be
-extensible by researchers, simple for practitioners, and fast and robust in
-industrial deployments. The library is available at
-\url{https://github.com/huggingface/transformers}.},
-year = {2019},
+issn = {2331-8422},
+abstract = {Recent progress in natural language processing has been driven by advances in both model architecture and model pretraining. Transformer architectures have facilitated building higher-capacity models and pretraining has made it possible to effectively utilize this capacity for a wide variety of tasks. \textit{Transformers} is an open-source library with the goal of opening up these advances to the wider machine learning community. The library consists of carefully engineered state-of-the art Transformer architectures under a unified API. Backing this library is a curated collection of pretrained models made by and available for the community. \textit{Transformers} is designed to be extensible by researchers, simple for practitioners, and fast and robust in industrial deployments. The library is available at \url{https://github.com/huggingface/transformers}.},
+journal = {arXiv.org},
+publisher = {Cornell University Library, arXiv.org},
+year = {2020},
 title = {HuggingFace's Transformers: State-of-the-art Natural Language Processing},
-copyright = {http://arxiv.org/licenses/nonexclusive-distrib/1.0},
+copyright = {2020. This work is published under http://arxiv.org/licenses/nonexclusive-distrib/1.0/ (the “License”). Notwithstanding the ProQuest Terms and Conditions, you may use this content in accordance with the terms of the License.},
 language = {eng},
-author = {Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Tim and Louf, Rémi and Funtowicz, Morgan and Davison, Joe and Shleifer, Sam and von Platen, Patrick and Ma, Clara and Jernite, Yacine and Plu, Julien and Xu, Canwen and Scao, Teven Le and Gugger, Sylvain and Drame, Mariama and Lhoest, Quentin and Rush, Alexander M},
-keywords = {Computer Science - Computation and Language},
+address = {Ithaca},
+author = {Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Clement Delangue and Moi, Anthony and Cistac, Pierric and Rault, Tim and Louf, Rémi and Morgan Funtowicz and Davison, Joe and Shleifer, Sam and Patrick von Platen and Ma, Clara and Jernite, Yacine and Plu, Julien and Xu, Canwen and Teven Le Scao and Gugger, Sylvain and Drame, Mariama and Lhoest, Quentin and Rush, Alexander M},
+keywords = {Communities ; Machine learning ; Natural language processing ; Speech recognition ; Transformers},
 }
 
 @book{deeplearning_mit,
@@ -374,6 +390,7 @@ keywords = {Neural networks (Computer science); Machine learning; Computer netwo
   title={Probability for Machine Learning: Discover How To Harness Uncertainty With Python},
   author={Brownlee, J.},
   url={https://books.google.com.au/books?id=uU2xDwAAQBAJ},
+  urldate = {2022-11-05},
   year={2019},
   publisher={Machine Learning Mastery}
 }
@@ -389,26 +406,52 @@ keywords = {Neural networks (Computer science); Machine learning; Computer netwo
     commit = {03b30c2}
 }
 
-@article{tsukagoshi2021defsent,
-  title={Defsent: Sentence embeddings using definition sentences},
-  author={Tsukagoshi, Hayato and Sasano, Ryohei and Takeda, Koichi},
-  journal={arXiv preprint arXiv:2105.04339},
-  year={2021}
+@inproceedings{tsukagoshi2021defsent,
+  title = "{D}ef{S}ent: Sentence Embeddings using Definition Sentences",
+  author = "Tsukagoshi, Hayato  and
+    Sasano, Ryohei  and
+    Takeda, Koichi",
+  booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 2: Short Papers)",
+  month = aug,
+  year = "2021",
+  address = "Online",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/2021.acl-short.52",
+  doi = "10.18653/v1/2021.acl-short.52",
+  pages = "411--418",
 }
 
-@article{reimers2019sentence,
-  title={Sentence-bert: Sentence embeddings using siamese bert-networks},
-  author={Reimers, Nils and Gurevych, Iryna},
-  journal={arXiv preprint arXiv:1908.10084},
-  year={2019}
+@inproceedings{reimers2019sentence,
+  title = "Sentence-{BERT}: Sentence Embeddings using {S}iamese {BERT}-Networks",
+  author = "Reimers, Nils  and
+    Gurevych, Iryna",
+  booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+  month = nov,
+  year = "2019",
+  address = "Hong Kong, China",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/D19-1410",
+  doi = "10.18653/v1/D19-1410",
+  pages = "3982--3992",
+  abstract = "BERT (Devlin et al., 2018) and RoBERTa (Liu et al., 2019) has set a new state-of-the-art performance on sentence-pair regression tasks like semantic textual similarity (STS). However, it requires that both sentences are fed into the network, which causes a massive computational overhead: Finding the most similar pair in a collection of 10,000 sentences requires about 50 million inference computations ({\textasciitilde}65 hours) with BERT. The construction of BERT makes it unsuitable for semantic similarity search as well as for unsupervised tasks like clustering. In this publication, we present Sentence-BERT (SBERT), a modification of the pretrained BERT network that use siamese and triplet network structures to derive semantically meaningful sentence embeddings that can be compared using cosine-similarity. This reduces the effort for finding the most similar pair from 65 hours with BERT / RoBERTa to about 5 seconds with SBERT, while maintaining the accuracy from BERT. We evaluate SBERT and SRoBERTa on common STS tasks and transfer learning tasks, where it outperforms other state-of-the-art sentence embeddings methods.",
 }
 
-@article{ma2019universal,
-  title={Universal text representation from BERT: an empirical study},
-  author={Ma, Xiaofei and Wang, Zhiguo and Ng, Patrick and Nallapati, Ramesh and Xiang, Bing},
-  journal={arXiv preprint arXiv:1910.07973},
-  year={2019}
+@ARTICLE{ma2019universal,
+       author = {{Ma}, Xiaofei and {Wang}, Zhiguo and {Ng}, Patrick and {Nallapati}, Ramesh and {Xiang}, Bing},
+        title = "{Universal Text Representation from BERT: An Empirical Study}",
+      journal = {arXiv e-prints},
+     keywords = {Computer Science - Computation and Language, Computer Science - Machine Learning},
+         year = 2019,
+        month = oct,
+          eid = {arXiv:1910.07973},
+        pages = {arXiv:1910.07973},
+archivePrefix = {arXiv},
+       eprint = {1910.07973},
+ primaryClass = {cs.CL},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2019arXiv191007973M},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
+
 
 @MISC{hyperplane,
     author = {Rohith Gandhi},
