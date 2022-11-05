@@ -8,15 +8,35 @@ Unfortunately, SAST tools are not perfect. From Rice's Theorem, it is known that
 To reduce the rate of false negatives, manual configuration of the SAST tools for specific software projects is often required \cite{ZampettiFiorella2017HOSP}. For example, to perform an effective taint analysis, a custom configuration of sources, sinks and sanitisers for a particular project is often required. Taint analysis tools are not yet sophisticated enough to implicitly categorise methods as sources, sinks, and sanitisers; taint analysis tools require security-sensitive methods to be pre-labelled to conduct the analysis. Generally, these tools come with a default configuration containing a list of sensitive methods in popular APIs. For example, the \emph{getParameter()} method as a part of the ServletRequest interface would likely be listed by all taint analysis tools as a \emph{source}. \\
 
 \noindent
-Of course, if a project is using a niche library or code developed in-house, the taint analysis will not be able to incorporate those data-points into its analysis, leading to sub-optimal output. To improve the taint analysis, one can manually identify the sensitive methods in a software project and add these to the taint analysis' configuration. Creating this manual configuration is often a time-consuming and resource-intensive process. As such, methodologies to automatically label security sensitive methods may enable existing taint analysis tools to be configured automatically and therefore operate more effectively without the burden of requiring manual configuration.\\
+Of course, if a project is using a niche library or proprietary code, the taint analysis will not be able to incorporate those data-points into its analysis, leading to sub-optimal output. To improve the taint analysis, one can manually identify the sensitive methods in a error-prone task. As such, methodologies to automatically classify security-sensitive methods in a software project may reduce the time required to configure taint analysis tools and generate a more complete configuration, resulting in a better analysis overall. \\
 
 \noindent
-There are numerous approaches one may take to perform this automatic classification of security sensitive methods, such as pattern-matching or dynamic analysis. For example, \emph{Merlin} \cite{merlin} uses interprocedural analysis combined with probabilistic inference to automatically classify security sensitive methods.  However, in light of recent developments in machine learning, deep-learning may prove an effective technique for classifying security-sensitive methods.\\
+There are numerous approaches to perform this automatic classification task, such as pattern-matching or dynamic analysis. For example, \emph{Merlin} \cite{merlin} uses interprocedural analysis combined with probabilistic inference to automatically classify security sensitive methods. However, in light of recent developments in machine learning, deep-learning (more specifically, models based on the Transformer architecture) may prove an effective technique for performing this task. Recently, Microsoft has made publicly available two pre-trained models, CodeBERT and UniXcoder, that excel in tasks involving the intersection between natural language and code, which could prove useful for this task. \\
 
 % \cite{swanassist}\cite{autodetection}\cite{susi}.\\
 
 \noindent
-Using machine learning to classify security sensitive methods is not novel in the literature. For example, \emph{SuSi} \cite{susi} uses a Support Vector Machine (SVM) on hundreds of hand-crafted features approach to identify sources, sinks, and sanitisers in the Android Framework. \emph{SWAN} \cite{swanassist} takes a similar approach on an alternative dataset. Likewise, Sas et al. \cite{autodetection} also uses an SVM on a number of hand-selected features. Notably, none of these aforementioned papers make use of natural-language descriptions of code, nor the source-code itself. They operate entirely out of features extracted from Java \emph{byte}-code. \\
+Using machine learning to classify security sensitive methods is not novel in the literature. For example, \emph{SuSi} \cite{susi} uses a Support Vector Machine (SVM) on hundreds of hand-crafted features approach to identify sources, sinks, and sanitisers in the Android Framework. \emph{SWAN} \cite{swanassist} takes a similar approach on an alternative dataset. Likewise, Sas et al. \cite{autodetection} also uses an SVM on a number of hand-selected features. These existing machine learning approaches make use of the archaic SVM model on manually selected features. Furthermore, these features are selected exclusively from the byte-code. To our knowledge, Javadoc has not been utilised for this task in the literature. \\
+
+% \noindent
+% The introduction of the Transformer machine-learning model has chanegd the landscape of natural language processing. So far, these sophisticated models have not been applied to the task of classifying security sensitive methods in Java. 
+
+\noindent
+We hypothesise that Javadocs contain information relevant for the task of security-relevant method classification. Additionally, it is also hypothesied that CodeBERT and UniXcoder, after sufficient fine-tuning, are capable of automatically classifying security-relevant Java methods. \\
+
+\noindent
+To fine-tune these pre-trained models, a dataset of labelled security-sensitive methods in Java is required. Unfortunately, a dataset of this description does not currently exist and will need to be constructed. \\
+
+\noindent
+In summary, the goals of this thesis project are to:
+\begin{itemize}
+    \item Construct a dataset of labelled security-sensitive Java methods.
+    \item Use that dataset to fine-tune CodeBERT and UniXcoder for the task of classifying security-relevant Java methods.
+    \item Evaluate the performance of this machine learning model in a realistic use case.
+\end{itemize}
+
+% \noindent
+% In this thesis, we aim to construct a dataset of security-relevant methods in Java in order to fine-tune the pre-trained models CodeBERT and UniXcoder for the task of automatically classifying security-relevant methods in Java using Javadoc as input. 
 
 % Notably, the aforementioned projects do not work on the code directly (i.e., no natural language processing; the model does not consider the context of the code); specific features are first extracted from the code. For example, one feature that \emph{SWAN} extracts from the code is the boolean value of whether or not the class being analysed contains the keyword `SQL' in its qualified name. While this may sound like a simple feature, which it is, \emph{SWAN} uses 206 of these features to conduct its analysis. And, more importantly, the Javadoc for codes is not used.\\ 
 
@@ -24,8 +44,8 @@ Using machine learning to classify security sensitive methods is not novel in th
 % \noindent
 % Since these approaches notably did not use natural-language processing, nor was the documentation of the codes considered, we propose an alternative methodology for the classification of security sensitive methods by using state-of-the-art pre-trained machine learning models on not only the method's code, but also its natural-langauge description; i.e., Javadoc. 
 
-\noindent
-While Javadoc is an informal description of code, it may contain information that is relevant to security analysis. In this thesis, we aim to incorporate natural-language descriptions of code (Javadoc) into the task of security-sensitive method classification.
+% \noindent
+% While Javadoc is an informal description of code, it may contain information that is relevant to security analysis. In this thesis, we aim to incorporate natural-language descriptions of code (Javadoc) into the task of security-sensitive method classification.
 
 % \section{Topic Definition}
 % % Manual configuration of taint analysis tools is a labourious and error-prone task. As such, methodologies for automatically classifying security sensitive methods will enable program analyses to operate more effectively and reduce the cost and errors associated with manual configuration.\\
@@ -48,7 +68,6 @@ While Javadoc is an informal description of code, it may contain information tha
 % \end{questions}
 
 \noindent
-
 % While some papers have looked at using machine-learning techniques for this task, the techniques are dated natural-language processing techniques on the method's code, nor on the accompanying Javadoc. That is, each feature of the code was considered in isolation --- the context that the key. After the publication of Vaswani et al.'s revolutionary paper, \emph{Attention is all you need}, laying the foundation for the Transformer architecture of machine-learning models, 
 
 
