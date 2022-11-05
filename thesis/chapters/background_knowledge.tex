@@ -29,7 +29,7 @@ That is, a taint analysis tool cannot follow the flow of tainted input through a
 In Figure \ref{figure-taint-example} the variable `name' is included in an SQL query without any validation of its input. That is, it is not \emph{sanitised}. Any good taint analysis tool will have getParameter() as a source and executeQuery() as a sink, so this example would likely be flagged as an insecure data flow. \\
 
 \noindent
-To rewrite this code so it is safe, the variable `name' should be passed through a sanitiser for SQL queries. An example of a sanitiser for SQL input is org.apache.commons.lang.StringEscapeUtils.escapeSql(), which will remove any SQL control characters from a string, such as `;'.\\
+To rewrite this code so it is safe, the variable `name' should be passed through a sanitiser for SQL queries. An example of a sanitiser for SQL input is\\ org.apache.commons.lang.StringEscapeUtils.escapeSql(), which will remove any SQL control characters from a string, such as `;'.\\
 
 \noindent
 While Figure \ref{figure-taint-example} is a simple and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, this insecure dataflow being detected is predicated by the those featured security-sensitive methods (i.e. getParameter(), executeQuery(), and escapeSql()), being included in the taint analysis tool's configuration.\\
