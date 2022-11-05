@@ -1,18 +1,52 @@
-\noindent
-The goal of this thesis was to determine if it is possible to extract security-relevant information from Javadocs and apply it to some security task. The security task selected for this thesis was the automatic classification of security-sensitive methods in Java for the purposes of configuring taint analysis tools. \\
+% \noindent
+% The goal of this thesis was to use machine-learning techniques to automatically classify security-sensitive Java methods using Javadoc. \\
+
+% \noindent
+% A dataset of security-relevant Java methods' source-code and Javadoc was produced. To our knowledge, a similar dataset does not already exist in the literature. The final dataset (training and validation combined) is comprised of 1096 methods (158 sources, 268 sinks, 175 sanitisers, and 495 security-insensitive methods). The dataset is produced dynamically from a preliminary dataset format. The preliminary dataset and the code to dynamically build the dataset is publicly available on \href{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}{GitHub}. \\
+
+% \noindent
+% In addition to the training and validation datasets, a test dataset was created on a more realistic use-case. This test dataset contained a random sample of methods from Apache's Log4j ($n = 165$) which were manually classified. This test dataset was used to evaluate the models' performance.  \\
+
+% \noindent
+% The pre-trained models CodeBERT and UniXcoder were fine-tuned on our dataset and used to perform the classification. Both mean and CLS pooling strategies were used as it was not clear which was more effective for this use-case. It was found that CLS pooling performed better for UniXcoder and mean pooling performed better for CodeBERT. \\
+
+% \noindent
+% The highest performing model configuration was found to be fine-tuned CodeBERT with a neural network classifier using mean pooling. This model achieved an F1-score of $0.68$. This result is significantly better than the performance of a naive SVM classifier using tf-idf for feature generation, which had an F1-score of 0.51. \\
+
+% % \noindent
+% % To our knowledge, the approach we present in this thesis is novel. Furthermore, the results of this thesis indicate that Javadoc contains information useful for security analyses.
+
+% \noindent
+% The approach we have taken in this thesis, to our knowledge, is novel. While the models we have presented in this thesis are not accurate enough to allow for taint analysis configurations to be fully automatically generated, as was hoped at beginning of this thesis, the models do perform well enough to allow for security analysts to create configurations more efficiently than from scratch. Furthermore, it is possible our approach could be combined with existing approaches in the literature to produce an even more performant model. Most importantly, however, this thesis has shown that Javadoc does indeed contain information useful for security anaylsis and it is worth exploring what other security analyses or other tasks could be enhanced using deep learning techniques on Javadoc.
 
 \noindent
-A dataset of security-relevant Java methods was produced. To our knowledge, this is the only dataset of its kind; one that includes the code and Javadoc for a security-sensitive method, as well as security-insensitive methods. The final dataset (training and validation combined) is comprised of 1096 methods (158 sources, 268 sinks, 175 sanitisers, and 495 security-insensitive methods). Furthermore, the dataset contains licensing information for each method used. \\
+In this concluding chapter of the thesis, we summarise the outcomes of the project and future work that can be done.
+
+\section{Project Outcomes}
 
 \noindent
-This dataset was used to train and validate a variety of machine-learning models and configurations. In particular, the pre-trained models CodeBERT and UniXcoder were used in conjunction with a neural-network classifier. It was not clear whether mean or CLS pooling was most appropriate for this task, so all experiments were conducted using both pooling methodologies.\\
+A dataset of security-relevant Java methods' source-code and Javadoc was produced. To our knowledge, a similar dataset does not already exist in the literature. The final dataset (training and validation combined) is comprised of 1096 methods (158 sources, 268 sinks, 175 sanitisers, and 495 security-insensitive methods). The dataset is produced dynamically from a preliminary dataset format. The preliminary dataset and the code to dynamically build the dataset is publicly available on \href{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}{GitHub}. \\
 
 \noindent
-In addition to the training and validation datasets, a test dataset was created on a more realistic use-case. This test dataset contained a random sample of methods from Apache's Log4j ($n = 165$) which were manually classified. This test dataset was used to evaluate the models' performance. \\
+In addition to this dataset, a test dataset was created. This test dataset consisted of a random sample of Java methods from Apache's Log4J that were manually labelled. This test dataset would serve as the benchmark test for our models as it more accurately reflected a realistic use-case. \\
 
 \noindent
-The highest performing model configuration was found to be fine-tuned CodeBERT with a neural network classifier using mean pooling. This model achieved an F1-score of $0.68$. This result is significantly better than the performance of a naive SVM classifier using tf-idf for feature generation, which had an F1-score of 0.51. \\
+Furthermore, several machine learning models based on CodeBERT and UniXcoder were produced. These pre-trained models were tried in a variety of configurations. The difference between different pooling strategies --- mean versus CLS pooling --- was investigated. It was determined that UniXcoder performed best with CLS pooling, and CodeBERT performed best with mean pooling. The highest performing model produced for this thesis project was CodeBERT with a neural-network classification head, using mean pooling. This model achieved an F1-score of $0.68$ on a test dataset. The source-code for all the machine-learning models and configurations investigated in this thesis can be found on \href{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/models}{GitHub}. \\
+
+
+\section{Future Work}
 
 \noindent
+In addition to these the improvements suggested in Section \ref{limitations_and_improvements}, there are a number of extensions that can be undertaken to improve the accuracy of the models. \\
 
+\noindent
+One possible extension would be to include the \emph{context} of a method call as input. For instance, it may be useful to include the Javadoc for the method that calls the method to be classified as input into the model. This would likely be a difficult extension to implement as it would likely require a call-graph analysis to be conducted to determine where methods are called in a program. \\ 
 
+\noindent
+Another potential extension would be to include in-line comments into the analysis. In this implementation, in-line comments were removed but perhaps they could be extracted and appended to the natural-language portion of codeBERT and UniXcoder's bimodal input. Recall that the dataset provided for this thesis is not static, it is produced dynamically by the dataset manager. As such, implementing this extension would likely only require small tweaks to the dataset manager, rather than having to build the dataset again completely from scratch. \\
+
+\noindent
+Another simple extension is to `highlight' certain keywords in the input and ensure they are not split by the tokeniser. Furthermore, these tokens could have their embeddings fixed so that they are not altered by contextual information. It is not clear at this stage what the keywords would be, but it is worth exploring this idea in future.\\
+
+\noindent
+Finally, learning could be conducted on an additional classification task where the model learns to classify each token in the input as either security-sensitive or security-insensitive. This approach was inspired by Wang et. al's identifier-tagging approach \cite{identifier_tagging} and may allow for more sophisticated learning to occur.

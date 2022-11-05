@@ -29,20 +29,3 @@ Due to this lack of data, a number of examples needed to be manually labelled fo
 
 \noindent
 Another limitation is in regards to how overloaded methods were handled. For the purposes of this thesis, if a method was considered security-sensitive then all overloaded methods sharing its name were also considered security-sensitive. It is not clear if this assumption is always valid and is therefore a potential source of inaccuracy. \\
-
-\section{Future Work}
-
-\noindent
-In addition to these the improvements suggested in Section \ref{limitations_and_improvements}, there are a number of extensions that can be undertaken to improve the accuracy of the models. \\
-
-\noindent
-One possible extension would be to include the \emph{context} of a method call as input. For instance, it may be useful to include the Javadoc for the method that calls the method to be classified as input into the model. This would likely be a difficult extension to implement as it would likely require a call-graph analysis to be conducted to determine where methods are called in a program. \\ 
-
-\noindent
-Another potential extension would be to include in-line comments into the analysis. In this implementation, in-line comments were removed but perhaps they could be extracted and appended to the natural-language portion of codeBERT and UniXcoder's bimodal input. Recall that the dataset provided for this thesis is not static, it is produced dynamically by the dataset manager. As such, implementing this extension would likely only require small tweaks to the dataset manager, rather than having to build the dataset again completely from scratch.    \\
-
-\noindent
-Another simple extension is to `highlight' certain keywords in the input and ensure they are not split by the tokeniser. Furthermore, these tokens could have their embeddings fixed so that they are not altered by contextual information. It is not clear at this stage what the keywords would be, but it is worth exploring this idea in future.\\
-
-\noindent
-Finally, learning could be conducted on an additional classification task where the model learns to classify each token in the input as either security-sensitive or security-insensitive. This approach was inspired by Wang et. al's identifier-tagging approach \cite{identifier_tagging} and may allow for more sophisticated learning to occur. 
