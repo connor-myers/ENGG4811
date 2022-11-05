@@ -115,7 +115,7 @@ In previous experiments, due to using bimodal data, if an input was longer than 
 \subsection{Experiment Results}
 
 \begin{table}[H]
-    \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset (Javadoc Only)}
+    \caption{Performance of SVM-classifier with tf-idf feature generation on test dataset (Javadoc only)}
     \label{tab:test_perfomance_tfidf_svm_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c}
@@ -127,7 +127,7 @@ In previous experiments, due to using bimodal data, if an input was longer than 
     \end{table}
     
     \begin{table}[H]
-        \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset (Javadoc Only)}
+        \caption{Performance of SVM-classifier with pre-trained encoders for feature generation on test dataset (Javadoc only)}
         \label{tab:test_perfomance_pre_svm_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
@@ -143,7 +143,7 @@ In previous experiments, due to using bimodal data, if an input was longer than 
     
     
     \begin{table}[H]
-        \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset (Javadoc Only)}
+        \caption{Performance of SVM-classifier with fine-tuned encoders for feature generation on test dataset (Javadoc only)}
         \label{tab:test_perfomance_fine_svm_javadoc}
         \begin{center}
             \begin{tabular}{c|c|c|c|c|c}
@@ -187,7 +187,7 @@ Another outlier was fine-tuned UniXcoder with CLS pooling using an SVM classifie
 The neural network classifier models (Table \ref{tab:test_perfomance_fine_nn_javadoc}) performed reasonably. They did not perform better than their bimodal equivalents (Table \ref{tab:test_perfomance_fine_nn}), however this was to be expected given that these encoders were trained primarily on bimodal data. Furthermore, while these encoders have been trained on unimodal data, that was code only --- they were never trained on natural language in isolation \cite{CodeBERT}\cite{unixcoder}. This is one potential explanation for the discrepancy in performance. \\
 
 \noindent
-Overall, since the results in Table \ref{tab:test_perfomance_fine_nn_javadoc} show performance far exceeding random guessing, it can be concluded that CodeBERT and UniXcoder \emph{are} learning and extracting security-relevant features from Javadoc. This is quite an important result as it validates the assumption that was made in the beginning of this thesis that Javadoc contains security-relevant information.  
+Overall, since the results in Table \ref{tab:test_perfomance_fine_nn_javadoc} show performance far exceeding random guessing, it can be concluded that CodeBERT and UniXcoder \emph{are} learning and extracting security-relevant features from Javadoc. This is quite an important result as it shows the assumption that was made in the beginning of this thesis, that Javadoc contains security-relevant information, holds for our benchmarks.  
 
 \section{Performance On Unimodal Code Models}
 
@@ -273,7 +273,7 @@ The results for this experiment are interesting. In both Table \ref{tab:test_per
 These results would indicate that mean pooling is not sufficient when operating on unimodal code data, however UniXcoder with mean pooling using a neural network classifier performs best in this experiment.\\
 
 \noindent
-For the neural-network classifier models, where the model is able to converge on a solution, the models perform better than their equivalent in the Java-only experiment, i.e., Table \ref{tab:test_perfomance_fine_nn_javadoc}. \\
+For the neural-network classifier models, where the model is able to converge on a solution, the models perform better than their equivalent in the Javadoc-only experiment, i.e., Table \ref{tab:test_perfomance_fine_nn_javadoc}. \\
 
 \noindent
 Overall, these results are inconclusive. This experiment shows that while in some cases the Javadoc is not required to produce close to optimum results (compared to the highest performing bimodal models), for some model configurations features extracted from code alone are useless.

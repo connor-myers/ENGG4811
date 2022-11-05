@@ -16,13 +16,13 @@ The performance of the Transformer encoders without fine-tuning was surprising. 
 Surprisingly, there were many cases of a significant difference in performance when using mean pooling versus CLS pooling. In general, it was found that UniXcoder performed better with mean pooling and CodeBERT performed better with CLS pooling. At this stage the cause of this discrepancy is unclear. \\
 
 \noindent
-Our models' performances fall short of Sas et al, SuSi and SWAN which achieved F1-scores of $86.4\%$, $91.9\%$, and $83\%$ respectively, however this does not take away from the success of this thesis project. This thesis has shown that Javadoc contains information useful for security-related tasks, namely SSM classification. The approach presented in this thesis is not mutually exclusive to existing implementations and, rather than replace, could enhance existing approaches to SSM classification.
+Our models' performances fall short of Sas et al, SuSi, and SWAN which achieved F1-scores of $86.4\%$, $91.9\%$, and $83\%$ respectively, however this does not take away from the success of this thesis project. This thesis has shown that Javadoc contains information useful for security-related tasks, namely SSM classification. The approach presented in this thesis is not mutually exclusive to existing implementations and, rather than replace, could enhance existing approaches to SSM classification. Furthermore, our models could be used by security analysts to generate a preliminary taint analysis configuration which could then be manually refined. This would likely result in a significant reduction in the time and effort required to produce a taint analysis configuration versus creating it completely from scratch. 
 
 \section{Limitations and Improvements}
 \label{limitations_and_improvements}
 
 \noindent
-There are numerous limitations with our approach. As is common with most machine learning projects, there was a lack of high-quality labelled data available to train and validate the models. Ideally, the dataset should be larger and come from a greater diversity of projects. This would hopefully allow the machine learning models to generalise more effectively.\\
+There are some limitations with our approach. As is common with most machine learning projects, there was a lack of high-quality labelled data available to train and validate the models. Ideally, the dataset should be larger and come from a greater diversity of projects. This would hopefully allow the machine learning models to generalise more effectively.\\
 
 \noindent
 Due to this lack of data, a number of examples needed to be manually labelled for this project. This is not ideal and undoubtedly lowered the quality of the dataset to some degree. To improve the quality of the dataset it should be reviewed by a third party to ensure there are no mislabelled examples.\\
