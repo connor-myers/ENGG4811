@@ -2,13 +2,16 @@
 \section{Dataset Sources}
 
 \noindent
-For our machine-learning model to accurately label security-sensitive methods, it will need to be trained on many labelled examples. Arguably the dataset is the most important aspect of this project. It is imperative to this project's success that we create a sufficiently-large high-quality dataset of labelled security-sensitive methods. \\
+For our machine learning model to accurately label security-sensitive methods, it will need to be fine-tuned on many labelled examples. The training dataset is arguably the most important aspect of this project. It is imperative to this project's success to create a sufficiently-large high-quality dataset of labelled security-sensitive methods. \\
 
 \noindent
-Recall that for our model, our labelled examples need to be in the following form: A Java method's code and documentation, and a label (one of: source, sink, sanitiser or security-irrelevant). Unfortunately, no such database exists in that form. However, this is not surprising as tasks of a similar nature typically extract features from byte-code (i.e., no natural-langauge processing directly on the source-code), and choose to neglect documentation as well. However, these similar datasets are not completely useless. In-fact, they provide a good starting point for us to create our dataset. While they do not have the code and the documentation included, they do provide high-quality labels. It is cumbersome and time-consuming, but manually locating the source-code for these numerous examples is worth-while given the quality of these examples. \\
+Each example in our dataset should include a Java method's code and Javadoc, as well as its security label (one of source, sink, sanitiser, or none). Unfortunately, no such database exists. This is not surprising as similar tasks extract features from byte code rather than source code or Javadoc. \\
 
 \noindent
-These similar datasets include:
+There are existing datasets that provide a list of security-sensitive methods, but only provide the fully-qualified method name and the example's security label. To incorporate these examples into our dataset, the source code for each method will need to be manually located, and the relevant Javadoc and code extracted from it. \\
+
+\noindent
+Datasets we can use include:
 \begin{itemize}
     \item SWAN's training dataset \cite{swan_github}
     \item Default taint-analysis configurations
@@ -24,40 +27,47 @@ These similar datasets include:
 \end{itemize}
 
 \noindent
-All the above datasets provide high-quality labelled examples of security-sensitive methods. Unfortunately, they are unsuitable for a variety of reasons and will require some augmentation to be of any use to this project. Namely, as has already been mentioned, they only provide a fully-qualified-name of the method and a security-sensitive label. They do not provide the code and the Javadoc which is essential to our approach. Furthermore, their security-sensitive labels are typically a subset of the labels we will be using. For instance, SinkTank only has labels for sources and sinks. This means there will be substantially fewer \emph{sanitiser} examples in the dataset; ideally we would like all our security-sensitive methods to occupy a similar proportion of the dataset. More concerningly, however, is that none of these existing datasets have labelled security-\emph{insensitive} methods. This is a signficant problem as it is likely the vast majority of methods our model will see in a real-world context are benign security-irrelevant methods. Accurately labelling security-irrelevant methods is imperative for this project as configuring taint-analysis tools with false-positive security-sensitive methods will in-turn lead to additional benign dataflows being considered malicious by the taint-analysis tool. \\
+Since these existing datasets do not include the method's code and Javadoc, these needed to be located ourselves. To achieve this, an intermediary dataset was created. This dataset includes the name of the method, the security-label of the method, and a link to the file (on GitHub) in which the method is located. From this information, a tool was written to dynamically scrape the code and Javadoc for each method from GitHub. This topic is explored further in Section \ref{intermediary}. \\
 
 \noindent
-For the first issue, that these existing databases do not include the code and the documentation, there is unfortunately no simple solution. For each example, the source-code needs to be manually located, with the code and the documentation for the relevant method's extracted accordingly. This can be semi-automated as there is a finite number of projects and the fully-qualified-name provides information on where to locate the method \emph{within} a project. That is, we download all the projects that all the examples come from and write a script to locate the method's source-code within that project, using the fully-qualified-name to locate it. Our approach we took was similar to this, but complicated by the fact we wanted the dataset to be generated dynamically. That is, for each example, it will download the code from Github and extract the code and documentation automatically. We will return to this topic later. \\
+Another issue is that these existing datasets lack security-\emph{insensitive} methods; they only list security-sensitive methods. This is a significant problem as it is likely that the vast majority of methods our model will encounter in a real-world context are benign and security-irrelevant. Unfortunately, there is no easy solution to this problem. To ensure the dataset includes security-insensitive methods, a number of methods were randomly sampled from various popular Java projects on GitHub and manually labelled. 
 
-\noindent
-For the second issue, of having an inadequate number of sanitiser examples and have \emph{no} security-insensitive examples, again, there is no easy solution for this. All security-insensitive labels were done by me. Popular open-source Java projects were obtained (Google Guava, ElasticSearch, Apache Commons, etc...) and a random sample of methods were extracted. I then manually labelled these examples. Naturally, as they were random samples from real-world Java projects, the majority of the examples were security-insensitve. Of course, manually labelling these examples is not ideal. I am not a security-expert and undoubtedly this lowered the quality of the dataset. We will return to this point in the limitations section of this thesis. \\
+% \noindent
+% For the first issue, that these existing databases do not include the code and the documentation, there is unfortunately no simple solution. For each example, the source-code needs to be manually located, with the code and the documentation for the relevant method's extracted accordingly. This can be semi-automated as there is a finite number of projects and the fully-qualified-name provides information on where to locate the method \emph{within} a project. That is, we download all the projects that all the examples come from and write a script to locate the method's source-code within that project, using the fully-qualified-name to locate it. Our approach we took was similar to this, but complicated by the fact we wanted the dataset to be generated dynamically. That is, for each example, it will download the code from Github and extract the code and documentation automatically. We will return to this topic later. \\
+
+% \noindent
+% For the second issue, of having an inadequate number of sanitiser examples and have \emph{no} security-insensitive examples, again, there is no easy solution for this. All security-insensitive labels were done by me. Popular open-source Java projects were obtained (Google Guava, ElasticSearch, Apache Commons, etc...) and a random sample of methods were extracted. I then manually labelled these examples. Naturally, as they were random samples from real-world Java projects, the majority of the examples were security-insensitve. Of course, manually labelling these examples is not ideal. I am not a security-expert and undoubtedly this lowered the quality of the dataset. We will return to this point in the limitations section of this thesis. \\
 
 \section{Intermediary Dataset Format}
+\label{intermediary}
+
+% \noindent
+% At this project stage, we only require code and documentation --- but what about the future? With these machine-learning models, we can provide all sorts of information as training data. Given that the dataset is arguably the most important deliverable of this thesis project, it would make more sense for the dataset to be easily extensible. \\
+
+% \noindent
+% For example, if for this thesis we simply provided a list of examples (code, documentation, label) we would not be able to easily extend our dataset. One extension task we may want to perform in future is to include AST information of a method into the training data. In that case, we would need to manually locate these files all over again, download them, pre-process them, etc., and create our training set from that.\\
+
+% \noindent
+% For these reasons, it would be much more appropriate to create an intermediary dataset that includes information needed to dynamically build the dataset (i.e., a link to the source-code on GitHub). automatically download the source-code for these examples, parse the code, extract the relevant data, etc., and dynamically create our training dataset. \\
 
 \noindent
-For our approach, it would be unwise and na\"ive to have our dataset simply be a large json file with a number of code, documentation, label tuples. At this stage of the project, we only require code and documentation --- but what about the future? With these machine-learning models, we can provide all sorts of information as training-data. Given that the dataset is arguably the most important deliverable of this thesis project, it would make more sense for the dataset provided to be applicable to other projects. Furthermore, the dataset should be made in a such a way that it is easily extensible. \\
+Figure \ref{intermediary_dataset} shows a sample of the intermediary dataset. It uses the YAML file format and includes all the information required to automatically build the dataset. In addition, licensing information for the file is included. Licensing information was automatically extracted using the open-source tool \emph{ScanCode}\footnote{\url{https://github.com/nexB/scancode-toolkit}}.
 
-\noindent
-For example, if for this thesis we simply provided a list of examples (code, documentation, label) we would not be able to easily extend our dataset. One extension task we may want to perform in future is to include AST information of a method into the training data. In that case, we would need to manually locate these files all over again, download them, pre-process them, etc., and create our training set from that. For these reasons, it would be much more appropriate to create an intermediary dataset that includes information needed to dynamically build the dataset (i.e., a link to the source-code) and create a tool to automatically download the source-code for these examples, parse the code, extract the relevant data, etc., and dynamically create our training dataset. \\
-
-\noindent
-Figure \ref{intermediary_dataset} shows the format of our intermediary dataset for one file. It uses the yaml file format and includes all the information we need to build the dataset using an additional tool. Namely, it includes a link to the file on GitHub that the method is located in, as well as the name of the method and its label. We do not differentiate between overloaded methods (i.e., same name, different arguments) as we assume they all the same security-label. Furthermore, we only create one entry for each file (rather than each method) so we do not fill the dataset with redundant information. We organise the dataset around files instead of projects because we download each file of a project individually, rather than the entire project. License information for the file is also included as some licenses are incompatible with each other. License information for each file was extracted automatically using an OSS tool called \emph{ScanCode}\footnote{\url{https://github.com/nexB/scancode-toolkit}}. It is worth noting that it is possible for two different files in the same project to have different licenses. Furthermore, we also include the root class type for each file (i.e. class, abstract class, interface). Although it is within the Java specification to have multiple root-classes for a single file, this is never done so we ignore that case.
-
-\begin{figure}[t!]
+\begin{figure}[H]
     \begin{center}
             \includegraphics[scale=0.55]{images/intermediary_dataset.png}
     \end{center}
-    \caption{Structure of intermediary dataset for one file}
+    \caption{Structure of the intermediary dataset for one file}
     \label{intermediary_dataset}
 \end{figure}
 
 \subsection{CodeCrawler}
 
 \noindent
-To dynamically extract code and documentation, and pre-process that data, a Python tool, \emph{CodeCrawler}, was developed. CodeCrawler is publicly available on GitHub\footnote{\url{https://github.com/connor-myers/CodeCrawler}}.\\ 
+To dynamically build the dataset from the intermediary dataset, \emph{CodeCrawler} was developed. CodeCrawler is publicly available on GitHub\footnote{\url{https://github.com/connor-myers/CodeCrawler}}.\\ 
 
 \noindent
-CodeCrawler scrapes the code and Javadoc for a particular method, given the method's name and the location of the file on GitHub. Furthermore, CodeCrawler does some basic pre-processing on the data. For the code, in-line comments and new-line characters are removed. For the Javadoc, HTML code is removed, as well as links, and new-line characters. 
+CodeCrawler scrapes the code and Javadoc for a particular method from GitHub. Furthermore, CodeCrawler does some basic pre-processing on the data. For the code, in-line comments and new-line characters are removed. Additionally, HTML code, URLs, and new-line characters are removed from the Javadoc. 
 
 \section{Dataset Manager Tool}
 
@@ -65,19 +75,19 @@ CodeCrawler scrapes the code and Javadoc for a particular method, given the meth
 The Dataset Manager Tool\footnote{\url{https://github.com/uqcyber/SecurityMethodClassifier/tree/main/tools/dataset-manager}}, as its name suggests, manages the intermediary dataset format. This tool provides a variety of useful functions for manipulating the dataset. Below is a brief summary of this program's functionality.
 
 \begin{itemize}
-    \item \textbf{Remove Duplicate:} Removes duplicate entries in the dataset. Duplicate here meaning methods mentioned multiple times, as well as files. If a file is listed multiple times, the methods for all the files (that duplicated) are combined to be under one file entry.
-    \item \textbf{Merge:} Merges two datasets together. Implicitly removes duplicates.
-    \item \textbf{Licensing:} For all files with unknown licenses in the dataset, uses \emph{ScanCode} to automatically detect the license and update the dataset.
+    \item \textbf{Remove Duplicate:} Removes duplicate entries in the dataset. Duplicate here meaning methods mentioned multiple times, as well as files. If a file is listed multiple times, the methods contained in duplicated files are combined under one file entry.
+    \item \textbf{Merge:} Merges two or more intermediary datasets together. Implicitly removes duplicates.
+    \item \textbf{Licensing:} For all files with unknown licenses in the dataset, the tool uses \emph{ScanCode} to automatically detect the license of the file and updates the dataset accordingly.
     \item \textbf{Statistics:} Provides statistics for the dataset.
     \item \textbf{Generate:} Uses CodeCrawler to parse code and Javadoc for each method; constructs training and validation datasets from this.
 \end{itemize}
 
 \section{Training and Validation Dataset}
 
-A 85\% to 15\% training-validation dataset split was used. The test set was not generated from this dataset, we will use an alternative methodology to derive a test dataset. \\
+An 85\% to 15\% training-validation dataset split was used. The test dataset was not generated from this dataset. \\
 
 \noindent
-\crefrange{tab:training_dataset}{tab:validation_dataset} shows the final statisitics for the training and validation dataset, respectively.
+\crefrange{tab:training_dataset}{tab:validation_dataset} show the final statistics for the training and validation dataset.
 
 \begin{table}[!htbp]
     \caption{Statistics for training dataset}
@@ -115,38 +125,32 @@ A 85\% to 15\% training-validation dataset split was used. The test set was not 
 \label{dataset_limitations}
 
 \noindent
-There are some key limitations to the training and validation datasets that are worth discussing. The most significant limitation is how the datasets are split. Because there is a small number of projects used in the dataset, it was not practical to isolate the examples from a particular project to just one of training or validation. That is, because there are too few projects with examples highly concentrated in some projects, it is not possible to allocate 15\% of the sources, sink, sanitisers, and security-insensitive methods (even approximately) while isolating examples from one particular project to either the training or validation dataset. \\
+There are some key limitations to the training and validation datasets that are worth discussing. The most significant limitation is how the datasets are split. Because a small number of projects were used in the dataset, it was not practical to isolate the examples from a particular project to just one of the training or validation datasets. Rather than isolating examples based on the project they came from, examples were instead isolated based on the file they are in. That is, a file with multiple methods associated with it must contribute \emph{all} its methods to just one of the training or validation datasets. This was done to reduce the bias in the validation dataset. \\
 
 \noindent
-This is a limitation as examples from the same project in both the training and validation datasets likely introduces an element of bias to the validation results. This is because examples in the same project are likely to have similar styles of writing code and Javadoc, share keywords, and are more likely to have the same security-sensitive label.\\ 
+Another limitation is that the proportion of labels in the validation dataset likely does not reflect a real-world use case. For instance, it is likely that in a realistic scenario the majority of methods are security-insensitive. That is, they are neither sources, sinks, nor sanitisers. This is not the case for the validation dataset, which likely has an inflated proportion of security-sensitive methods compared to a real-world Java project.\\
 
 \noindent
-To clarify the last point, it is often the case that one project only contributes one type of security-sensitive label. For instance, examples from Apache Commons Lang\footnote{\url{https://commons.apache.org/proper/commons-lang/}} are all sanitisers as the library's entire functionality is providing String manipulation functionality for Java. \\
+For these reasons, the model's performance on the validation dataset will likely be inflated. Therefore, the validation dataset is better used to configure model hyperparameters rather than as a metric for the model's real-world performance.
 
-\noindent
-Additionally, the proportion of labels in the validation dataset likely does not reflect that of real-world conditions. For instance, it is likely in a real-world scenario that the majority of methods are security-irrelevant. That is, they are neither sources, sinks, nor sanitisers. This is not the case for the validation dataset which likely have an inflated proportion of security-sensitive methods compared to a real-world Java project.\\
+% \noindent
+% To reduce the bias as much as possible, while allowing a fair allocation that approximates the 85\%-15\% split that has been decided on, we instead isolate examples based on the file it came from. That is, examples from the same file must all go to one of the training or validation dataset, but not both. Even more-so than examples from the same project, examples from the same file are more likely: to be of the same label, share keywords, have similar coding and documentation styles. \\
 
-\noindent
-For these reasons, the performance of the model on the validation dataset will likely be inflated. The validation performance is still useful to configure hyper-parameters of the model (e.g., learning rate, number of epochs, etc.) however it should not be used to determine the performance of the model on a real use-case. \\
-
-\noindent
-To reduce the bias as much as possible, while allowing a fair allocation that approximates the 85\%-15\% split that has been decided on, we instead isolate examples based on the file it came from. That is, examples from the same file must all go to one of the training or validation dataset, but not both. Even more-so than examples from the same project, examples from the same file are more likely: to be of the same label, share keywords, have similar coding and documentation styles. \\
-
-\noindent
-The Dataset Manager tool will take all examples from the intermediary-dataset and attempt to produce a fair allocation that approximates the ideal allocation using a greedy algorithm\footnote{It is likely the optimal allocation can be explicitly found efficiently using dynamic programming but for our-case the approximate allocation the greedy algorithm also produces the optimal result.}. The ideal allocation is probably not possible; that is, the training dataset receiving 85\% of the examples for each label (not just 85\% of the examples in total; we want a similar proportion of labels in each of the datasets) due to the file-isolation constraint we have set.  
+% \noindent
+% The Dataset Manager tool will take all examples from the intermediary-dataset and attempt to produce a fair allocation that approximates the ideal allocation using a greedy algorithm\footnote{It is likely the optimal allocation can be explicitly found efficiently using dynamic programming but for our-case the approximate allocation the greedy algorithm also produces the optimal result.}. The ideal allocation is probably not possible; that is, the training dataset receiving 85\% of the examples for each label (not just 85\% of the examples in total; we want a similar proportion of labels in each of the datasets) due to the file-isolation constraint we have set.  
 
 
 \section{Test Dataset}
 Due to the limitations discussed in Section \ref{dataset_limitations}, to get an accurate figure for the performance of the trained model, a test dataset should be created. \\
 
 \noindent
-This test dataset should reflect the proposed real-world use-case of our model. Recall that the purpose of our model is to accurately label security-sensitive methods to configure taint-analysis tools for \emph{particular} software projects written in Java. As such, our test dataset should reflect this use-case. \\
+This test dataset should reflect the proposed real-world use case of our model. Recall that our model aims to accurately label security-sensitive methods to configure taint-analysis tools for Java projects. As such, our test dataset should reflect this use case. \\
 
 \noindent
-For our test dataset, we randomly sample 165 methods (same size as the validation dataset) from Apache's Log4J\footnote{\url{https://logging.apache.org/log4j/2.x/}}, manually label the methods. Comparing the model's predictions to our manually-generated labels will provide a measure of our model's performance in a real-world setting. 
+For our test dataset, we randomly sample 165 methods (same size as the validation dataset) from Apache's Log4J\footnote{\url{https://logging.apache.org/log4j/2.x/}}, and manually label these methods. Comparing the model's predictions to our manually-generated labels will provide a measure of our model's performance in a real-world setting. \\
 
 \noindent
-Log4J was chosen as it is a popular, open-source Java library that has had security-issues in the past \cite{log4shell}. \\
+Log4J was chosen because it is a popular and open-source Java library with catastrophic security exploits in the past \cite{log4shell}. \\
 
 % \noindent
 % The test dataset is available at \url{www.google.com}. %finish later
