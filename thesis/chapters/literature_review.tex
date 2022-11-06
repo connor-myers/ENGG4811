@@ -1,26 +1,28 @@
 \section{Similar Tasks}
-There are numerous similar tasks in the literature. That is, applying machine-learning to the classification of security-sensitive methods. Here we will detail the more relevant papers in the literature.
+There are numerous similar tasks in the literature. That is, applying machine learning to the classification of security-sensitive methods. Here we will detail the more relevant papers in the literature.
 
 \subsection{SuSi}
 
 \noindent
-SuSi \cite{susi} is a machine-learning approach for identifying sources and sinks in \emph{Android} code. SuSi uses a support vector machine (SVM) with a large number of features as its machine-learning model. SuSi employs a Support Vector Machine (SVM) approach on 144 manually defined binary features (i.e., does the method have this feature --- true or false?) to perform its classification. That is, the SuSi authors have manually identified what aspects of a method's code is important for classifying it as a security sensitive method. \\
+SuSi \cite{susi} is a machine learning approach for identifying sources and sinks in \emph{Android} code. SuSi uses a Support Vector Machine (SVM) classifier with 144 manually defined binary features (i.e., does the method have this feature --- true or false?) to perform its classification. \\
 
 \noindent
-For example, one of the 144 features SuSi classifies on is whether or not the class name the method belongs to contains the keyword `get' (the reason for this being that methods that are `getting' a value are more likely to be a \emph{source}; e.g., HttpServletRequest.getParameter()). While this may seem like a simple feature, which it is, when combined with 144 additional features a high accuracy can be reached on a relatively small training dataset.\\
+For example, one of the features used is whether or not the class name the method belongs to contains the keyword `get'. While this may seem like a simple feature, which it is, when combined with 143 additional features, high accuracy can be reached.\\
+
+% (the reason for this being that methods that are `getting' a value are more likely to be a \emph{source}; e.g., HttpServletRequest.getParameter()). 
 
 \noindent
-Importantly, this methodology is decidedly different than our proposed approach of fine-tuning a pre-trained bimodal transformer model. Rather than manually identifying the features, it is hoped the powerful pre-trained bimodal model will be able to perform this process automatically. That is, automatically learn how to classify security-sensitive methods. SuSi also differs from our proposed approach as it only operates on the code; no features of the Javadoc are included in the SVM. Furthermore, SuSi only classifies methods as sources, sinks, or none. It does not classify sanitisers, whereas our proposed approach will.\\
+Importantly, this methodology is decidedly different from our proposed approach. For instance, SuSi uses manually curated features, whereas, in our approach, these features would automatically be generated. SuSi also differs from our proposed approach as it only operates on the code; no features of the Javadoc are included in the SVM. Furthermore, SuSi only classifies methods as sources, sinks, or none. It does not classify sanitisers, whereas our proposed approach does.\\
 
 \noindent
-SuSi's labelled dataset is available and open-source. However, despite the code technically being Java (as most android code is written in Java), for our purposes we will restrict the training dataset to native Java examples. Android Java code tends to use android-only libraries and, in general, looks very different to `normal Java code'. As such, it is thought it would affect the performance of the model on traditional Java code if these Android examples were included. Hence, we will not be including SuSi's dataset in our final training dataset.\\
+SuSi's labelled dataset is available and open-source. However, despite the code technically being Java, we will restrict our training dataset to \emph{native} Java examples. Android Java code uses Android-only libraries and generally looks very different from `normal' Java. As such, it was thought included Android examples in the training data would negatively affect the model's performance on traditional Java code. Additionally, the dataset is not in a suitable format (it does not include Javadoc) and, if used, would require additional configuration to be useful for our purposes. \\
 
 \noindent
-SuSi performs extremely well, achieving a 91.9\% recall and a 91.9\% precision.
+SuSi performs exceptionally well, achieving an F1-score of 91.9\%.
 
 \subsection{Swan}
 
-SWAN is an automated classifier of security-sensitive methods in Java using machine-learning \cite{swanassist}. SWAN works almost identically to SuSi (i.e., SVM on a number of manually identified binary features), except it is trained on general Java programs and is trained on more features (206 for SWAN versus 144 for SuSi). SWAN classifies code as a source, sink, sanitizer, authentication-method, or none --- which is identical to our task, with the inclusion of the \emph{authenitication-method} security-sensitive method type. SWAN is also able to further classify some of these methods according to their specific CWE (Common Weakness Enumeration), however this aspect of SWAN is not relevant to this thesis. \\
+SWAN is a semi-automated classifier of security-sensitive Java methods using machine learning techniques \cite{swanassist}. SWAN works almost identically to SuSi (i.e., SVM on a number of manually identified binary features), except it is trained on general Java programs and is trained on more features (206 for SWAN versus 144 for SuSi). SWAN classifies code as source, sink, sanitiser, authentication-method, or none --- which is a superset of the labels we are using. SWAN can also further classify some of these methods according to their specific CWE (Common Weakness Enumeration). However, this aspect of SWAN is not relevant to this thesis. \\
 
 % \noindent
 % SWAN employs a Support Vector Machine (SVM) approach on 206 manually defined binary features (i.e., does the method have this feature --- true or false?) to perform its classification. That is, the authors have gone through a dataset of examples of security-sensitive-methods and manually identified what aspects of a code is important for classifying it as a security sensitive method. This is decidedly different from our proposed implementation of fine-tuning a pre-trained bimodal Transformer model. \\
@@ -28,31 +30,31 @@ SWAN is an automated classifier of security-sensitive methods in Java using mach
 %\noindent
 %For example, one of the 206 features SWAN classifies on is whether or not the class name the method belongs to contains the keyword `SQL' (the reason for this being that methods interacting with an SQL database are more likely to be a \emph{sink}). While this may seem like a simple feature, which it is, when combined with 205 additional features a high accuracy can be reached on a relatively small training dataset.\\
 
-\noindent
-SWAN's training dataset is publicly available and open-source \cite{swan_github}. Labelled datasets of security-sensitive methods are hard to come by, and thankfully Swan has quite an extensive list. For this thesis, we will be including a subset of this dataset (we remove \emph{authentication-method} examples, add \emph{none} examples which are not included in SWAN's public dataset, and remove unsuitable examples according to our own filtering rules) for our own training and evaluation purposes. Furthermore, SWAN does not provide its testing or validation dataset so we will split up their training set to get testing and validation examples.\\
+% \noindent
+% The \emph{SWAN} project also includes SWAN-assist, which is an Intellij plugin that allows users to classify security-relevant methods while working on a project. SWAN includes this additional information to improve the machine-learning classifier for a particular project. Of course, this aspect is not relevant to our project, but it does inflate the model's accuracy compared to a fully-automated process such as ours. \\
 
 \noindent
-This dataset does not provide the code and Javadoc associated with each method, so additional processing of this data is required. We will come back to this later in the thesis. \\
+SWAN's training dataset is publicly available and open-source \cite{swan_github}. Labelled datasets of security-sensitive methods are hard to come by, and thankfully Swan has quite an extensive list. For this thesis, we will include a subset of this dataset for our training and evaluation purposes.  \\
 
 \noindent
-The \emph{SWAN} project also includes SWAN-assist, which is an Intellij plugin that allows users to classify security-relevant methods while working on a project. SWAN includes this additional information to improve the machine-learning classifier for a particular project. Of course, this aspect is not relevant to our project but it does inflate the accuracy of the model when compared to a fully-automated process such as ours. \\
+This dataset does not provide the code and Javadoc associated with each method, so additional data processing is required. We will return to this topic in Chapter \ref{dataset-creation}. \\
 
 \noindent
-SWAN-base (i.e., SWAN without additional information from users using SWAN-assist) achieves an accuracy of $0.826$ on classification of security-sensitive methods \cite{swanassist}. While it would be good for our model to achieve an accuracy higher than this, it should be noted that it is not a fair comparison. For one, we will be operating on a subset of SWAN's base training-set out of necessity, and will be classifying on four labels, not five. Naturally, classifying on fewer labels is likely to inflate the accuracy of our model compared to SWAN-base, whereas operating on a subset on the dataset is likely to reduce the accuracy of our model relatively.
+SWAN achieves an accuracy of $0.826$ on the classification of security-sensitive methods \cite{swanassist}.
 
 \subsection{Sas et al.}
 
 \noindent
-Sas et al. \cite{autodetection}, like SuSi and SWAN, uses an SVM on a variety of features to perform its classification. Sas et al. uses the least number of features (roughly 100) compared to SuSi and SWAN. Like SWAN, it was developed in hopes of identifying security-sensitive methods in general Java code, as opposed to SuSi which classified Java code for Android. The model was trained on over 1000 methods manually identified from popular Java libraries including: Apache Commons IO\footnote{\url{https://commons.apache.org/proper/commons-io/}} and Apache HTTP Client\footnote{\url{https://hc.apache.org/httpcomponents-client-5.1.x/}}. \\
+Sas et al. \cite{autodetection}, like SuSi and SWAN, uses an SVM classifier on many manually curated features to perform its classification. Sas et al. uses fewer features (roughly 100) than SuSi and SWAN. Like SWAN, it is trained on general Java code. The model was trained on over 1000 methods manually identified from popular Java libraries, including Apache Commons IO\footnote{\url{https://commons.apache.org/proper/commons-io/}} and Apache HTTP Client\footnote{\url{https://hc.apache.org/httpcomponents-client-5.1.x/}}. \\
 
 \noindent
-Furthermore, Sas et al. does not classify on the same labels as SuSi or SWAN. It classifies on the four following labels: source, sink, mixed (both source and sink), and none (neither a source or sink). Unlike our proposed approach, it does not identify sanitisers, but it does include methods with behaviour reflective of both sources and sinks, i.e., mixed.\\
+Furthermore, Sas et al. does not classify on the same labels as SuSi or SWAN. It classifies on the four following labels: source, sink, mixed (both source and sink), and none (neither a source nor a sink). Unlike our approach, it does not include sanitisers. \\
 
 \noindent
 The SVM model achieved an average (of all classes) recall of 85\% and an average precision of 77.9\%.\\ 
 
 \noindent
-Unfortunately, the training dataset is not publicly available and hence we will not be able to include it in our training data for this thesis.
+Unfortunately, the training dataset is not publicly available, so we cannot include it in our training data for this thesis.
 
 \section{Model Architecture}
 \label{model_architecture}
