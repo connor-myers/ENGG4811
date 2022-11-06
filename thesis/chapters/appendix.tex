@@ -2,7 +2,7 @@
 \label{appendix:sources}
 
 
-Figure \ref{sink-tank-default-source-config}, below, is a real default configuration of sources for the taint-analyis tool `sink-tank'. Importantly, from the example shown in Figure \ref{figure-taint-example}, we can see that HttpServletRequest.getParameter() was considered a source. Luckily, since ServletRequest.getParameter() is listed in the configuration, (recalling that HttpServletRequest implements the interface ServletRequest), it is likely the vulnerability would be detected by sink-tank.\\
+Figure \ref{sink-tank-default-source-config}, below, is a real default configuration of sources for the taint-analyis tool `sink-tank'. \\
 
 \begin{figure}[H]
 \lstinputlisting[language=XML]{misc/method-sources.xml}
