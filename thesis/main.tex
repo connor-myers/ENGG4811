@@ -121,13 +121,13 @@
 %In this thesis, natural language processing techniques are applied on Javadoc and code to automatically classify security-sensitive Java methods for the purpose of configuring taint analysis tools. Four classes of methods were considered for this classification task, namely: sources, sinks, sanitisers, and security-irrelevant methods. \\
 
 \noindent
-Taint analysis tools scan code for vulnerable dataflows. A vulnerable dataflow is any dataflow where user-inputted data (i.e., tainted data) is able to reach a security-sensitive operation without first being sanitised. A list of security-sensitive methods (SSMs) relevant to the code being analysed is required to conduct a taint analysis. Taint analysis tools typically provide a default configuration of commonly used SSMs, although these often prove insufficient in many use-cases. As a result these configurations are often produced manually which is time-consuming and error-prone. Automating this task would not only save developers time but also enable taint analysis tools to operate more effectively. \\
+Taint analysis tools scan code for vulnerable dataflows. A vulnerable dataflow is any dataflow where user-inputted data (i.e., tainted data) can reach a security-sensitive operation without first being sanitised. Taint analysis tools do not implicitly know which methods are security sensitive; they require a list of appropriate security-sensitive methods. Taint analysis tools typically provide a default configuration of commonly used SSMs, although these often prove insufficient in many use cases. In such cases, security analysts usually develop a configuration manually, which is time-consuming and error-prone. Automating this task would save developers time and enable taint analysis tools to operate more effectively. \\
  
 \noindent
-Javadoc is an informal and natural language description of code, and it may contain information relevant to SSM classification. In this thesis we aim to extract security-relevant information from Javadoc using machine-learning techniques and apply this to the task of automatically configuring taint analysis tools. \\
+Javadoc is an informal and natural language description of code, and it may contain information relevant to SSM classification. In this thesis, we aim to extract security-relevant information from Javadoc with machine-learning techniques and use this to configure taint analysis tools automatically. \\
 
 \noindent
-Our machine learning approach utilised Microsoft's pre-trained model \emph{CodeBERT}, which was fine-tuned on a dataset of Java SSMs. Our highest performing model achieved an F1-score of $0.68$.
+Our machine learning approach utilised Microsoft's pre-trained model \emph{CodeBERT}, which was fine-tuned on a dataset of Java SSMs. Our highest-performing model achieved an F1-score of $0.68$.
 
 %Automatic classification of security-sensitive Java methods was implemented using a machine-learning approach. A variety of different machine learning implementations and configurations were evaluated, however the foremost architecture explored was extending existing relevant pre-trained models (CodeBERT and UniXcoder) by fine-tuning the models on a dataset of security-sensitive Java methods. The best performing model achieved achieved an F1-score of $0.68$.\\
 
@@ -144,16 +144,16 @@ Our machine learning approach utilised Microsoft's pre-trained model \emph{CodeB
 %\noindent
 %This level of performance falls short of what would be required to have the task of configuring taint analysis tools for particular projects to be completely automated. However this thesis has shown that code documentations likely do contain information useful security information and it is worth further exploring how applying machine learning techniques can enhance existing security analyses. 
 
-\newpage
+% \newpage
 
-\vspace*{0.5\textheight}
+% \vspace*{0.5\textheight}
 
-\begin{center}
-\emph{Dedicated to Joe}
-\end{center}
+% \begin{center}
+% \emph{Dedicated to Joe}
+% \end{center}
 
 \chapter*{Acknowledgements}
-I would like to thank my three supervisors Mark Utting, Behnaz Hassanshahi, and Dai Nguyen for going above and beyond with helping me with this thesis. I would also like to thank Paddy Krishnan for organising this collaboration between UQ and Oracle.
+I want to thank my three supervisors, Mark Utting, Behnaz Hassanshahi, and Dai Nguyen, for going above and beyond to help me with my thesis. I would also like to thank Paddy Krishnan for organising this collaboration between UQ and Oracle.
 
 \noindent
 
