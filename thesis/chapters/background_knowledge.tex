@@ -1,65 +1,65 @@
-In this section, the key background knowledge for this thesis will be discussed. 
+This section will discuss the key background knowledge for this thesis. 
 
 \section{Taint Analysis}
 
-Taint analysis is a type of information-flow analysis that considers all user inputted data (sources) as malicious, and follows the flow of this `tainted' data to determine if it reaches a security sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
+Taint analysis is a type of information-flow analysis that considers all user-inputted data (sources) as malicious and follows the flow of this tainted data to determine if it reaches a security-sensitive operation (sinks) \cite{effective-taint-analysis} (e.g., a function call or SQL query). \\ 
 
 \noindent
-Most taint analyis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is some process (usually a method or function call) that make untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source is able to reach a sink without first going through a sanitiser. \\
+Most taint analysis tools also consider another class in addition to sources and sinks known as sanitisers. A sanitiser is a method that makes untrusted user data safe to flow into sinks. A taint analysis tool will consider all sources of tainted data, follow their flow in a program, and raise a warning if a source can reach a sink without first going through a sanitiser. \\
 
 \noindent
-Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code, or as a running program), however is typically conducted statically. Common tools for performing static taint analysis include: Facebook's Infer\footnote{\url{https://fbinfer.com}}, and SonarQube\footnote{\url{https://www.sonarqube.org}}. \\
+Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code or as a running program), although it is typically done statically. Common tools for performing static taint analysis include Facebook's Infer \cite{infer} and SonarQube \cite{sonarqube}. \\
 
 \noindent
 Consider the motivating example in Figure \ref{figure-taint-example} which shows a simple SQL injection attack in Java.\\
 
 \begin{figure}[H]
     \lstinputlisting[style=mystyle, language=Java]{code/path-traversal-bad.java}
-    \caption{A contrived example of a SQL injection vulnerability that would be detected by a taint analysis tool.}
+    \caption{A contrived example of an SQL injection vulnerability that would be detected by a taint analysis tool.}
     \label{figure-taint-example}
 \end{figure}
 
 \noindent
-From Figure \ref{figure-taint-example}, we can see getParameter() is a source. This is because getParameter() retrieves the value of a parameter in a HTTP request, which can be arbitrarily set by the user. Because it can be set by the user, from a security perspective, the variable `name' in this code is considered tainted. However, taint analysis tools cannot implicitly know that a particular method is a source. Taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{appendix:sources} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}.\\
+From Figure \ref{figure-taint-example}, it is clear that getParameter() is a source. This is because getParameter() retrieves the value of a parameter in an HTTP request, which the user can set arbitrarily. Because the user can set the parameter, the variable `name' in this code is considered tainted. Taint analysis tools do not implicitly know what methods are security sensitive. Taint analysis tools have a database of methods (labelled as sources, sinks, and sanitisers) from commonly used libraries in which to conduct the analysis on\footnote{See Appendix \ref{appendix:sources} for an example of a real default configuration of source methods for the taint-analyis tool \emph{sink-tank}.}.\\
 
 \noindent
-That is, a taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered security sensitive. For large projects and projects using niche libraries, the provided dataset of security sensitive methods often proves insufficient. Therefore, developers must inspect the project's code manually and create a list of security sensitive methods specific to a project. Naturally, creating this custom taint analysis configuration is time-consuming and error prone.\\
+A taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered security sensitive. The default configuration of security-sensitive methods often proves insufficient for large projects and projects using niche libraries. Therefore, security analysts often manually inspect a project's code and create a configuration of security-sensitive methods specific to a particular project. Naturally, creating this custom taint analysis configuration is time-consuming and error-prone.\\
 
 \noindent
-In Figure \ref{figure-taint-example} the variable `name' is included in an SQL query without any validation of its input. That is, it is not \emph{sanitised}. Any good taint analysis tool will have getParameter() as a source and executeQuery() as a sink, so this example would likely be flagged as an insecure data flow. \\
+In Figure \ref{figure-taint-example} the variable \emph{name} is included in an SQL query without its content being sanitised. Any good taint analysis tool will have getParameter() as a source and executeQuery() as a sink. Any good taint analysis tool would flag this example as an insecure dataflow. \\
 
 \noindent
-To rewrite this code so it is safe, the variable `name' should be passed through a sanitiser for SQL queries. An example of a sanitiser for SQL input is\\ org.apache.commons.lang.StringEscapeUtils.escapeSql(), which will remove any SQL control characters from a string, such as `;'.\\
+\emph{Name} should first be sanitised before it is included in the SQL query. An example of a commonly used sanitiser for SQL input is\\ org.apache.commons.lang.StringEscapeUtils.escapeSql(), which removes any SQL control characters from a string, such as `;'.\\
 
 \noindent
-While Figure \ref{figure-taint-example} is a simple and contrived example, it highlights the importance of taint analysis and the terminology used. The example would easily be detected by any good taint analysis tool, and hence more likely to be fixed before any adverse outcomes occur. However, this insecure dataflow being detected is predicated by the those featured security-sensitive methods (i.e. getParameter(), executeQuery(), and escapeSql()), being included in the taint analysis tool's configuration.\\
+While Figure \ref{figure-taint-example} is a simple and contrived example, it highlights the importance of taint analysis and the terminology used. However, the detection of this insecure dataflow is predicated by those featured security-sensitive methods (i.e. getParameter(), executeQuery(), and escapeSql()),  being included in the taint analysis tool's configuration.\\
 
 \noindent
-A taint analysis tool is only as effective as its security-sensitive method configuration is complete. If a taint analysis tool's configuration misses real security-sensitive methods in a project, the analysis generated by the tool will not be optimum and will likely miss insecure data flows in the program. \\
+A taint analysis tool is only as effective as its configuration is complete. Suppose a taint analysis tool's configuration misses real security-sensitive methods in a project. In that case, the analysis generated will not be optimum and insecure dataflows will be missed. \\
 
 \section{Deep Learning}
 
-Deep-learning is a subtopic within the broader category of machine learning whereby many layers of interconnected artificial neurons learn generalised representations of data for applications such as: image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artifical neurons inspired by biological neurons, although artifical neurons do not exactly model biological neurons and their behaviour differs in many regards.\\
+Deep learning is a subtopic within the broader category of machine learning whereby many layers of interconnected artificial neurons learn generalised representations of data for applications such as image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artificial neurons inspired by biological neurons, although artificial neurons do not exactly model biological neurons, and their behaviour differs in many aspects.\\
 
 \begin{figure}[h]
     \begin{center}
             \includegraphics[scale=0.65]{images/neuron_diagram.png}
     \end{center}
-    \caption{Diagram of a singular neuron}
+    \caption{Diagram of a singular neuron \cite{neuron_picture}}
     \label{neurondiagram}
 \end{figure}
 
 \noindent
-Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden-layer, or, if this neuron is within the first layer of the hidden-network, directly from the input data. Each edge (that is, each connection between an input and the neuron in-question) has a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. A weight is simply a real number associated with each neuron connection that scales the signal from the input signal. \\
+Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden layer or, if this neuron is within the first layer of the hidden network, directly from the input data. Each edge (that is, each connection between an input and the neuron in question) has a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. A weight is a real number associated with each neuron connection that scales the signal from the input signal. \\
 
 \noindent
-After all the input values from each connecting neuron are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron also has an associated bias. Bias is a value that is added to a neuron's output by default. \\
+After all the input values from each connecting neuron are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is a value that is added to a neuron's output by default. \\
 
 \noindent
-In order to introduce non-linearity into the network (all the operations we have discussed --- adding bias and multiplying weights --- are linear), and thereby enable the network to learn more sophisticated representations of data, the sum of the bias and the weighted inputs is passed through an \emph{activation function}. A common choice of activation function is a sigmoid function, although there are many activations to choose from, each with their own positives and negatives. After the activation function is applied, the final output value of neuron has been calculated. \\
+To introduce non-linearity into the network, a neuron's sum is passed through an \emph{activation function}. A common choice of activation function is a sigmoid function, although there are many activations to choose from, each with its positives and negatives. \\
 
 \noindent
-Initially, the weights and biases of all the neurons and connections in the network are initialised randomly. A neural network must be `trained' so that all the weights and biases are set in such a way that the network produces useful outputs for whatever task it is performing. How exactly training is done is out-of-scope for this background knowledge --- see backpropagation and gradient descent --- however for the purposes of understanding the contents of this thesis, all one needs to know is that by feeding \emph{labelled} data into the model (i.e., input where it is already known what the `correct' output should be), the weights and biases of the model can be systematically updated so that the actual output generated by the network for some input more closely resembles the expected output. If conducted on a sufficient number of examples on a diverse training dataset, the neural network will hopefully learn to effectively perform the task (whatever that may be) on data it has not seen before. \\
+Initially, the weights and biases of all the neurons and connections in the network are initialised randomly. A neural network must be `trained', it is said, to set all its weights and biases in such a way that the network produces useful outputs. By feeding labelled data into the model (i.e., where the expected output is known), the weights and biases of the model can be systematically updated so that the output generated by the network for some input more closely resembles the expected output. If conducted on a sufficient number of examples on a diverse training dataset, the neural network will hopefully learn to generate accurate outputs for data it has not seen before. \\
 
 %
 %\noindent
@@ -69,45 +69,45 @@ Initially, the weights and biases of all the neurons and connections in the netw
 %After training a network over a diverse (to avoid overfitting) and appropriate dataset for a sufficient number of examples, a neural network can have the weights and biases of its corresponding neurons adjusted in such a way that it can make predictions on data it has not yet seen before --- that is, it has learned \emph{general} representations of the data.\\
 
 \noindent
-So far, we have only discussed the function of one neuron in isolation. While this is critcal for a basic understanding of deep-learning as it relates to this thesis topic, it undermines the sheer scale of the models that will be employed this thesis project. One such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters (that is, 125M weights and biases that need to be calibrated) and was trained on a corpus of almost 10 million examples.
+So far, we have only discussed the function of one neuron in isolation. While this is critical for a basic understanding of deep learning as it relates to this thesis topic, it undermines the sheer scale of the models employed in this thesis project. For example, one such model, CodeBERT \cite{CodeBERT}, has over 125 million parameters and was trained on a corpus of almost 10 million examples.
 
 \subsection{Neural Network Architectures}
-There are a variety of architectures of neural networks. Choice of architecture is critical and fundamentally affects the performance of the model.
+There are a variety of architectures of neural networks. The choice of architecture is critical and fundamentally affects a model's performance.
 
 \subsubsection{Recurrent Neural Networks}
 
 \noindent
-Natural language processing had for many years been done with Recurrent Neural Networks (RNNs)\footnote{More specifically, it was done with long short-term memory networks (LSTMs) which are a subclass of RNNs.}. \\
+Natural language processing has for many years been done with Recurrent Neural Networks (RNNs)\footnote{More specifically, long short-term memory networks (LSTMs), which are a subclass of RNNs.}. \\
 
 \noindent
-RNNs were vital for natural-language processing as this architecture of neural-network is capable of `memory'. In the scope of natural language processing, this means RNNs were capable of understanding the \emph{context} of words. Having a model understand context is vital because where a word is placed in a sentence, or what words surround it, can dramatically alter the meaning of a word. The same idea applies in the context of source-code. \\
+RNNs were vital for natural-language processing as this neural-network architecture is capable of `memory'. In the scope of natural language processing, this means RNNs can understand the \emph{context} of words. Having a model understand context is vital because a word's position in a sentence can dramatically alter its meaning. \\
 
 \noindent
-RNNs understand context by sequentially processing an input sentence one word at a time, and incorporate the output of one word into the processing of word after it. This means that RNNs must process data sequentially and options for parallelisation are limited. As a result of this, RNNs are notoriously slow \cite{patiexploring}.\\
+RNNs understand context by sequentially processing an input sentence one word at a time and incorporating one word's output into processing the word after it. Since RNNs process data sequentially, options for parallelisation are limited. As a result of this, RNNs are notoriously slow \cite{patiexploring}.\\
 
 \noindent
-Furthermore, this context (i.e., memory of previous inputs) that is maintained as the network processes an input slowly vanishes. That is, for very long inputs the `context' created at the start of an input sequence is likely to have disappeared when processing words towards the end of the sequence. As such, RNNs are not as effective on very large inputs. \\
+Furthermore, this memory of previous inputs that is maintained as the network processes an input slowly vanishes. For very long inputs, the memory created at the start of an input sequence will disappear towards the end of the sentence. As such, RNNs are not as effective on long sequences. \\
 
 \subsubsection{Long Short Term Memory (LSTM)}
 
 \noindent
-Long short-term memory networks (LSTMs) are a subclass of RNNs that aim to reduce the problems of traditional RNNs, particularly with regards to handling longer inputs. LSTMs employ `gating-units' to each node in a network which act to ensure the contextual information generated by previous words in a sentence is better maintained for longer input sequences. Including these gating units, while allowing for networks that can process longer inputs more effectively, comes at a significant performance cost. As a result, LSTMs are notoriously slow to train and, in general, are extremely computationally expensive \cite{sundermeyer2012lstm}.
+Long short-term memory networks (LSTMs) are a subclass of RNNs that aim to reduce the problems of traditional RNNs, namely vanishing context for long inputs. LSTMs employ `gating units' to each node in a network, ensuring the contextual information generated by previous words in a sentence is maintained over longer input sequences. Unfortunately, this comes at a significant performance cost. As a result, LSTMs are notoriously slow \cite{sundermeyer2012lstm}.
 
 \subsubsection{Transformer Architecture}
 \label{transformers}
 
 \noindent
-It is not an exaggeration to say that Google's publishing of \emph{Attention Is All You Need} \cite{attention} (cited over 50,000 times), and thereby the introduction of the Transformer architecture, has completely revolutionalised natural-language processing. \\
+It is not an exaggeration to say that the publishing of \emph{Attention Is All You Need} \cite{attention}, and thereby the introduction of the Transformer architecture, has completely revolutionalised natural-language processing. \\
 
 \noindent
-Perhaps the most useful property of the Transformer architecture is input processing is done parallelised. That is, all tokens of an input sequence are processed simultaneously. This means these Transformers can more efficiently exploit GPU hardware \cite{gpu-parallel}, which excel at parallelised workflows. This in turn leads to extraordinary performance improvements compared to other neural network architectures \cite{attention}.\\
+Perhaps the most useful property of the Transformer architecture is that they are parallelisable. With Transformers, all words of an input sentence are processed simultaneously. Transformers can more efficiently exploit GPU hardware \cite{gpu-parallel}, which excels at parallelised workflows. Because of this, Transformers see extraordinary performance improvements compared to other neural network architectures \cite{attention}.\\
 
 \noindent
-Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand the context of tokens (notably, future context as well) much better than RRNs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold, however, is for small amounts of data. With tasks that have very small amounts of training data, LSTMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training-time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
+Furthermore, because all tokens of an input sequence are processed simultaneously, Transformers can understand context much better than RRNs. Transformers have been shown to consistently outperform RNNs\footnote{The literature suggests one case this does not hold is when only a small amount of training data is available. In that case, LSTMs have been shown to outperform Transformers \cite{transformer-bad}.} in both training time and efficacy in many downstream tasks \cite{attention}\cite{asr-rnn-transformer}.\\
 
-\noindent
 \label{token_limit}
-There is one major caveat to this improved performance, however. Unlike RNNs, which can have an input sequence of any length, Transformers require a fixed-length input. All input sequences must have the same length, and there is a maximum length an input sequence can be. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. For most use-cases, this is not an issue as 512 tokens are more than enough. \\
+\noindent
+There is one major caveat to this improved performance. Unlike RNNs, which can have an input sequence of any length, Transformers require a fixed-length input. All input sequences must have the same length, and there is a maximum length an input sequence can be. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. This is not an issue for most use cases, as 512 tokens are usually sufficient. \\
 
 \begin{figure}[t]
     \begin{center}
@@ -123,71 +123,69 @@ There is one major caveat to this improved performance, however. Unlike RNNs, wh
 \label{fine-tuning}
 
 \noindent
-Given this thesis project is about the classification of security sensitive methods in Java, using both the code and natural-language descriptions of code (i.e., Javadoc), a machine learning model that can understand code and natural-language, and how they relate to each other, is required.\\
+Given this thesis project is about the classification of security-sensitive methods (SSMs) in Java, using both the code and natural-language descriptions of code (For example, Javadoc), it would be best to use a pre-trained machine learning model that can understand both code and natural language and how they relate to each other. \\
 
 \noindent
-Pre-trained models are machine-learning models that have already been trained for some task. Typically, this task is very general and non-specific so that the model can later be \emph{fine-tuned} for a more specific, but related, task. Pre-trained models are useful because a significant number of machine-learning tasks are actually quite similar. That is, even though two downstream tasks may be different, the majority of the `knowledge' the model is required to learn for each task is shared between the two.\\
+Pre-trained models are machine-learning models that have already been trained for some \emph{general} task. Pre-trained models can later be \emph{fine-tuned} for a more specific but related task. Pre-trained models are helpful because many machine-learning tasks are very similar. Instead of training a new model from scratch for every task as required, it would be better to `pre-train' a model such that it learns what is shared between all the tasks. This model can then be extended for each task individually by performing a small amount of additional training specific to that particular task. This is known as fine-tuning.\\
 
 \noindent
-For instance, there are many tasks that require a model to understand the relationship between natural language and code. Downstream tasks requiring this knowledge include: code search (searching for the most related code from natural language), code generation (creating code from natural-language), and code completion (taking a fragment of code and completing it). It is easy to see that all these aforementioned tasks share many aspects in common. Instead of training a new model from scratch for each of these tasks, it would be better to `pre-train' a model such that it learns what is common between all the downstream tasks. This model can then be extended for each downstream task individually by performing a small amount of additional training specific for that downstream task. This process is known as fine-tuning.\\
-
-\noindent
-Using pre-trained models enables us to avoid `doubling-up' on work that has already done and, in our case, gain access to sophisticated models with a level of performance that would typically be out of reach for an undergraduate thesis project. \\
+By using pre-trained models, we avoid redoing work and gain access to sophisticated models with a level of performance that would otherwise be out of reach for an undergraduate thesis project. \\
 
 %\label{fine-tuning}
 %\noindent
 %In the case of this thesis project, a pre-trained model that has been trained on understanding both natural language and code, and also how they are related should be selected. Additional fine-tuning on this model so that it uses this understanding of code and natural-language to classify which Java methods are security sensitive\footnote{The process is not quite this simple. We will need to add an additional classification layer and modify the existing pre-trained model. We will return to this topic later in the thesis.}. We will still need to collect labelled examples of security sensitive methods, but we will not need to collect anywhere near as much data if we were training the model from scratch. Because the model has already been trained on the general-task of understanding natural-langauge and code, the vast majority of the work has already been done.\\
 
-\noindent
-This discussion of pre-trained models will continue in the literature review, where an appropriate pre-trained model for this project will be identified. 
+% \noindent
+% This discussion of pre-trained models will continue in the literature review, where we will identify an appropriate pre-trained model for this project. 
 
 \subsubsection{PyTorch and Huggingface}
 
 \noindent
-PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will be using for this project. PyTorch makes the process of loading pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow} and Keras \cite{keras}, however PyTorch was selected as the examples provided by the CodeBERT authors use PyTorch. \\
+PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will use for this project. PyTorch makes the process of using pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow}, and Keras \cite{keras}. PyTorch was selected as CodeBERT's example code uses PyTorch. \\
 
 \noindent
-PyTorch provides a framework to do machine learning work, but it does not provide the model implementations. For that, the HuggingFace library will be used. HuggingFace provides not only implementations of models that can be used in conjunction with machine learning frameworks such as PyTorch, but also a cloud-platform to load pre-trained models from \cite{huggingface}.\\
+PyTorch may simplify the process of \emph{using} machine learning models, but it does not provide the model implementations themselves. The HuggingFace Transformer's library \cite{huggingface} will be used for that. HuggingFace provides implementations of models that can be used in conjunction with machine learning frameworks such as PyTorch and a cloud platform to download pre-trained models from.\\
 
 \noindent
 \textbf{Tensors}\\
 
 \noindent
-Tensors are an important data structure in machine-learning, and it is important to have a general idea of what they are for this project. The precise definition of tensors is best left for mathematicians and physicists, but for the purposes of this thesis, they can simply be thought of n-dimensional arrays of real numbers that run very fast on GPUs \cite{deeplearning_mit}.
+Tensors are an essential data structure in machine learning, and it is important to have a general idea of what they are for this project. The precise definition of tensors is best left to mathematicians and physicists. Still, for this thesis, they can be thought of as $n$-dimensional arrays of real numbers that run very fast on GPUs \cite{deeplearning_mit}.
 
 
 \subsubsection{Tokeniser}
 
-Tokenisation is an important step in natural-language processing. When processing natural-language, or source code, text cannot be inputted into the model directly. First, the text must be broken into individual components that model is familiar with. I.e., tokens. For natural-language, tokens typically correspond to whole words however this is not always the case. In Section \ref{token_limit} it was mentioned that all BERT models have a maximum input length of 512. Typically, a token represents more than one character so this 512 limit is not as small as it may initially seem. 
+Tokenisation is an essential step in natural language processing. When processing natural language, or source code, text cannot be inputted into the model directly. First, the text must be broken into individual components with which the model is familiar. I.e., \emph{tokens}. For natural language, tokens typically correspond to whole words; however, this is not always the case. \\
 
 %\noindent
 %The CodeBERT tokeniser has learned what tokens are important for natural-langauge and code, and will therefore tokenise input appropriately for that context. For this project, we do not necessarily have to add additional tokens to the tokeniser\footnote{We will be adding additional tokens, but for an alternative reason. We will come back to this later.} as the CodeBERT tokeniser has already learned how to tokenize Java and natural-langauge during pre-training.\\
 %
 
 \noindent
-See Appendix \ref{appendix:tokenizer-example} for an example of the pre-trained model `CodeBERT' tokenises input.
+See Appendix \ref{appendix:tokenizer-example} for an example of how the pre-trained model \emph{CodeBERT} tokenises.
 
 \subsubsection{Embeddings}
 
 \noindent
-For the purposes of this thesis, embeddings can be thought of as vector representations of tokens. That is, they map a token to a point in vector-space. This is an important aspect of NLP as this is related to how NLP models understand context. Related tokens or tokens that have similar meanings will map more closely together in vector-space compared to unrelated words. For example, homonyms --- words spelt the same but with different meanings --- will produce embeddings that are not close together in vector-space because despite being the same have vastly different meanings.\\
+For this thesis, embeddings can be considered as vector representations of tokens. That is, they map a token to a point in vector space. Related tokens and tokens with similar meanings will map more closely together in vector space. \\
 
 %\noindent
 %Naturally, how models based on the transformer architecture do this is out-of-scope for this thesis, however it corresponds to the `Multi-head Attention' block in Figure \ref{transformer}.\\
 
 \noindent
-The pre-trained model CodeBERT, for example, has 768 nodes in its output layer (i.e. the last layer of its hidden network) \cite{CodeBERT}. The sequence of numbers created by these 768 nodes are the embedding for some input token. This means each token fed into CodeBERT (or any other BERT model) has an embedding of size $768$.\\
+For example, the pre-trained model CodeBERT has 768 nodes in its output layer (i.e. the last layer of its hidden network) \cite{CodeBERT}. The sequence of numbers created by the final values of those 768 nodes is the embedding for that input token. This means the output for each token fed into CodeBERT is an embedding, and a tensor, of size $n = 768$.\\
 
 %In the case of codeBERT, there is some additional embedding information included in the embedding in addition to the token embedding. These additional embeddings are the \emph{segment} embeddings and \emph{positional} embeddings. The segment embedding provides information whether the embedding is part of the code or natural-language segment of the input. And, the positional embedding indicates where the token the embedding is for was located in the input sequence. The token embedding, segments embedding, and positional embedding are added elementwise to produce the final embedding for a given input token. \\
 
+\subsection{Sentence Embeddings}
 \label{embedding}
 \noindent
-For some input sequence of $n$ tokens, a BERT model will therefore produce $n$ embeddings, each of size $768$. Most downstream tasks are performed on an input sequence, not an individual token. As such, the embeddings of each token should be combined in such a way to generate a new embedding that contains information pertaining to all the tokens. This is known as a sequence embedding and there are a variety of methodologies to create them. This is known as \emph{pooling} and there are two main pooling strategies for Transformer models.
+For some input sequence of $n$ tokens, CodeBERT will therefore produce $n$ embeddings, each of size $768$. Most downstream tasks are performed on an input sequence, not an individual token. As such, the embeddings of each token should be combined in such a way as to generate a new embedding that contains information pertaining to \emph{all} the tokens. This is known as a sentence embedding. Creating sentence embeddings from token embeddings is known as \emph{pooling}, and various strategies exist to perform this. We will discuss the two most common techniques.
 
 \begin{enumerate}
-    \item \textbf{Mean-pooling:} Each of the $n$ token embeddings are added together and divided by $n$ (element-wise). That is, the average embedding is calculated. 
+    \item \textbf{Mean-pooling:} Each of the $n$ token embeddings are added together and divided by $n$ (element-wise). That is, the \emph{average} embedding is calculated. 
   
-    \item \textbf{CLS-pooling:} A special token (typically denoted as [CLS]) is included as the first token of an input sequence. As a result of how Transformers work, this token will include information for the entire input sequence. The token embedding for this special token is in turn treated as the sequence embedding. 
+    \item \textbf{CLS-pooling:} A special token (typically denoted [CLS]) is included as the first token of an input sequence. As a result of how Transformers work, this token will include information regarding the entire input sequence. To get the sentence embedding for an input sequence, we treat the token embedding of the [CLS] token as the embedding for the entire sequence.
 \end{enumerate}
 
 \subsubsection{Loss}
@@ -196,13 +194,13 @@ For some input sequence of $n$ tokens, a BERT model will therefore produce $n$ e
 % left off editing here
 
 \noindent
-Loss is a measure of how incorrect a model's prediction was. Loss is used both in the context of a single input and sequence of inputs, i.e., the average loss \cite[p.~11]{python-machine-learning}. It should be noted that when a neural network is being trained, the accuracy of neural network is not what is being optimised. Instead, the \emph{loss} is optimised. Of course a low loss correlates with a high accuracy, however it is indeed possible to have a highly accurate model with high average loss. \\ 
+Loss is a measure of how incorrect a model's prediction is. Loss is used both in the context of a single input and sequence of inputs \cite[p.~11]{python-machine-learning}. Unintuitively, neural network optimisation algorithms do not optimise for accuracy. Instead, they aim to reduce loss as much as possible. A high accuracy usually correlates with low loss. However, it is possible for this not to be the case. \\ 
 
 % \noindent
 % For instance, we can have a model that is extremely accurate with its answers but not very confident, i.e., a high loss. For example, if we have a classifier model and generate the final probabilities, our final answer is whichever probability is greatest. However if our model responds with probabilities that look like: $[0.25, 0.25, 0.24, 0.26]$, where each of these values is the probability of the input sequence being one of the labels in our dataset. Technically, the model has predicted our input sequence was the 4th class, as it has a probablity of $0.26$. Even if this predicition is correct, however, it is far from ideal as we would expect a perfect model, in the case of the 4th label indeed being correct, to output $[0.0,0.0,0.0,1.0]$. Obviously no model would perform \emph{that} well, but the sentiment stands that our model should be able to \emph{confidently} predict its answers. That way, we can be reassured our model is learning \emph{generalised} representations of the data and will be able to perform effectively on real-world data it has not yet seen before. In summary: not only do we want our model to be accurate, we also want it to be confident in its answer.\\
 
 \noindent
-Loss is calculated using a loss function. Just as with activation functions, there are many different loss functions each with their own pros and cons. What loss function is selected for a model is an important decision to be made and has significant consequences for the final performance of the model. For example, for multi-label classification tasks, the cross-entropy loss function is typically used \cite[p.~17]{AggarwalCharuC2018Nnad}.\\
+Loss is calculated using a loss function. Just as with activation functions, there are many loss functions, each with pros and cons. What loss function is used has significant consequences for the final performance of a model. For example, for multi-label classification tasks, the cross-entropy loss function is typically used \cite[p.~17]{AggarwalCharuC2018Nnad}.\\
 
 % \noindent
 % Exactly how cross-entropy works is quite complicated and certainly out of scope. However, for the purposes of understanding this thesis, we will treat cross-entropy as a function that takes in two probability distributions (i.e., our model's predictions versus the expected probabilities) and computes a loss comensurate to how `disimilar' the probability distributions are \cite[p.~208]{brownlee2019probability}.
@@ -210,10 +208,10 @@ Loss is calculated using a loss function. Just as with activation functions, the
 \section{Support Vector Machines}
 
 \noindent
-In this background knowledge, a considerable amount of time has been spent discussing complex and state-of-the-art technologies for machine-learning. To properly evaluate these complex models for this thesis, it would be beneficial to have an older and more simplistic model to compare results to. One such architecture that fits this description are Support Vector Machines (SVMs). SVMs were created in the 90s and are a standard tool for classification tasks.\\ 
+We have spent a considerable amount of time discussing complex and state-of-the-art technologies for machine learning. To properly evaluate these complex models for this thesis, it would be beneficial to have a more simplistic model to compare results. One such architecture that fits this description is Support Vector Machines (SVMs). SVMs were developed in the 90s and are a standard tool for classification tasks.\\ 
 
 \noindent
-SVMs take in as input data with $n$ number of features and one of two labels, where each feature corresponds to a dimension in an n-dimensional feature-plane, and calculate a `hyperplane' such that the datapoints from the two labels are partitioned on either side of that hyperplane in the feature-plane \cite[p.~5]{AbeShigeo2005SVMf}. Furthermore, this hyperplane is optimised in such a way that the distance between the hyperplane and the `support' data (i.e., the two datapoints, one from each label, that is closet to the hyperplane) is maximised \cite{berwick2003idiot}. Figure \ref{hyperplane-image} shows a visual representation of a hyperplane partitioning two sets of labelled data. \\
+SVMs take in as input data with $n$ number of features and one of two labels, where each feature corresponds to a dimension in an n-dimensional feature plane. SVMs calculate a `hyperplane' such that the data points from the two labels are partitioned to either side of that hyperplane \cite[p.~5]{AbeShigeo2005SVMf}. Furthermore, this hyperplane is optimised in such a way that the distance between the hyperplane and the `support' data (i.e., the two data points from opposite labels that are closest to each other) is maximised \cite{berwick2003idiot}. Figure \ref{hyperplane-image} shows a visual representation of a hyperplane partitioning two sets of labelled data. \\
 
 % \noindent
 % As will become evident later in this thesis, feature-planes with dimensions much larger than 2 or 3 will be used. Clearly, a $767$ dimension hyperplane partitioning a $768$ dimensional feature-plane is impossible to conceive, so this lower-dimensional analogy will have to suffice.\\
@@ -225,15 +223,21 @@ SVMs take in as input data with $n$ number of features and one of two labels, wh
 \end{figure}
 
 \noindent
-Inherently, SVMs produce a \emph{binary} classification. This is an issue as this project requires a multilabel classification. However, even though SVMs are strictly a binary classification tool, they can be used for multilabel classification. This can be achieved through a number of techniques, but for this thesis a \emph{one-versus-the-rest} will be used \footnote{The SGDClassifier class in scikit-learn (the implementation of SVM that will be used) implicitly takes a one-versus-the-rest approach.}. In one-versus-the-rest classification, $K$ number of binary classifiers are created, where $K$ is the number of different labels to classify over. Each classifier classifies the datapoints as being part of the $K_{ith}$ label, or as one of the other $K-1$ remaining labels \cite[p.~182]{BishopChristopherM2006Pram}. Input data is classified by classifying using each of the $K$ classifiers and selecting the label for which the corresponding classifier produced the most `confident' result \cite[p.~338]{BishopChristopherM2006Pram}.\\
+Inherently, SVMs perform \emph{binary} classification, whereas this task has $4$ labels to classify on. Thankfully, SVMs can be used for multilabel classification. This can be achieved through several techniques, but a \emph{one-versus-the-rest} approach will be used for this thesis. \\
+
+\noindent
+In one-versus-the-rest classification, $K$ number of binary classifiers are created, where $K$ is the number of different labels to classify over. Each classifier classifies the data points as being part of the $K_{ith}$ label or as one of the other $K-1$ remaining labels \cite[p.~182]{BishopChristopherM2006Pram}. Input data is classified by classifying an input using each of the $K$ classifiers and selecting the label for which the corresponding classifier produced the most confident result \cite[p.~338]{BishopChristopherM2006Pram}.\\
 
 \subsection{Term Frequency-Inverse Document Frequency}
 \label{tf-idf}
 
-Term frequency-inverse document frequency (tf-idf), for the purposes of this thesis, is a methodology to extract features from data that is relevant for classification. There are two aspects to td-idf --- term-frequency, and inverse document frequency. Term-frequency is a measure of how often a word appears in a text. More specifically, it is \emph{proportional} to the number of times the term appears. This is because the term-frequency is typically normalised by dividing the number of occurences of a term, by the frequency of the most used term in a text is. So, the most frequent term in a document will have a term-frequency of $1.0$ and all other terms will have a term-frequency inside $\left[0.0, 1.0\right]$ \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
+Our naive model will use term-frequency inverse-document-frequency (tf-idf) to extract features for the SVM classifier. There are two aspects to td-idf --- term-frequency and inverse document frequency. \\
 
 \noindent
-Inverse document frequency (idf) is an additional metric which has the goal of reducing the final tf-idf value for terms that are common in texts for all labels. For instance, the term `the' is likely going to have the highest term-frequency in all documents simply because it is the most common word in English. However, it is equally true that `the' is not important in the context of classifying texts. For instance, `the' is likely to have a high term-frequency in Javadocs, but it does not produce useful information as to whether or not a Java method is a source, sink, or sanitiser. Idf is calculated with the following equation: $ IDF_{i} = \log_{2}\left(\frac{N}{n_{i}}\right)$, where $IDF_{i}$ is the idf of the $i_{ith}$ term, $N$ is the number of documents in total, and $n_{i}$ is the number of documents the $i_{ith}$ term appears in. \\
+Term frequency is a measure of how often a word appears in a text. More specifically, it is \emph{proportional} to the number of times the term appears. This is because the term frequency is typically normalised by dividing the number of occurrences of a term by the frequency of the most used term in a text. So, the most frequent term in a document will have a term frequency of $1.0$, and all other terms will have a term frequency inside $\left[0.0, 1.0\right]$ \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
+
+\noindent
+Inverse-document-frequency (idf) is an additional metric that aims to reduce the final tf-idf value for terms common in texts for all labels. For instance, the word `the' will likely have the highest term-frequency in all labels simply because it is the most common word in English. However, it is equally true that `the' is not important in classification because \emph{all} texts, regardless of label, feature it. Idf is calculated with the following equation: $ IDF_{i} = \log_{2}\left(\frac{N}{n_{i}}\right)$, where $IDF_{i}$ is the idf of the $i_{ith}$ term, $N$ is the number of documents in total, and $n_{i}$ is the number of documents the $i_{ith}$ term appears in. \\
 
 \noindent
 The final tf-idf value for a particular input is the product of term-frequency and inverse-document-frequency \cite[p.~8]{leskovec_rajaraman_ullman_2014}.
