@@ -1,10 +1,10 @@
 \section{Performance}
 
 \noindent
-It was found that natural language processing on Javadoc is useful for classifying security-sensitive methods. A fine-tuned UniXcoder model was able to classify security-sensitive methods (SSMs) based on their Javadoc alone with an F1-score of $0.65$. \\
+It was found that natural language processing on Javadoc is useful for classifying security-sensitive methods. A fine-tuned UniXcoder model was able to classify security-sensitive methods based on their Javadoc alone with an F1-score of $0.65$. \\
 
 \noindent
-However, it was also found that models trained on Javadocs exclusively did not perform as well as models operating on bimodal data (i.e., Javadoc \emph{and} code). This is likely a result of the specific pre-trained encoders being used. Since CodeBERT and UniXcoder were trained primarily on bimodal inputs, it is expected that the encoders perform best on the input that most closely resembles the pre-training data as a result. \\
+However, it was also found that models trained on Javadocs exclusively did not perform as well as models using bimodal data (i.e., Javadoc \emph{and} code). This is likely a result of the specific pre-trained encoders being used. Since CodeBERT and UniXcoder were trained primarily on bimodal inputs, it is expected that these encoders perform best on input that more closely resembles the pre-training data. \\
 
 \noindent
 In almost all cases, the more sophisticated models (fine-tuned Transformer encoders with neural network classifiers) performed better than the more naive approaches (SVM classifiers, tf-idf feature generation, and pre-trained encoders without fine-tuning). In the case of models with bimodal input, the most simplistic model (an SVM classifier with tf-idf for feature extraction) had an F1-score of $0.51$ on the test dataset, whereas the best performing model (CodeBERT with mean pooling using a neural network classifier) achieved an F1-score of $0.68$. \\
@@ -13,19 +13,19 @@ In almost all cases, the more sophisticated models (fine-tuned Transformer encod
 The performance of the Transformer encoders without fine-tuning was surprising. UniXcoder without fine-tuning, when paired with an SVM classifier, had an accuracy of $41\%$, which is considerably better than randomly guessing (i.e., $25\%$). In fact, the only model of this category that performed worse than randomly guessing was CodeBERT using CLS pooling which had an accuracy of $24\%$.\\
 
 \noindent
-Surprisingly, there were many cases of a significant difference in performance when using mean pooling versus CLS pooling. In general, it was found that UniXcoder performed better with mean pooling and CodeBERT performed better with CLS pooling. At this stage the cause of this discrepancy is unclear. \\
+Surprisingly, there were many cases of a significant difference in performance when using mean pooling versus CLS pooling. In general, it was found that UniXcoder performed better with mean pooling, and CodeBERT performed better with CLS pooling. At this stage, the cause of this discrepancy is unclear. \\
 
 \noindent
-Our models' performances fall short of Sas et al, SuSi, and SWAN which achieved F1-scores of $86.4\%$, $91.9\%$, and $83\%$ respectively, however this does not take away from the success of this thesis project. This thesis has shown that Javadoc contains information useful for security-related tasks, namely SSM classification. The approach presented in this thesis is not mutually exclusive to existing implementations and, rather than replace, could enhance existing approaches to SSM classification. Furthermore, our models could be used by security analysts to generate a preliminary taint analysis configuration which could then be manually refined. This would likely result in a significant reduction in the time and effort required to produce a taint analysis configuration versus creating it completely from scratch. 
+Our models' performances fall short of Sas et al, SuSi, and SWAN, which achieved F1-scores of $86.4\%$, $91.9\%$, and $83\%$, respectively. However, this does not take away from the success of this thesis project. This thesis has shown that Javadoc contains information useful for security-related tasks, namely security-sensitive method classification. The approach presented in this thesis is not mutually exclusive to existing implementations and, rather than replace, could enhance current approaches. Furthermore, our models could be used by security analysts to generate a preliminary taint analysis configuration which could then be manually refined. This would likely result in a significant reduction in the time and effort required to produce a taint analysis configuration compared to creating one entirely from scratch. 
 
 \section{Limitations and Improvements}
 \label{limitations_and_improvements}
 
 \noindent
-There are some limitations with our approach. As is common with most machine learning projects, there was a lack of high-quality labelled data available to train and validate the models. Ideally, the dataset should be larger and come from a greater diversity of projects. This would hopefully allow the machine learning models to generalise more effectively.\\
+There are some limitations to our approach. As is common with most machine learning projects, there was not enough high-quality labelled data to train and validate the models optimally. Ideally, the dataset should be larger and come from a greater diversity of projects. This would hopefully allow the models to generalise more effectively and perform better.\\
 
 \noindent
-Due to this lack of data, a number of examples needed to be manually labelled for this project. This is not ideal and undoubtedly lowered the quality of the dataset to some degree. To improve the quality of the dataset it should be reviewed by a third party to ensure there are no mislabelled examples.\\
+Due to this lack of data, many examples needed to be manually labelled for this project. This is not ideal and undoubtedly lowered the quality of the dataset. A third party should review the dataset to ensure there are no mislabelled examples and that it is high-quality.\\
 
 \noindent
-Another limitation is in regards to how overloaded methods were handled. For the purposes of this thesis, if a method was considered security-sensitive then all overloaded methods sharing its name were also considered security-sensitive. It is not clear if this assumption is always valid and is therefore a potential source of inaccuracy. \\
+Another limitation is in regards to how overloaded methods were handled. For this thesis, if a method was considered security-sensitive, all overloaded methods sharing its name were also considered security-sensitive. It is unclear if this assumption is always valid and is, therefore, a potential source of inaccuracy. \\
