@@ -15,7 +15,7 @@ For example, one of the features used is whether or not the class name the metho
 Importantly, this methodology is different from our proposed approach. For instance, SuSi uses manually curated features, whereas, in our approach, these features would automatically be generated. SuSi also differs from our proposed approach as it only operates on the code; no features of the Javadoc are included in the SVM. Furthermore, SuSi only classifies methods as sources, sinks, or none. It does not classify sanitisers, whereas our proposed approach does.\\
 
 \noindent
-SuSi's labelled dataset is available and open-source. However, despite the code technically being Java, we will restrict our training dataset to \emph{native} Java examples. Android Java code uses Android-only libraries and generally looks very different from `normal' Java. As such, it was thought included Android examples in the training data would negatively affect the model's performance on traditional Java code. Additionally, the dataset is not in a suitable format (it does not include Javadoc) and, if used, would require additional configuration to be useful for our purposes. \\
+SuSi's labelled dataset is available and open-source. However, despite the code technically being Java, we will restrict our training dataset to \emph{native} Java examples. Android Java code uses Android-only libraries and generally looks very different from `normal' Java. As such, it was thought including Android examples in the training data would negatively affect the model's performance on traditional Java code. Additionally, the dataset is not in a suitable format (it does not include Javadoc) and, if used, would require additional configuration to be useful for our purposes. \\
 
 \noindent
 SuSi performs exceptionally well, achieving an F1-score of 91.9\%.
@@ -83,7 +83,7 @@ Since CodeBERT has only been trained on these two general tasks, it will need to
 
 \subsection{UniXcoder}
 \noindent
-UniXcoder is another large pre-trained model created by Microsoft for code and natural language understanding tasks\cite{unixcoder}. UniXcoder is similar to codeBERT in that they were both trained on the same dataset, and both models are the same size. However, these two models differ in several key areas. Most importantly is that, unlike codeBERT, UniXcoder is not trained on code directly, but rather on a special abstract syntax tree (AST) generated from the code\footnote{The pseudo-code for the algorithm used to generate the special AST can be found at \cite[pg.~3]{unixcoder}}. \\
+UniXcoder is another large pre-trained model created by Microsoft for code and natural language understanding tasks \cite{unixcoder}. UniXcoder is similar to codeBERT in that they were both trained on the same dataset, and both models are the same size. However, these two models differ in several key areas. Most importantly is that, unlike CodeBERT, UniXcoder is not trained on code directly, but rather on a special abstract syntax tree (AST) generated from the code\footnote{The pseudo-code for the algorithm used to generate the special AST can be found at \cite[pg.~3]{unixcoder}}. \\
 
 \noindent
 UniXcoder, like CodeBERT, was also trained on the MLM and RTD training objectives\footnote{UniXcoder uses additional training objectives, but these are for the decoder portion of the model, which we will not be using.}. In the CodeBERT paper, the authors hypothesised that their model was performing worse than another model, Code2Seq \cite{code2seq}, for specific tasks because Code2Seq learns the syntactic structure of programs during pre-training \cite{CodeBERT}. As such, the development of UniXcoder is an extension to CodeBERT in which the syntactic structure of the program is incorporated into pre-training. This was accomplished by training on the AST of code rather than the code directly.
@@ -91,7 +91,7 @@ UniXcoder, like CodeBERT, was also trained on the MLM and RTD training objective
 \subsection{SVM tf-idf}
 
 \noindent
-Tf-idf, as described in Section \ref{tf-idf}, is a common technique to generate features for an SVM classifier \cite{sentiment-analysis-cb} \cite{sentiment-analysis-fin}. For this architecture, TF-IDF is used to generate the features (i.e., the TF-IDF value for each unique token in a text) for each input, and an SVM is trained to classify based on these TF-IDF features. 
+Tf-idf, as described in Section \ref{tf-idf}, is a common technique to generate features for an SVM classifier \cite{sentiment-analysis-cb} \cite{sentiment-analysis-fin}. For this architecture, tf-idf is used to generate the features (i.e., the tf-idf value for each unique token in a text) for each input, and an SVM is trained to classify based on these tf-idf features.\\
 
 \noindent
 Because this is a simplistic and perhaps naive approach to our task, this model will be considered the `baseline model'. That is, the performance of this SVM with tf-idf represents the bare minimum performance our more advanced models should reach. \\
@@ -127,7 +127,7 @@ We will also conduct this experiment. For our SVM-hybrid model configuration, we
 As mentioned in Section \ref{embedding}, we need to select a pooling strategy to generate a sequence embedding. Typically, models based on BERT use CLS-pooling. \\
 
 \noindent
-While CLS-pooling is a common technique, mean pooling has outperformed CLS-pooling in some circumstances. Experiments conducted for \emph{DefSent}, a natural language processing model, saw CLS and mean pooling perform similarly \cite{tsukagoshi2021defsent}. SentenceBERT, another NLP model, saw better performance using mean-pooling compared to CLS-pooling\cite{reimers2019sentence}. A paper by Ma et al., found that mean-pooling outperformed CLS-pooling on all experiments \cite{ma2019universal}. \\
+While CLS-pooling is a common technique, mean pooling has outperformed CLS-pooling in some circumstances. Experiments conducted for \emph{DefSent}, a natural language processing model, saw CLS and mean pooling perform similarly \cite{tsukagoshi2021defsent}. SentenceBERT, another NLP model, saw better performance using mean-pooling compared to CLS-pooling \cite{reimers2019sentence}. A paper by Ma et al., found that mean-pooling outperformed CLS-pooling on all experiments \cite{ma2019universal}. \\
 
 \noindent
 It is clear there is no best pooling strategy for all use cases. As such, we will perform all experiments involving CodeBERT or UniXcoder using both mean and CLS-pooling to compare the relative effectiveness of each pooling strategy. By default, HuggingFace's implementation of RoBERTa (for classification tasks) uses CLS-pooling. As such, we will need to run a modified version of HuggingFace's source code to implement mean-pooling. \\

@@ -11,7 +11,7 @@ Most taint analysis tools also consider another class in addition to sources and
 Taint analysis can be performed statically or dynamically (i.e., on some representation of the source code or as a running program), although it is typically done statically. Common tools for performing static taint analysis include Facebook's Infer \cite{infer} and SonarQube \cite{sonarqube}. \\
 
 \noindent
-Consider the motivating example in Figure \ref{figure-taint-example} which shows a simple SQL injection attack in Java.\\
+Consider the motivating example in Figure \ref{figure-taint-example} which shows a simple SQL injection vulnerability in Java.\\
 
 \begin{figure}[H]
     \lstinputlisting[style=mystyle, language=Java]{code/path-traversal-bad.java}
@@ -26,7 +26,7 @@ From Figure \ref{figure-taint-example}, it is clear that getParameter() is a sou
 A taint analysis tool cannot follow the flow of tainted input through a program if it does not know what input should be considered security sensitive. The default configuration of security-sensitive methods often proves insufficient for large projects and projects using niche libraries. Therefore, security analysts often manually inspect a project's code and create a configuration of security-sensitive methods specific to a particular project. Naturally, creating this custom taint analysis configuration is time-consuming and error-prone.\\
 
 \noindent
-In Figure \ref{figure-taint-example} the variable \emph{name} is included in an SQL query without its content being sanitised. Any good taint analysis tool will have getParameter() as a source and executeQuery() as a sink. Any good taint analysis tool would flag this example as an insecure dataflow. \\
+In Figure \ref{figure-taint-example} the variable \emph{name} is included in an SQL query without its content being sanitised. Any good taint analysis tool will have getParameter() as a source and executeQuery() as a sink and therefore flag this example as an insecure dataflow. \\
 
 \noindent
 \emph{Name} should first be sanitised before it is included in the SQL query. An example of a commonly used sanitiser for SQL input is\\ org.apache.commons.lang.StringEscapeUtils.escapeSql(), which removes any SQL control characters from a string, such as `;'.\\
@@ -39,7 +39,7 @@ A taint analysis tool is only as effective as its configuration is complete. Sup
 
 \section{Deep Learning}
 
-Deep learning is a subtopic within the broader category of machine learning whereby many layers of interconnected artificial neurons learn generalised representations of data for applications such as image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artificial neurons inspired by biological neurons, although artificial neurons do not exactly model biological neurons, and their behaviour differs in many aspects.\\
+Deep learning is a subtopic within the broader category of machine learning whereby many layers of interconnected artificial neurons learn generalised representations of data for applications such as image classification, machine translation, autonomous vehicles, and many more \cite{LecunYann2015Dl}. Neural networks are networks of artificial neurons inspired by biological neurons.\\
 
 \begin{figure}[h]
     \begin{center}
@@ -50,16 +50,16 @@ Deep learning is a subtopic within the broader category of machine learning wher
 \end{figure}
 
 \noindent
-Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons inside the hidden layer or, if this neuron is within the first layer of the hidden network, directly from the input data. Each edge (that is, each connection between an input and the neuron in question) has a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. A weight is a real number associated with each neuron connection that scales the signal from the input signal. \\
+Figure \ref{neurondiagram} shows a diagram of a singular neuron in a neural network, highlighting the key features of a neuron. A neuron receives input from $m$ nodes, listed above as $\{x_{0}, x_{1}, x_{2},...,x_{m}\}$. These inputs may come from other neurons in the previous layer in the network or, if this neuron is within the first layer of the hidden network, directly from the input data. Each edge (that is, each connection between an input and the neuron in question) has a \emph{weight}; the weights in the above diagram are $\{w_{j0}, w_{j1}, w_{j2},...,w_{jm}\}$. A weight is a real number associated with each neuron connection that scales the value of the input signal. \\
 
 \noindent
 After all the input values from each connecting neuron are calculated, they are summed together. Typically, although it is not shown in the above figure, each neuron has an associated bias. Bias is a value that is added to a neuron's output by default. \\
 
 \noindent
-To introduce non-linearity into the network, a neuron's sum is passed through an \emph{activation function}. A common choice of activation function is a sigmoid function, although there are many activations to choose from, each with its positives and negatives. \\
+To introduce non-linearity into the network, a neuron's sum is passed through an \emph{activation function}. A common choice of activation function is the sigmoid function, although there are many activation functions to choose from, each with its positives and negatives. \\
 
 \noindent
-Initially, the weights and biases of all the neurons and connections in the network are initialised randomly. A neural network must be `trained', it is said, to set all its weights and biases in such a way that the network produces useful outputs. By feeding labelled data into the model (i.e., where the expected output is known), the weights and biases of the model can be systematically updated so that the output generated by the network for some input more closely resembles the expected output. If conducted on a sufficient number of examples on a diverse training dataset, the neural network will hopefully learn to generate accurate outputs for data it has not seen before. \\
+Initially, the weights and biases in the network are initialised randomly. A neural network must be `trained', it is said, to set all its weights and biases in such a way that the network produces useful outputs. By feeding labelled data into the model (i.e., where the expected output is known), the weights and biases of the model can be systematically updated so that the output generated by the network for some input more closely resembles the expected output. If conducted on a sufficient number of examples on a diverse training dataset, the neural network will hopefully learn to generate accurate outputs for data it has not seen before. \\
 
 %
 %\noindent
@@ -109,13 +109,13 @@ Furthermore, because all tokens of an input sequence are processed simultaneousl
 \noindent
 There is one major caveat to this improved performance. Unlike RNNs, which can have an input sequence of any length, Transformers require a fixed-length input. All input sequences must have the same length, and there is a maximum length an input sequence can be. BERT, and other models based on it, such as RoBERTa, have a maximum input length of 512 tokens \cite{bert}. This is not an issue for most use cases, as 512 tokens are usually sufficient. \\
 
-\begin{figure}[t]
-    \begin{center}
-            \includegraphics[scale=0.65]{images/transformer.png}
-    \end{center}
-    \caption{Model architecture of the Transformer \cite{attention}}
-    \label{transformer}
-\end{figure}
+% \begin{figure}[t]
+%     \begin{center}
+%             \includegraphics[scale=0.65]{images/transformer.png}
+%     \end{center}
+%     \caption{Model architecture of the Transformer \cite{attention}}
+%     \label{transformer}
+% \end{figure}
 
 \subsection{Key Concepts and Terminology}
 
@@ -123,7 +123,7 @@ There is one major caveat to this improved performance. Unlike RNNs, which can h
 \label{fine-tuning}
 
 \noindent
-Given this thesis project is about the classification of security-sensitive methods (SSMs) in Java, using both the code and natural-language descriptions of code (For example, Javadoc), it would be best to use a pre-trained machine learning model that can understand both code and natural language and how they relate to each other. \\
+Given this thesis project is about the classification of security-sensitive Java methods, using both the code and natural-language descriptions of code (i.e., Javadoc), it would be best to use a pre-trained machine learning model that can understand both code and natural language and how they relate to each other. \\
 
 \noindent
 Pre-trained models are machine-learning models that have already been trained for some \emph{general} task. Pre-trained models can later be \emph{fine-tuned} for a more specific but related task. Pre-trained models are helpful because many machine-learning tasks are very similar. Instead of training a new model from scratch for every task as required, it would be better to `pre-train' a model such that it learns what is shared between all the tasks. This model can then be extended for each task individually by performing a small amount of additional training specific to that particular task. This is known as fine-tuning.\\
@@ -141,7 +141,7 @@ By using pre-trained models, we avoid redoing work and gain access to sophistica
 \subsubsection{PyTorch and Huggingface}
 
 \noindent
-PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will use for this project. PyTorch makes the process of using pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow\cite{tensorflow}, and Keras \cite{keras}. PyTorch was selected as CodeBERT's example code uses PyTorch. \\
+PyTorch is a popular machine-learning framework for Python \cite{pytorch}, and it is the framework we will use for this project. PyTorch makes the process of using pre-trained models and fine-tuning them far simpler. Other popular machine-learning frameworks include Tensorflow \cite{tensorflow}, and Keras \cite{keras}. PyTorch was selected as CodeBERT's example code uses PyTorch. \\
 
 \noindent
 PyTorch may simplify the process of \emph{using} machine learning models, but it does not provide the model implementations themselves. The HuggingFace Transformer's library \cite{huggingface} will be used for that. HuggingFace provides implementations of models that can be used in conjunction with machine learning frameworks such as PyTorch and a cloud platform to download pre-trained models from.\\
@@ -231,7 +231,7 @@ In one-versus-the-rest classification, $K$ number of binary classifiers are crea
 \subsection{Term Frequency-Inverse Document Frequency}
 \label{tf-idf}
 
-Our naive model will use term-frequency inverse-document-frequency (tf-idf) to extract features for the SVM classifier. There are two aspects to td-idf --- term-frequency and inverse document frequency. \\
+Our naive model will use term-frequency inverse-document-frequency (tf-idf) to extract features for the SVM classifier. There are two aspects to tf-idf --- term-frequency and inverse document frequency. \\
 
 \noindent
 Term frequency is a measure of how often a word appears in a text. More specifically, it is \emph{proportional} to the number of times the term appears. This is because the term frequency is typically normalised by dividing the number of occurrences of a term by the frequency of the most used term in a text. So, the most frequent term in a document will have a term frequency of $1.0$, and all other terms will have a term frequency inside $\left[0.0, 1.0\right]$ \cite[p.~8]{leskovec_rajaraman_ullman_2014}. \\
